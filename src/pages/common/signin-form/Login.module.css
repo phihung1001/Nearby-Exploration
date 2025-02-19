@@ -1,0 +1,92 @@
+/* Login.module.css */
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Toàn màn hình */
+    background-image: url('../../../assets/Img/bground4.jpg'); /* Đường dẫn ảnh */
+    background-size: cover; /* Phủ kín màn hình */
+    background-position: center; /* Căn giữa */
+    background-repeat: no-repeat; /* Không lặp lại */
+  }
+/* Phần chứa ảnh */
+.pageLeft {
+    position: relative;
+    width: 50%;  /* Đảm bảo phần chứa ảnh chiếm đủ 50% */
+    height: 100vh;
+    display: flex;
+    background-image: url('../../../assets/Img/bgleft.jpg'); /* Đường dẫn ảnh */
+    background-size: 100% 100%;
+    background-position: center; /* Căn giữa */
+    background-repeat: no-repeat; /* Không lặp lại */
+}
+
+/* Phần chứa form */
+.pageRight {
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Khung chứa form */
+.formLoginContainer {
+    backdrop-filter: blur(5px); /* Hiệu ứng mờ nền */
+    animation: fadeIn 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 360px;
+    border: 2px solid rgb(230, 227, 227);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* Tiêu đề */
+.formTitle h2 {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+/* Form đăng nhập */
+.antForm {
+  padding:20px !important;
+  width:100%;
+  max-width: 100% !important;
+}
+
+/* Media Query cho thiết bị di động */
+@media (max-width: 768px) {
+    /* Ẩn phần chứa ảnh */
+    .pageLeft {
+        display: none;
+    }
+
+    /* Đảm bảo phần chứa form chiếm toàn bộ chiều rộng */
+    .pageRight {
+        width: 100%;
+    }
+
+    .formLoginContainer {
+        width: 80%; /* Hoặc 100% nếu bạn muốn form chiếm toàn bộ chiều rộng */
+        max-width: 100%; /* Xóa max-width để form có thể mở rộng ra */
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+  

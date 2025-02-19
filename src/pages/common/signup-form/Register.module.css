@@ -1,0 +1,123 @@
+/* Layout chính */
+.registerContainer {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-image: url('../../../assets/Img/bground4.jpg'); /* Đường dẫn ảnh */
+    background-size: cover; /* Phủ kín màn hình */
+    background-position: center; /* Căn giữa */
+    background-repeat: no-repeat; /* Không lặp lại */
+}
+
+/* Phần chứa ảnh */
+.pageLeft {
+    position: relative;
+    width: 50%;  /* Đảm bảo phần chứa ảnh chiếm đủ 50% */
+    height: 100vh;
+    display: flex;
+    background-image: url('../../../assets/Img/bgleft.jpg'); /* Đường dẫn ảnh */
+    background-size: 100% 100%;
+    background-position: center; /* Căn giữa */
+    background-repeat: no-repeat; /* Không lặp lại */
+}
+
+/* Phần chứa form */
+.pageRight {
+    width: 50%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;    
+    height: 100%;
+
+    /* Khung chứa form */
+    .formRegisterContainer {
+        backdrop-filter: blur(5px); /* Hiệu ứng mờ nền */
+        animation: fadeIn 0.5s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 480px;
+        margin: 50px 50px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid rgb(230, 227, 227);
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        
+        /* Tiêu đề */
+        .formTitle h2 {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+
+}
+
+
+/* Form đăng kí */
+.antForm {
+    padding-right:20px !important;
+    width:100%;
+    max-width: 100% !important;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .pageLeft {
+        position: relative;
+        width: 40%;
+        height: 100%;
+        overflow: hidden;
+    }
+    .pageRight {
+        width: 60%;
+    }
+    
+    /* Hình ảnh nền */
+    .backgroundImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Đảm bảo ảnh phủ toàn bộ */
+    }
+    .antForm {
+        padding-left: 20px;
+        padding-right:20px !important;
+        width:100%;
+        max-width: 100% !important;
+    }
+    .ant-form-item-row{
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+}
+/* Media Query cho thiết bị di động */
+@media (max-width: 768px) {
+    /* Ẩn phần chứa ảnh */
+    .pageLeft {
+        display: none;
+    }
+    .antForm {
+        padding-left: 20px;
+        padding-right:20px !important;
+        width:100%;
+        max-width: 100% !important;
+    }
+    /* Đảm bảo phần chứa form chiếm toàn bộ chiều rộng */
+    .pageRight {
+        width: 100%;
+    }
+
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
