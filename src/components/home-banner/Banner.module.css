@@ -1,0 +1,17 @@
+.bannerContainer {
+    width: 100%;
+  }
+  
+  .imageWrapper {
+    width: 100%;
+    height: 440px; /* Chiều cao của container chứa ảnh */
+    overflow: hidden; /* Ẩn phần ảnh vượt ra ngoài */
+    border-radius: 10px;
+  }
+  
+  .bannerImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  

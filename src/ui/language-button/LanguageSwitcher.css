@@ -1,0 +1,11 @@
+/* LanguageSwitcher.css */
+.language-button {
+  border: none;
+  background: none;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer; /* Hiển thị con trỏ khi hover */
+}
+
+.language-button:active {
+  transform: scale(0.9);
+}

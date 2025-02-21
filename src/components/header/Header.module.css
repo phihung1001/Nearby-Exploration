@@ -1,0 +1,21 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Khoảng cách giữa các nút */
+}
+  
+  .logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #f39c12;
+  }
+
+  
