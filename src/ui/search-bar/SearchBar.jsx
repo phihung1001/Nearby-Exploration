@@ -46,7 +46,6 @@ export default function SearchBar({ onSearch }) {
         Tìm kiếm
       </Button>
 
-      {/* Cập nhật prop từ 'visible' thành 'open' */}
       <CameraModal open={isModalOpen} onCancel={handleModalCancel} />
     </div>
   );

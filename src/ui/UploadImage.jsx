@@ -43,17 +43,17 @@ export default function UploadImage({ onUpload = () => {},onCancel }) {  // Đ�
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }}>
-      {!isCameraActive && !capturedImage && (
-        <>
-          <Button type="primary" icon={<CameraOutlined />} onClick={() => setIsCameraActive(true)}>
-            Chụp ảnh
-          </Button>
+        {!isCameraActive && !capturedImage && (
+          <>
+            <Button style={{ width: "160px" ,height:"32px" }} type="primary" icon={<CameraOutlined />} onClick={() => setIsCameraActive(true)}>
+              Chụp ảnh
+            </Button>
 
-          <Upload fileList={fileList} beforeUpload={() => false} onChange={handleUploadImage} accept="image/*">
-            <Button icon={<UploadOutlined />}>Chọn ảnh từ máy</Button>
-          </Upload>
-        </>
-      )}
+            <Upload fileList={fileList} beforeUpload={() => false} onChange={handleUploadImage} accept="image/*">
+              <Button style={{ width: "160px" ,height:"32px" }} icon={<UploadOutlined />}>Chọn ảnh từ máy</Button>
+            </Upload>
+          </>
+        )}
 
       {isCameraActive && (
         <>

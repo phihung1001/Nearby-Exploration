@@ -4,8 +4,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./Banner.module.css";
 
-import banner1 from '../../assets/Img/image1.png';
-import banner2 from "../../assets/Img/anh2.jpg";
+import banner1 from '../../assets/Img/loginpage.jpg';
+import banner2 from "../../assets/Img/bg.jpg";
 import banner3 from "../../assets/Img/bground3.jpg";
 import banner4 from "../../assets/Img/bgleft.jpg";
 
