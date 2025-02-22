@@ -1,0 +1,76 @@
+.rightContainer {
+    /* Tùy chỉnh phần container bên phải */
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  /* Container của Tabs */
+.headerTabs {
+  position: sticky;
+  top: 55px; /* Điều chỉnh theo chiều cao của header */
+  display: flex;
+  background: white;
+  gap: 12px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
+}
+
+/* Button Tab */
+.headerTabs button {
+  background: transparent;
+  border: none;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Hiệu ứng gạch chân khi hover */
+.headerTabs button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 0;
+  height: 3px;
+  background: #ff5722;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.headerTabs button:hover {
+  color: #333;
+}
+
+.headerTabs button:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Khi tab được chọn (active) */
+.headerTabs button.active {
+  color: #ff5722;
+  font-weight: bold;
+  background: rgba(255, 87, 34, 0.1); /* Nhấn mạnh tab được chọn */
+  border-radius: 5px;
+  padding: 12px 18px;
+}
+
+/* Hiệu ứng gạch chân dưới tab đang chọn */
+.headerTabs button.active::after {
+  width: 100%;
+  left: 0;
+}
+
+  
+  .content {
+    /* Khu vực hiển thị nội dung từng tab */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  

@@ -1,4 +1,6 @@
 .container {
+    position: sticky;
+    top: 55px; /* Điều chỉnh theo chiều cao của header */
     display: flex;
     flex-direction: column;
     align-items: center;

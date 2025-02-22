@@ -7,6 +7,7 @@ import Explore from '../../../ui/explore/Explore';
 import khamphaimg from '../../../assets/Img/loginpage1.jpg';
 import styles from './Home.module.css';
 import Footer from '../../../components/footer/Footer';
+import HomeBodyRightContainer from '../home-body/HomeBodyRightContainer';
 export default function Home() {
 
 
@@ -15,8 +16,14 @@ export default function Home() {
       <Header />
       <Banner />
       <div className={styles.homeBody}>
-        <Explore imageUrl={khamphaimg} width='200px' height='300px'/>
-        <ItemRestaurant
+        <div className={styles.stickyExplore}>
+          <Explore imageUrl={khamphaimg} width="200px" height="300px" />
+        </div>
+        <div className={styles.homeBodyRightContainer}>
+            <HomeBodyRightContainer />
+        </div>
+        
+        {/* <ItemRestaurant
           name="Cửa hàng Bún Chả Hà Nội"
           address="123 Trần Hưng Đạo, Quận 1, TP.HCM"
           latestComment="Bún chả ở đây ngon, thịt nướng thơm!"
@@ -24,7 +31,7 @@ export default function Home() {
           imageCount={45}
           rating={4.5}
           image={backgroundLogin}
-        />
+        /> */}
       </div>
       <Footer />
     </div>

@@ -1,0 +1,183 @@
+[
+    {
+      "name": "Cửa hàng Bún Chả Hà Nội",
+      "address": "123 Trần Hưng Đạo, Quận 1, TP.HCM",
+      "latestComment": "Bún chả ở đây ngon, thịt nướng thơm!",
+      "reviewCount": 120,
+      "imageCount": 45,
+      "rating": 4.5,
+      "image": "/assets/Img/lauga.jpg"
+    },
+    {
+      "name": "Bánh Mì Đà Nẵng",
+      "address": "Ngã 4 Phan Văn Trị, Q.Gò Vấp",
+      "latestComment": "Bánh mì thơm, nhân đầy đặn!",
+      "reviewCount": 80,
+      "imageCount": 30,
+      "rating": 4.2,
+      "image": "/assets/Img/banhmi.jpg"
+    },
+    {
+      "name": "Phở Gia Truyền",
+      "address": "56 Nguyễn Huệ, Quận 1, TP.HCM",
+      "latestComment": "Nước dùng thanh, thịt bò mềm!",
+      "reviewCount": 150,
+      "imageCount": 50,
+      "rating": 4.8,
+      "image": "/assets/Img/lauga.jpg"
+    },
+    {
+      "name": "Bánh Cuốn Tây Hồ",
+      "address": "88 Lý Thái Tổ, Quận 10, TP.HCM",
+      "latestComment": "Bánh cuốn nóng hổi, chả lụa ngon!",
+      "reviewCount": 110,
+      "imageCount": 40,
+      "rating": 4.3,
+      "image": "/assets/Img/banhcuon.jpg"
+    },
+    {
+      "name": "Hủ Tiếu Nam Vang",
+      "address": "22 Võ Văn Kiệt, Quận 5, TP.HCM",
+      "latestComment": "Nước lèo đậm đà, topping đa dạng!",
+      "reviewCount": 95,
+      "imageCount": 35,
+      "rating": 4.4,
+      "image": "/assets/Img/hutieu.jpg"
+    },
+    {
+      "name": "Gỏi Cuốn Sài Gòn",
+      "address": "12 Lê Lợi, Quận 3, TP.HCM",
+      "latestComment": "Gỏi cuốn tươi, nước chấm đặc biệt!",
+      "reviewCount": 75,
+      "imageCount": 25,
+      "rating": 4.1,
+      "image": "/assets/Img/banhcuon.jpg"
+    },
+    {
+      "name": "Bò Né 3 Ngon",
+      "address": "190 Trần Quang Khải, Quận 1, TP.HCM",
+      "latestComment": "Bò mềm, pate thơm, bánh mì giòn!",
+      "reviewCount": 130,
+      "imageCount": 55,
+      "rating": 4.7,
+      "image": "/assets/Img/bone.jpg"
+    },
+    {
+      "name": "Cơm Tấm Sườn Bì Chả",
+      "address": "101 Cách Mạng Tháng 8, Quận 10, TP.HCM",
+      "latestComment": "Sườn nướng ngon, cơm dẻo!",
+      "reviewCount": 200,
+      "imageCount": 60,
+      "rating": 4.9,
+      "image": "/assets/Img/comtam.jpg"
+    },
+    {
+      "name": "Bún Riêu Cua Đồng",
+      "address": "34 Nguyễn Trãi, Quận 5, TP.HCM",
+      "latestComment": "Bún riêu đậm vị, riêu cua thơm!",
+      "reviewCount": 105,
+      "imageCount": 38,
+      "rating": 4.6,
+      "image": "/assets/Img/bunrieu.jpg"
+    },
+    {
+      "name": "Bánh Xèo Miền Tây",
+      "address": "210 Tôn Đức Thắng, Quận 1, TP.HCM",
+      "latestComment": "Bánh xèo giòn, nhân tôm thịt đầy!",
+      "reviewCount": 140,
+      "imageCount": 50,
+      "rating": 4.5,
+      "image": "/assets/Img/banhxeo.jpg"
+    },
+    {
+      "name": "Bún Bò Huế Ngự Bình",
+      "address": "45 Lê Văn Sỹ, Quận 3, TP.HCM",
+      "latestComment": "Bún bò chuẩn vị Huế!",
+      "reviewCount": 175,
+      "imageCount": 65,
+      "rating": 4.8,
+      "image": "/assets/Img/bunbohue.jpg"
+    },
+    {
+      "name": "Chè Sài Gòn",
+      "address": "29 Đinh Tiên Hoàng, Quận 1, TP.HCM",
+      "latestComment": "Chè đa dạng, không quá ngọt!",
+      "reviewCount": 90,
+      "imageCount": 33,
+      "rating": 4.2,
+      "image": "/assets/Img/che.jpg"
+    },
+    {
+      "name": "Lẩu Gà Lá É",
+      "address": "92 Nguyễn Văn Trỗi, Quận Phú Nhuận, TP.HCM",
+      "latestComment": "Lẩu thơm ngon, nước dùng đặc biệt!",
+      "reviewCount": 130,
+      "imageCount": 45,
+      "rating": 4.7,
+      "image": "/assets/Img/lauga.jpg"
+    },
+    {
+      "name": "Gà Nướng Lu",
+      "address": "168 Nguyễn Trọng Tuyển, Quận Tân Bình, TP.HCM",
+      "latestComment": "Gà nướng mềm, ướp đậm vị!",
+      "reviewCount": 115,
+      "imageCount": 40,
+      "rating": 4.5,
+      "image": "/assets/Img/ganuong.jpg"
+    },
+    {
+      "name": "Ốc Đêm Sài Gòn",
+      "address": "77 Điện Biên Phủ, Quận Bình Thạnh, TP.HCM",
+      "latestComment": "Ốc tươi, chế biến ngon!",
+      "reviewCount": 180,
+      "imageCount": 70,
+      "rating": 4.9,
+      "image": "/assets/Img/oc.jpg"
+    },
+    {
+      "name": "Bánh Tráng Trộn",
+      "address": "18 Nguyễn Văn Đậu, Quận Phú Nhuận, TP.HCM",
+      "latestComment": "Bánh tráng trộn đậm vị, topping phong phú!",
+      "reviewCount": 125,
+      "imageCount": 48,
+      "rating": 4.4,
+      "image": "/assets/Img/banhtrangtron.jpg"
+    },
+    {
+      "name": "Xôi Gà Bà Chiểu",
+      "address": "37 Bạch Đằng, Quận Bình Thạnh, TP.HCM",
+      "latestComment": "Xôi dẻo, gà chiên giòn rụm!",
+      "reviewCount": 160,
+      "imageCount": 58,
+      "rating": 4.8,
+      "image": "/assets/Img/banhcuon.jpg"
+    },
+    {
+      "name": "Nem Nướng Nha Trang",
+      "address": "200 Lê Hồng Phong, Quận 10, TP.HCM",
+      "latestComment": "Nem nướng thơm, nước chấm đậm đà!",
+      "reviewCount": 140,
+      "imageCount": 50,
+      "rating": 4.6,
+      "image": "/assets/Img/banhcuon.jpg"
+    },
+    {
+      "name": "Bánh Căn Đà Lạt",
+      "address": "50 Bùi Viện, Quận 1, TP.HCM",
+      "latestComment": "Bánh căn giòn, nước chấm ngon!",
+      "reviewCount": 110,
+      "imageCount": 42,
+      "rating": 4.5,
+      "image": "/assets/Img/banhcuon.jpg"
+    },
+    {
+      "name": "Trà Sữa Trân Châu",
+      "address": "95 Nguyễn Văn Cừ, Quận 5, TP.HCM",
+      "latestComment": "Trà sữa béo, trân châu dai ngon!",
+      "reviewCount": 190,
+      "imageCount": 75,
+      "rating": 4.9,
+      "image": "/assets/Img/banhcuon.jpg"
+    }
+  ]
+  
