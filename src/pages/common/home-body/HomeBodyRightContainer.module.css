@@ -11,6 +11,7 @@
   top: 55px; /* Điều chỉnh theo chiều cao của header */
   display: flex;
   background: white;
+  z-index: 100;
   gap: 12px;
   margin-bottom: 20px;
   border-bottom: 2px solid #ddd;
