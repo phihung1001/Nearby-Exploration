@@ -6,45 +6,9 @@ import Banner from '../../../components/home-baner/Banner';
 import Explore from '../../../ui/explore/Explore';
 import khamphaimg from '../../../assets/Img/loginpage1.jpg';
 import styles from './Home.module.css';
+import Footer from '../../../components/footer/Footer';
 export default function Home() {
-  const [userLocation, setUserLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [district, setDistrict] = useState(null);
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          console.log("Vị trí của bạn:", latitude, longitude);
-          setUserLocation({ latitude, longitude });
-          // Gọi API reverse geocoding của Nominatim (OpenStreetMap)
-          fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
-            .then((res) => res.json())
-            .then((data) => {
-              const districtInfo =
-                data.address?.district ||
-                data.address?.suburb ||
-                data.address?.city_district ||
-                data.address?.county ||
-                "Không xác định";
-              setDistrict(districtInfo);
-              console.log("Địa chỉ quận/huyện:", districtInfo);
-            })
-            .catch((error) => {
-              console.error("Lỗi reverse geocoding:", error);
-              setErrorMsg("Lỗi khi lấy địa chỉ.");
-            });
-        },
-        (error) => {
-          setErrorMsg("Không lấy được vị trí của bạn.");
-          console.error("Geolocation error:", error);
-        }
-      );
-    } else {
-      setErrorMsg("Trình duyệt của bạn không hỗ trợ Geolocation.");
-    }
-  }, []);
 
   return (
     <div>
@@ -62,6 +26,7 @@ export default function Home() {
           image={backgroundLogin}
         />
       </div>
+      <Footer />
     </div>
   );
 }
