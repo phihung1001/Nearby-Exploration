@@ -8,7 +8,8 @@ import AuthButton from "../../ui/authlogin-button/AuthButton";
 
 export default function Header({ onSearch }) {
   return (
-    <header className={styles.header}>
+    
+    <div className={styles.headerContainer}>
       <div className={styles.headerRight}>
       <div className={styles.logo}>Nearby Exploration</div>
       </div>
@@ -20,6 +21,6 @@ export default function Header({ onSearch }) {
             <AuthButton />
             <LanguageSwitcher />
         </div>
-    </header>
+    </div>
   );
 }

@@ -12,7 +12,7 @@ export default function Home() {
 
 
   return (
-    <div>
+    <div style={{display:"flex", flexDirection:"column"}}>
       <Header />
       <Banner />
       <div className={styles.homeBody}>
@@ -22,16 +22,6 @@ export default function Home() {
         <div className={styles.homeBodyRightContainer}>
             <HomeBodyRightContainer />
         </div>
-        
-        {/* <ItemRestaurant
-          name="Cửa hàng Bún Chả Hà Nội"
-          address="123 Trần Hưng Đạo, Quận 1, TP.HCM"
-          latestComment="Bún chả ở đây ngon, thịt nướng thơm!"
-          reviewCount={120}
-          imageCount={45}
-          rating={4.5}
-          image={backgroundLogin}
-        /> */}
       </div>
       <Footer />
     </div>

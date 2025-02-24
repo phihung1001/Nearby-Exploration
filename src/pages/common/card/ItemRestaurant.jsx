@@ -8,10 +8,11 @@ export default function ItemRestaurant({
     latestComment, 
     reviewCount, 
     imageCount, 
-    rating 
+    rating, 
+    onClick // Thêm prop onClick
 }) {
     return (
-        <div className={styles.itemRestaurant}>
+        <div className={styles.itemRestaurant} onClick={onClick}> 
             <img className={styles.restaurantImage} src={image} alt={name} />
             <div className={styles.content}>
                 <div className={styles.header}>

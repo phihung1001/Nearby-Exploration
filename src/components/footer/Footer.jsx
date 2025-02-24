@@ -13,14 +13,17 @@ export default function Footer() {
           const { latitude, longitude } = position.coords;
           console.log("Vị trí của bạn:", latitude, longitude);
           setUserLocation({ latitude, longitude });
+
           // Gọi API reverse geocoding của Nominatim (OpenStreetMap)
-          fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
+          const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+
+          fetch(apiUrl)
             .then((res) => res.json())
             .then((data) => {
-            const district = data.address?.district || data.address?.suburb || data.address?.city_district || data.address?.county || "";
+            const dis_trict = data.address?.district || data.address?.suburb || data.address?.city_district || data.address?.county || "";
             const city = data.address?.city || data.address?.town || data.address?.village || "";
             const country = data.address?.country || "";
-            const fullAddress = [district, city, country].filter(Boolean).join(", ") || "Không xác định";
+            const fullAddress = [dis_trict, city, country].filter(Boolean).join(", ") || "Không xác định";
 
               setDistrict(fullAddress);
               console.log("Địa chỉ :", fullAddress);

@@ -1,0 +1,71 @@
+.reviewContainer {
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+  }
+  
+  .ratingHeader {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .ratingItem {
+    font-weight: bold;
+  }
+  
+  .tuyetVoi {
+    color: #8e44ad;
+  }
+  
+  .khaTot {
+    color: #27ae60;
+  }
+  
+  .trungBinh {
+    color: #7f8c8d;
+  }
+  
+  .kem {
+    color: #c0392b;
+  }
+  
+  .ratingScore {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2ecc71;
+    margin-top: 10px;
+  }
+  
+  .progressContainer {
+    text-align: left;
+    margin-top: 10px;
+  }
+  
+  .progressLabel {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .writeCommentBtn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 15px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s;
+  }
+  
+  .writeCommentBtn:hover {
+    background-color: #2980b9;
+  }
+  

@@ -1,28 +1,38 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import ItemRestaurant from "../card/ItemRestaurant";
 
 export default function RestaurantList() {
-  // Dữ liệu nhà hàng giả lập
   const [restaurants, setRestaurants] = useState([]);
+  const navigate = useNavigate(); 
+
   useEffect(() => {
-    fetch("/restaurants.json") 
+    fetch("/restaurants.json")
       .then((res) => res.json())
       .then((data) => setRestaurants(data))
       .catch((error) => console.error("Error loading JSON:", error));
   }, []);
+
+  // Xử lý khi nhấp vào nhà hàng
+  const handleClick = (restaurant) => {
+    console.log("restaurant-detail", restaurant);
+    navigate(`/restaurant-detail/${restaurant.id}`, { state: restaurant });
+  };
   
+
   return (
     <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-      {restaurants.map((r, idx) => (
+      {restaurants.map((r) => (
         <ItemRestaurant
-          key={idx}
+          key={r.id}
           name={r.name}
           address={r.address}
           latestComment={r.latestComment}
           reviewCount={r.reviewCount}
           imageCount={r.imageCount}
           rating={r.rating}
-          image={r.image}
+          image={r.image[0]}
+          onClick={() => handleClick(r)}
         />
       ))}
     </div>

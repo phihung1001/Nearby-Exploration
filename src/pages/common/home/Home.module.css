@@ -1,4 +1,5 @@
 .homeBody {
+    margin-top: 10px;
     display: flex;
     align-items: flex-start; /* Để các phần tử nằm trên cùng một hàng */
     gap: 20px; /* Khoảng cách giữa các phần */
