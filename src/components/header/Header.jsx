@@ -4,6 +4,7 @@ import SearchBar from "../../ui/search-bar/SearchBar";
 import FilterDropdown from "../../ui/FilterDropdown";
 import LanguageSwitcher from "../../ui/language-button/LanguageSwitcher";
 import AuthButton from "../../ui/authlogin-button/AuthButton";
+import { Link } from "react-router-dom";
 
 
 export default function Header({ onSearch }) {
@@ -11,7 +12,9 @@ export default function Header({ onSearch }) {
     
     <div className={styles.headerContainer}>
       <div className={styles.headerRight}>
-      <div className={styles.logo}>Nearby Exploration</div>
+        <Link to="/" className={styles.logo}>
+          Nearby Exploration
+        </Link>      
       </div>
       <div className={styles.headerRight}>
         <SearchBar onSearch={onSearch} />

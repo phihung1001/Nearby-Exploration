@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import ItemRestaurant from "../card/ItemRestaurant";
-
+import styles from "./Restaurant.module.css"
 export default function RestaurantList() {
   const [restaurants, setRestaurants] = useState([]);
   const navigate = useNavigate(); 
@@ -21,7 +21,7 @@ export default function RestaurantList() {
   
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+    <div className={styles.productContainer}>
       {restaurants.map((r) => (
         <ItemRestaurant
           key={r.id}

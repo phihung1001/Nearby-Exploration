@@ -8,6 +8,8 @@ import Footer from "../../../components/footer/Footer";
 import Explore from '../../../ui/explore/Explore';
 import khamphaimg from '../../../assets/Img/loginpage1.jpg';
 import ReviewSummary from "../../../ui/review-sumary/ReviewSummary";
+import HomeBodyRightContainer from '../home-body/HomeBodyRightContainer';
+
 export default function RestaurantDetail() {
   const { id } = useParams(); // Lấy ID từ URL
   const [restaurant, setRestaurant] = useState(null);
@@ -68,7 +70,7 @@ export default function RestaurantDetail() {
               <Explore imageUrl={khamphaimg} width="200px" height="300px" />
             </div>
             <div>
-
+                <HomeBodyRightContainer />
             </div>
             <div className={styles.reviewSumary}>
               <ReviewSummary />
