@@ -70,7 +70,6 @@
   
   .content {
     /* Khu vực hiển thị nội dung từng tab */
-    display: flex;
     flex-wrap: wrap;
     gap: 10px;
     max-width: 100%;

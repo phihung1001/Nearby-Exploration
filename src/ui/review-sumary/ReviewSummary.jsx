@@ -44,14 +44,14 @@ const ReviewSummary = () => {
               <span>{item.label}</span>
               <span>{item.value}</span>
             </div>
-            <Progress percent={item.value * 10} showInfo={false} strokeColor="#e74c3c" />
+            <Progress percent={item.value * 10} showInfo={false} strokeColor="#3498db" />
           </div>
         ))}
       </div>
 
       <div className={styles.ratingScore}>{ratings.overall} điểm - Khá tốt</div>
 
-      <Button className={styles.writeCommentBtn} icon="edit">
+      <Button className={styles.writeCommentBtn}>
         Viết bình luận
       </Button>
     </div>

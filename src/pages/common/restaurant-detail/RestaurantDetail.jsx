@@ -8,7 +8,9 @@ import Footer from "../../../components/footer/Footer";
 import Explore from '../../../ui/explore/Explore';
 import khamphaimg from '../../../assets/Img/loginpage1.jpg';
 import ReviewSummary from "../../../ui/review-sumary/ReviewSummary";
-import HomeBodyRightContainer from '../home-body/HomeBodyRightContainer';
+import RestaurantMenu from "../restaurant-menu/RestaurantMenu";
+import CommentItem from "../comment-item/CommentItem";
+import logo from "../../../../src/assets/Img/account.png";
 
 export default function RestaurantDetail() {
   const { id } = useParams(); // Lấy ID từ URL
@@ -70,7 +72,36 @@ export default function RestaurantDetail() {
               <Explore imageUrl={khamphaimg} width="200px" height="300px" />
             </div>
             <div>
-                <HomeBodyRightContainer />
+                <RestaurantMenu />
+                <CommentItem
+                    avatar={logo}
+                    username="Oanh Vũ"
+                    date="27/2/2025 9:17"
+                    content="Đi đoàn 40 người vào chủ nhật tới, 2/3/2025 có phải đặt trước ko ạ?"
+                    rating="10"
+                />
+                <CommentItem
+                    avatar={logo}
+                    username="Phi Hùng"
+                    date="27/2/2025 9:17"
+                    content="Món nào cũng ngon, ăn xong là thấy vui vẻ cả ngày, đúng là đồ ăn ngon cũng có thể làm tâm trạng tốt hơn!"
+                    rating="10"
+                />
+                <CommentItem
+                    avatar={logo}
+                    username="Tiên Tiên"
+                    date="27/2/2025 9:17"
+                    content="Kiểu gì cũng sẽ đặt lại quán này, không thể tìm được nơi nào khác hợp khẩu vị hơn!
+"
+                    rating="10"
+                />
+                <CommentItem
+                    avatar={logo}
+                    username="Linh Linh"
+                    date="27/2/2025 9:17"
+                    content="Cảm giác lần đầu ăn mà như đã quen thuộc từ lâu, hợp miệng đến lạ luôn!"
+                    rating="10"
+                />
             </div>
             <div className={styles.reviewSumary}>
               <ReviewSummary />

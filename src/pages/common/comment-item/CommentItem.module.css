@@ -1,0 +1,74 @@
+.commentContainer {
+    background: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+  }
+  
+  .commentHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .userInfo {
+    flex-grow: 1;
+    margin-left: 10px;
+  }
+  
+  .username {
+    font-weight: bold;
+    display: block;
+  }
+  
+  .commentDate {
+    font-size: 12px;
+    color: gray;
+  }
+  
+  .rating {
+    background-color: green;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 50%;
+  }
+  
+  .commentBody {
+    margin-top: 10px;
+  }
+  
+  .commentContent {
+    font-size: 14px;
+  }
+  
+  .commentNote {
+    font-size: 12px;
+    color: gray;
+    margin-top: 5px;
+  }
+  
+  .commentActions {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+    margin-top: 10px;
+    color: gray;
+  }
+  
+  .actionItem {
+    cursor: pointer;
+  }
+  
+  .actionItem:hover {
+    color: #0073b1;
+  }
+  

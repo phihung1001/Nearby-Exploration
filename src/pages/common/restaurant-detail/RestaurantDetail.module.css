@@ -11,7 +11,7 @@
     max-width: 100%;    
     margin-top: 55px;  
     margin-bottom: 10px;     
-    background-color: #f9f9f9;
+    background-color: #fff;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   }
@@ -29,8 +29,39 @@
   }
   
   .bodyDetail {
-    display: flex;
-    align-items: flex-start; /* Để các phần tử nằm trên cùng một hàng */
-    gap: 20px; /* Khoảng cách giữa các phần */
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+    max-width: 1400px;
+    width: 80%;
+    margin: 10px auto 0;
+    padding-left: 30px;
+    padding-right: 30px;
   }
+  
+  /* Khi màn hình nhỏ hơn 1200px, giảm max-width */
+  @media (max-width: 1200px) {
+    .bodyDetail {
+      max-width: 1000px;
+    }
+  }
+  
+  /* Khi màn hình nhỏ hơn 992px, giảm max-width */
+  @media (max-width: 992px) {
+    .bodyDetail {
+      max-width: 800px;
+      gap: 15px;
+    }
+  }
+  
+  /* Khi màn hình nhỏ hơn 768px, giảm max-width và đổi layout */
+  @media (max-width: 768px) {
+    .bodyDetail {
+      max-width: 95%;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+  }
+  
+  
   

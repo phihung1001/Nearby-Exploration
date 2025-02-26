@@ -1,8 +1,14 @@
 .homeBody {
-    margin-top: 10px;
+    margin: 10px auto 0; 
     display: flex;
     align-items: flex-start; /* Để các phần tử nằm trên cùng một hàng */
     gap: 20px; /* Khoảng cách giữa các phần */
+    max-width: 1400px;
+    width:80%;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    
   }
   
   .stickyExplore {

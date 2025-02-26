@@ -13,7 +13,12 @@
       "image": [
          "/assets/Img/banhcuon.jpg",
         "/assets/Img/banhcuon.jpg"
-      ]
+      ],
+      "menu": [
+      { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+      { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+      { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 2,
@@ -29,7 +34,12 @@
       "image": [
           "/assets/Img/banhmi.jpg",
           "/assets/Img/banhmi.jpg"
-      ]
+      ],
+      "menu": [
+      { "name": "Phở Tái", "price": 45000, "image": "/assets/Img/banhcuon.jpg" },
+      { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+      { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 3,
@@ -45,7 +55,12 @@
       "image": [
           "/assets/Img/lauga.jpg",
           "/assets/Img/lauga.jpg"
-      ]
+      ],
+      "menu": [
+      { "name": "Phở Tái", "price": 45000 },
+      { "name": "Phở Gà", "price": 40000 },
+      { "name": "Phở Đặc Biệt", "price": 55000 }
+    ]
     },
     {
       "id": 4,
@@ -61,7 +76,12 @@
       "image": [
         "/assets/Img/banhcuon.jpg",
         "/assets/Img/banhcuon.jpg"
-      ]
+      ],
+      "menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 5,
@@ -77,7 +97,12 @@
       "image": [
         "/assets/Img/hutieu.jpg",
         "/assets/Img/hutieu.jpg"
-      ]
+      ],
+      "menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 6,
@@ -93,7 +118,12 @@
       "image": [
           "/assets/Img/banhcuon.jpg",
           "/assets/Img/banhcuon.jpg"
-      ]
+      ],
+      "menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 7,
@@ -109,7 +139,12 @@
       "image": [
          "/assets/Img/comtam.jpg",
           "/assets/Img/comtam.jpg"
-      ]
+      ],
+      "menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 8,
@@ -123,9 +158,14 @@
       "imageCount": 22,
       "rating": 4.0,
       "image":[
-        "/assets/Img/chebuoi.jpg",
-        "/assets/Img/chebuoi.jpg"
-      ] 
+        "/assets/Img/che.jpg",
+        "/assets/Img/che.jpg"
+      ],
+      "menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 9,
@@ -139,9 +179,14 @@
       "imageCount": 38,
       "rating": 4.5,
       "image": [
-        "/assets/Img/laumam.jpg",
-        "/assets/Img/laumam.jpg"        
-      ]
+        "/assets/Img/lauga.jpg",
+        "/assets/Img/lauga.jpg"        
+      ],
+      "menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 10,
@@ -157,7 +202,11 @@
       "image": [
         "/assets/Img/bunrieu.jpg",
         "/assets/Img/bunrieu.jpg"
-      ]
+      ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 11,
@@ -168,9 +217,13 @@
       "imageCount": 37,
       "rating": 4.4,
       "image": [
-          "/assets/Img/nemnuong.jpg",
-          "/assets/Img/nemnuong.jpg"
-      ]
+          "/assets/Img/nemlui.jpg",
+          "/assets/Img/nemlui.jpg"
+      ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 12,
@@ -181,13 +234,17 @@
       "imageCount": 40,
       "rating": 4.6,
       "image": [
-        "/assets/Img/nemnuong.jpg",
-        "/assets/Img/nemnuong.jpg"
+        "/assets/Img/lauga.jpg",
+        "/assets/Img/lauga.jpg"
+    ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
     ]
     },
 
     {
-      "id": 133,
+      "id": 13,
       "name": "Lẩu Gà Lá É",
       "address": "92 Nguyễn Văn Trỗi, Quận Phú Nhuận, TP.HCM",
       "latestComment": "Lẩu thơm ngon, nước dùng đặc biệt!",
@@ -195,8 +252,12 @@
       "imageCount": 45,
       "rating": 4.7,
       "image": [
-        "/assets/Img/nemnuong.jpg",
-        "/assets/Img/nemnuong.jpg"
+       "/assets/Img/hutieu.jpg",
+        "/assets/Img/hutieu.jpg"
+    ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
     ]
     },
     {
@@ -208,8 +269,12 @@
       "imageCount": 40,
       "rating": 4.5,
       "image": [
-        "/assets/Img/nemnuong.jpg",
-        "/assets/Img/nemnuong.jpg"
+        "/assets/Img/banhcuon.jpg",
+        "/assets/Img/banhcuon.jpg"
+    ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
     ]
     },
     {
@@ -221,8 +286,12 @@
       "imageCount": 70,
       "rating": 4.9,
       "image": [
-        "/assets/Img/nemnuong.jpg",
-        "/assets/Img/nemnuong.jpg"
+        "/assets/Img/oc.jpg",
+        "/assets/Img/oc.jpg"
+    ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
     ]
     },
     {
@@ -234,8 +303,12 @@
       "imageCount": 48,
       "rating": 4.4,
       "image": [
-        "/assets/Img/nemnuong.jpg",
-        "/assets/Img/nemnuong.jpg"
+        "/assets/Img/banhxeo.jpg",
+        "/assets/Img/banhxeo.jpg"
+    ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
     ]
     },
     {
@@ -247,8 +320,12 @@
       "imageCount": 58,
       "rating": 4.8,
       "image": [
-        "/assets/Img/nemnuong.jpg",
-        "/assets/Img/nemnuong.jpg"
+        "/assets/Img/comtam.jpg",
+        "/assets/Img/comtam.jpg"
+    ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
     ]
     },
     {
@@ -260,8 +337,12 @@
       "imageCount": 50,
       "rating": 4.6,
       "image": [
-        "/assets/Img/nemnuong.jpg",
-        "/assets/Img/nemnuong.jpg"
+        "/assets/Img/nemlui.jpg",
+        "/assets/Img/nemlui.jpg"
+    ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
     ]
     },
     {
@@ -275,7 +356,11 @@
       "image": [
         "/assets/Img/banhcuon.jpg",
         "/assets/Img/banhcuon.jpg"
-      ]
+      ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
+    ]
     },
     {
       "id": 20,
@@ -286,8 +371,12 @@
       "imageCount": 75,
       "rating": 4.9,
       "image": [
-        "/assets/Img/nemnuong.jpg",
-        "/assets/Img/nemnuong.jpg"
+        "/assets/Img/che.jpg",
+        "/assets/Img/che.jpg"
+    ],"menu": [
+        { "name": "Phở Tái", "price": 45000 , "image": "/assets/Img/banhcuon.jpg"},
+        { "name": "Phở Gà", "price": 40000, "image": "/assets/Img/banhcuon.jpg" },
+        { "name": "Phở Đặc Biệt", "price": 55000 , "image": "/assets/Img/banhcuon.jpg"}
     ]
     }
   ]

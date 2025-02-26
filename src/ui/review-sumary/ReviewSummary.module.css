@@ -1,71 +1,84 @@
 .reviewContainer {
-    max-width: 400px;
-    margin: auto;
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: white;
-  }
-  
-  .ratingHeader {
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .ratingItem {
-    font-weight: bold;
-  }
-  
-  .tuyetVoi {
-    color: #8e44ad;
-  }
-  
-  .khaTot {
-    color: #27ae60;
-  }
-  
-  .trungBinh {
-    color: #7f8c8d;
-  }
-  
-  .kem {
-    color: #c0392b;
-  }
-  
-  .ratingScore {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2ecc71;
-    margin-top: 10px;
-  }
-  
-  .progressContainer {
-    text-align: left;
-    margin-top: 10px;
-  }
-  
-  .progressLabel {
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .writeCommentBtn {
-    background-color: #3498db;
-    color: white;
-    padding: 10px 16px;
-    font-size: 16px;
-    border-radius: 5px;
-    margin-top: 15px;
-    cursor: pointer;
-    border: none;
-    transition: background 0.3s;
-  }
-  
-  .writeCommentBtn:hover {
-    background-color: #2980b9;
-  }
-  
+  position: sticky;
+  top: 55px; /* Điều chỉnh theo header */
+  max-width: 380px;
+  margin: auto;
+  text-align: center;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  background-color: white;
+  font-family: "Inter", sans-serif;
+}
+
+/* Phần tiêu đề */
+.ratingHeader {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #2c3e50;
+}
+
+/* Các đánh giá */
+.ratingItem {
+  font-weight: 500;
+  font-size: 14px;
+  padding: 5px 0;
+}
+
+.tuyetVoi {
+  color: #9b59b6;
+}
+
+.khaTot {
+  color: #2ecc71;
+}
+
+.trungBinh {
+  color: #95a5a6;
+}
+
+.kem {
+  color: #e74c3c;
+}
+
+/* Điểm tổng quan */
+.ratingScore {
+  font-size: 22px;
+  font-weight: 700;
+  color: #27ae60;
+  margin-top: 10px;
+}
+
+/* Tiêu chí đánh giá */
+.progressContainer {
+  text-align: left;
+  margin-top: 12px;
+}
+
+.progressLabel {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 13px;
+  color: #34495e;
+  margin-bottom: 5px;
+}
+
+/* Nút viết bình luận */
+.writeCommentBtn {
+  background-color: #3498db;
+  color: white;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  margin-top: 12px;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.writeCommentBtn:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
