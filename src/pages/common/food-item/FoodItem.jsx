@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./FoodItem.module.css";
 
-const FoodItem = ({ image, name, price ,nameRestaurant}) => {
+const FoodItem = ({ image, name, price ,nameRestaurant, onClick}) => {
   return (
-    <div className={styles.foodItem}>
+    <div className={styles.foodItem} onClick={onClick}>
       <img src={image} alt={name} className={styles.foodImage} />
       <div className={styles.foodInfo}>
         <h3 className={styles.foodName}>{name}</h3>

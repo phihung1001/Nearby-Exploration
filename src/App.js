@@ -6,6 +6,7 @@ import ResetPassword from './pages/common/reset-password/ResetPassword';
 import ChangePassword from './pages/common/confirm-password/ChangePassword';
 import RestaurantDetail from './pages/common/restaurant-detail/RestaurantDetail';
 import './App.css';
+import FoodDetail from './pages/common/food-detail/FoodDetail';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/confirm-password" element={<ChangePassword/>} />
         <Route path="/food-list" element={<Login />} />
         <Route path="/restaurant-detail/:id" element={<RestaurantDetail />} />  
+        <Route path="/restaurant/:restaurantId/food-detail/:foodId" element={<FoodDetail />} />
+
     </Routes>
   </BrowserRouter>
   );
