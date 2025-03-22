@@ -2,22 +2,7 @@ import React from "react";
 import { Progress, Button } from "antd";
 import styles from "./ReviewSummary.module.css";
 
-const ReviewSummary = () => {
-  const ratings = {
-    total: 38,
-    excellent: 17,
-    good: 17,
-    average: 3,
-    bad: 1,
-    criteria: [
-      { label: "Vị trí", value: 8.2 },
-      { label: "Giá cả", value: 8.0 },
-      { label: "Chất lượng", value: 9.2 },
-      { label: "Phục vụ", value: 8.8 },
-      { label: "Không gian", value: 8.3 },
-    ],
-    overall: 8.5,
-  };
+const ReviewSummary = ({ ratings }) => {
 
   return (
     <div className={styles.reviewContainer}>

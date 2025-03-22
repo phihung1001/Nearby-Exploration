@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 import backgroundLogin from '../../../assets/Img/loginpage1.jpg';
 import styles from './Register.module.css'; // Import CSS Module
 
 import {
-  AutoComplete,
   Button,
-  Cascader,
   Checkbox,
-  Col,
   Form,
   Input,
-  InputNumber,
-  Row,
   Select,
+  Modal
 } from 'antd';
 const { Option } = Select;
 
@@ -48,8 +45,39 @@ const tailFormItemLayout = {
 };
 export default function Register() {
   const [form] = Form.useForm();
-  const onFinish = (values) => {
-    console.log('Data Success: ', values);
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+      const response = await fetch('http://localhost:8080/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      });
+      const result = await response.json();
+      console.log("result", result);
+      if (!response.ok) {
+          const modal = Modal.error({
+            centered: true,
+            title: 'Đăng kí thất bại',
+            content: result.message,
+          });
+          setTimeout(() => {
+            modal.destroy();
+        }, 2000);
+      } else {
+        const modal = Modal.success({
+          centered: true,
+          title: 'Đăng kí thành công',
+          content: 'Vui lòng đăng nhập để sử dụng hệ thống',
+        });
+        navigate('/auth/signin');
+        console.log("token", result.token);
+        localStorage.setItem('token', result.token);
+        setTimeout(() => {
+          modal.destroy();
+        }, 1000);
+    }
   };
 
   const [autoCompleteResult, setAutoCompleteResult] = useState([]);
@@ -87,7 +115,7 @@ export default function Register() {
           >
             <Form.Item
               className={styles.antFormItem} 
-              name="name"
+              name="fullName"
               label="Name"
               tooltip="What do you want others to call you?"
               rules={[
@@ -134,7 +162,7 @@ export default function Register() {
 
             <Form.Item
               className={styles.antFormItem} 
-              name="confirm"
+              name="confirmPassword"
               label="Xác nhận mật khẩu "
               dependencies={['password']}
               hasFeedback
@@ -158,7 +186,7 @@ export default function Register() {
 
             <Form.Item
               className={styles.antFormItem} 
-              name="residence"
+              name="address"
               label="Địa điểm"
               rules={[
                 {
@@ -172,7 +200,7 @@ export default function Register() {
 
             <Form.Item
                 className={styles.antFormItem} 
-                name="phone"
+                name="phoneNumber"
                 label="Số điện thoại"
                 rules={[
                   {

@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./ItemRestaurant.module.css";
+import defaultImage from "../../../../src/assets/Img/loginpage.jpg"
 
 export default function ItemRestaurant({ 
     name, 
@@ -13,7 +14,14 @@ export default function ItemRestaurant({
 }) {
     return (
         <div className={styles.itemRestaurant} onClick={onClick}> 
-            <img className={styles.restaurantImage} src={image} alt={name} />
+            <img className={styles.restaurantImage} 
+                src={image} 
+                alt={name}  
+                onError={(e) => {
+                    e.target.onerror = null; // Ngăn lặp vô hạn khi ảnh mặc định cũng lỗi
+                    e.target.src = defaultImage;
+                }}
+            />
             <div className={styles.content}>
                 <div className={styles.header}>
                     <h3>{name}</h3>
@@ -26,7 +34,7 @@ export default function ItemRestaurant({
                         <span>📸 {imageCount} ảnh</span>
                     </div>
                     <div className={styles.rating}>
-                        ⭐ {rating} / 5
+                        ⭐ {rating} / 10
                     </div>
                 </div>
             </div>

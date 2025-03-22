@@ -7,19 +7,22 @@ import ChangePassword from './pages/common/confirm-password/ChangePassword';
 import RestaurantDetail from './pages/common/restaurant-detail/RestaurantDetail';
 import './App.css';
 import FoodDetail from './pages/common/food-detail/FoodDetail';
-
+import RestaurantListPage from "./pages/common/RestaurantListPage";
+import Profile from "./pages/common/profile/Profile";
 function App() {
   return (
     <BrowserRouter>
     <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<Login/ >} />
-        <Route path="/signup" element={<Register/>} />
-        <Route path="/reset-password" element={<ResetPassword/>} />
-        <Route path="/confirm-password" element={<ChangePassword/>} />
-        <Route path="/food-list" element={<Login />} />
-        <Route path="/restaurant-detail/:id" element={<RestaurantDetail />} />  
-        <Route path="/restaurant/:restaurantId/food-detail/:foodId" element={<FoodDetail />} />
+        <Route path="/auth/signin" element={<Login/ >} />
+        <Route path="/auth/signup" element={<Register/>} />
+        <Route path="/auth/reset-password" element={<ResetPassword/>} />
+        <Route path="/auth/confirm-password" element={<ChangePassword/>} />
+        <Route path="/public/food-list" element={<Login />} />
+        <Route path="/public/restaurant-detail/:id" element={<RestaurantDetail />} />  
+        <Route path="/public/restaurant/:restaurantId/food-detail/:foodId" element={<FoodDetail />} />
+        <Route path="/public/restaurant-list" element={<RestaurantListPage />} />
+        <Route path="/profile/:id" element={<Profile />} />
 
     </Routes>
   </BrowserRouter>

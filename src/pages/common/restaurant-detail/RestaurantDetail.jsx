@@ -11,6 +11,7 @@ import ReviewSummary from "../../../ui/review-sumary/ReviewSummary";
 import RestaurantMenu from "../restaurant-menu/RestaurantMenu";
 import CommentItem from "../comment-item/CommentItem";
 import logo from "../../../../src/assets/Img/account.png";
+import defaultImage from "../../../../src/assets/Img/loginpage.jpg"
 
 export default function RestaurantDetail() {
   const { id } = useParams(); // Lấy ID từ URL
@@ -24,20 +25,27 @@ export default function RestaurantDetail() {
     khongGian: 7.4,
     binhLuan: 15,
   };
+  const fixImageUrl = (url) => {
+    if (url.startsWith("https://images.foody.vn/")) {
+        const parts = url.split('/').pop(); // Lấy phần cuối của URL
+        return `https://down-tx-vn.img.susercontent.com/${parts}`;
+    }
+    return url;
+  };
   useEffect(() => {
     // Fetch dữ liệu từ API
-    fetch("/restaurants.json")
-      .then((res) => res.json())
-      .then((data) => {
-        const foundRestaurant = data.find((r) => r.id.toString() === id);
-        if (foundRestaurant) {
-          setRestaurant(foundRestaurant);
-        } else {
-          console.error("Không tìm thấy nhà hàng");
-        }
-      })
-      .catch((error) => console.error("Lỗi tải dữ liệu:", error))
-      .finally(() => setLoading(false)); // Dừng trạng thái loading
+    fetch(`http://localhost:8080/public/restaurant/${id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data && data.id) {
+        setRestaurant(data);
+      } else {
+        console.error("Không tìm thấy nhà hàng");
+      }
+    })
+    .catch((error) => console.error("Lỗi tải dữ liệu:", error))
+    .finally(() => setLoading(false));
+  
  
   }, [id]);
   console.log("foundRestaurant",restaurant);
@@ -51,18 +59,26 @@ export default function RestaurantDetail() {
 
         <div className={styles.bannerDetail}>
           <div className={styles.left}>
-            <Banner images={restaurant.image} width="100%" height="300px" />
+            <img 
+                src={fixImageUrl(restaurant.photoUrl)} 
+                alt="banner-detail" 
+                width="100%" height="300px" 
+                onError={(e) => {
+                  e.target.onerror = null; // Ngăn lặp vô hạn khi ảnh mặc định cũng lỗi
+                  e.target.src = defaultImage;
+              }}
+            />
           </div>
           <div className={styles.right}>
             <InforRestaurant
-                breadcrumb={restaurant.city + " > " + restaurant.suburb + " > " + restaurant.district}
+                breadcrumb={restaurant.city + " > " + restaurant.district + " > " + restaurant.houseNumber}
                 name={restaurant.name}
                 shortDesc="Quán ăn - Món Việt - Gia đình, Nhóm hội, Giao hàng..."
                 branchLink="#"
                 ratings={myRatings}
                 address={restaurant.address}
                 time="Chưa mở cửa (10:00 - 22:00)"
-                price="50.000đ - 100.000đ"
+                price="10.000đ - 1.000.000đ"
             />
           </div>
         </div>
@@ -104,7 +120,23 @@ export default function RestaurantDetail() {
                 />
             </div>
             <div className={styles.reviewSumary}>
-              <ReviewSummary />
+              <ReviewSummary 
+                  ratings={{
+                    total: restaurant.totalReviews,
+                    excellent: 17,
+                    good: 17,
+                    average: 3,
+                    bad: 1,
+                    criteria: [
+                      { label: "Vị trí", value: myRatings.viTri },
+                      { label: "Giá cả", value: myRatings.giaCa },
+                      { label: "Chất lượng", value: myRatings.chatLuong },
+                      { label: "Phục vụ", value: myRatings.phucVu },
+                      { label: "Không gian", value: myRatings.khongGian },
+                    ],
+                    overall: restaurant.avgRatingText,
+                  }}
+              />
             </div>
         </div>
         

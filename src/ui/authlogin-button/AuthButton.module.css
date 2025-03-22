@@ -1,0 +1,53 @@
+.authButton {
+    background-color: #1677ff;  
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .authButton:hover {
+    background-color: #1677ff; 
+  }
+  
+  .authModal {
+    min-width: 220px;  
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .authModalItem {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .authModalItem:hover {
+    background-color: #dddfe1;  /* Nền xám nhạt khi hover */
+  }
+  
+  .authModalItemIcon {
+    margin-right: 10px;
+    color: #1677ff; /* Icon màu xanh lá */
+    font-size: 18px;
+  }
+  
+  .authModalItemText {
+    flex: 1;
+    font-weight: 500;
+  }
+  
+  .authModalTitle {
+    background-color: #1677ff;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
