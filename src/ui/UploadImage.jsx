@@ -44,7 +44,8 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
     }
 
     try {
-      const response = await fetch("http://localhost:8080/public/customer/searchByImage", {
+      const token = localStorage.getItem('token');
+      const response = await fetch("http://localhost:8080/customer/searchByImage", {
         method: "POST",
         body: formData,
       });
@@ -85,7 +86,7 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
       const restaurants = await fetchRestaurants(result.label);
 
       // Điều hướng đến trang mới và truyền dữ liệu nhà hàng qua state
-      navigate("/restaurant-list", { state: { restaurants } });
+      navigate("/public/restaurant-list", { state: { restaurants } });
 
     } catch (error) {
       console.error("Lỗi trong quá trình tải ảnh lên:", error);

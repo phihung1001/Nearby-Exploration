@@ -1,51 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Spin } from "antd";
 import { useParams } from "react-router-dom";
-import { Card, Avatar, Descriptions, Spin } from "antd";
-import { UserOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
-import axios from "axios";
-import styles from "./Profile.module.css";
+import { useUserData } from "../../../hooks/useUserData";
+import ProfileLayout from "./ProfileLayout";
+import InfoPanel from "./InfoPanel";
+import ChangePasswordPanel from "./ChangePasswordPanel";
 
 export default function Profile() {
   const { id } = useParams();
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { userData, loading, error } = useUserData(id);
+  const [localUserData, setLocalUserData] = useState(userData);
+  const handleUpdateSuccess = (updatedData) => {
+    setLocalUserData(updatedData);
+  };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`/http://localhost:8080/public/customer/${id}`);
-        setUserData(response.data);
-      } catch (error) {
-        console.error("Lỗi khi tải thông tin người dùng:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [id]);
+  const [selectedMenu, setSelectedMenu] = useState("info");
 
   if (loading) {
-    return <Spin size="large" className={styles.spinner} />;
+    return <Spin size="large" style={{ display: "block", marginTop: "2rem", textAlign: "center" }} />;
   }
-
+  if (error) {
+    return <p style={{ color: "red" }}>Lỗi: {error}</p>;
+  }
   if (!userData) {
-    return <p className={styles.errorText}>Không tìm thấy người dùng.</p>;
+    return <p style={{ color: "red" }}>Không tìm thấy người dùng.</p>;
+  }
+  const displayedData = localUserData || userData;
+  console.log("Profile -> displayedData", displayedData)
+
+  // Xác định nội dung bên phải dựa trên selectedMenu
+  let rightContent;
+  if (selectedMenu === "info") {
+    rightContent = <InfoPanel userData={displayedData} onUpdateSuccess={handleUpdateSuccess} />
+  } else if (selectedMenu === "changePassword") {
+    rightContent = <ChangePasswordPanel id={displayedData.id}/>;
+  } else if (selectedMenu === "logout") {
+    localStorage.removeItem("token");
+    window.location.href = "/";
   }
 
   return (
-    <Card className={styles.profileCard}>
-      <Avatar size={100} src={userData.avatar || <UserOutlined />} />
-      <Descriptions title="Thông tin cá nhân" bordered column={1}>
-        <Descriptions.Item label="Họ và tên">{userData.fullName}</Descriptions.Item>
-        <Descriptions.Item label="Email">
-          <MailOutlined /> {userData.email}
-        </Descriptions.Item>
-        <Descriptions.Item label="Số điện thoại">
-          <PhoneOutlined /> {userData.phone}
-        </Descriptions.Item>
-        <Descriptions.Item label="Địa chỉ">{userData.address || "Chưa cập nhật"}</Descriptions.Item>
-      </Descriptions>
-    </Card>
+    <ProfileLayout
+      userData={userData}
+      selectedMenu={selectedMenu}
+      onSelectMenu={setSelectedMenu}
+      rightContent={rightContent}
+    />
   );
 }

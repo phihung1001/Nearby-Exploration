@@ -3,12 +3,14 @@ import styles from "./HomeBodyRightContainer.module.css";
 import RestaurantList from "./RestaurantList";
 import ItemRestaurant from "../card/ItemRestaurant";
 import styles2 from "./Restaurant.module.css";
+import { useNavigate } from "react-router-dom"; 
 
 export default function HomeBodyRightContainer() {
   // State quản lý tab đang chọn
   const [activeTab, setActiveTab] = useState("trangchu");
   const [nearbyRestaurants, setNearbyRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); 
 
   // Xử lý khi nhấn vào từng nút
   const handleTabClick = (tabName) => {
@@ -37,6 +39,11 @@ export default function HomeBodyRightContainer() {
       console.error("Error fetching nearby restaurants:", error);
       setLoading(false);
     }
+  };
+
+  const handleClick = (restaurant) => {
+    console.log("restaurant-detail", restaurant);
+    navigate(`/public/restaurant-detail/${restaurant.id}`, { state: restaurant });
   };
 
   return (
@@ -110,7 +117,7 @@ export default function HomeBodyRightContainer() {
                       imageCount={r.totalPictures}
                       rating={r.avgRatingText}
                       image={r.photoUrl}
-                      onClick={() => console.log("Clicked", r)}
+                      onClick={() => handleClick(r)}
                     />
                   ))
                 ) : (

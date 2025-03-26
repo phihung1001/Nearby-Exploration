@@ -8,7 +8,8 @@ import RestaurantDetail from './pages/common/restaurant-detail/RestaurantDetail'
 import './App.css';
 import FoodDetail from './pages/common/food-detail/FoodDetail';
 import RestaurantListPage from "./pages/common/RestaurantListPage";
-import Profile from "./pages/common/profile/Profile";
+import Profile from './pages/user/profile/Profile';
+
 function App() {
   return (
     <BrowserRouter>

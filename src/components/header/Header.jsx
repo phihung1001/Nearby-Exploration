@@ -17,7 +17,7 @@ export default function Header({ onSearch }) {
         </Link>      
       </div>
       <div className={styles.headerRight}>
-        <SearchBar onSearch={onSearch} />
+        <SearchBar onSearch={onSearch} /> 
         <FilterDropdown onSearch={onSearch} />
       </div>
         <div className={styles.headerRight}>

@@ -14,13 +14,19 @@ import { jwtDecode } from "jwt-decode";
 export default function AuthButton() {
   const navigate = useNavigate();
   const [username, setUsername] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        setUsername(decoded.fullName || decoded.username);
+        if (decoded && typeof decoded === "object") {
+          setUser(decoded);
+          console.log("decode",decoded);
+        }
+        
+        setUsername(decoded.fullName);
       } catch (error) {
         console.error("Lỗi giải mã token:", error);
       }
@@ -28,7 +34,7 @@ export default function AuthButton() {
   }, []);
 
   const handleClick = () => {
-    if (!username) {
+    if (!username && !user?.sub) {
       navigate("/auth/signin");
     }
   };
@@ -36,11 +42,12 @@ export default function AuthButton() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUsername(null);
+    setUser(null);
     navigate("/auth/signin");
   };
 
   const modalItems = [
-    { title: "Thông tin cá nhân", icon: <UserOutlined />, onClick: () => navigate("/profile") },
+    { title: "Thông tin cá nhân", icon: <UserOutlined />, onClick: () => navigate(`/profile/${user.id}`)},
     { title: "Đã lưu", icon: <HeartOutlined />, onClick: () => navigate("/saved-stores") },
     { title: "Thông báo", icon: <BellOutlined />, onClick: () => navigate("/notifications") },
     { title: "Tin nhắn", icon: <MessageOutlined />, onClick: () => navigate("/messages") },
@@ -69,7 +76,7 @@ export default function AuthButton() {
   return (
     <Popover
       content={<div className={styles.authModal}>{content}</div>}
-      title={<div className={styles.authModalTitle}>Xin chào, {username}!</div>}
+      title={<div className={styles.authModalTitle}>Xin chào {user?.fullName || "bạn"}!</div>}
       trigger="click"
       onClick={handleClick}
     >
@@ -79,7 +86,7 @@ export default function AuthButton() {
         icon={<UserOutlined />}
         type="primary"
       >
-        {username || "Đăng nhập"}
+        {user?.fullName || user?.sub || "Đăng nhập"}
       </Button>
     </Popover>
   );

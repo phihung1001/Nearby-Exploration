@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button, message } from "antd";
+import { Input, Button, message ,notification} from "antd";
 import { SearchOutlined, CameraOutlined } from "@ant-design/icons";
 import CameraModal from "../CameraModal";  
 
@@ -9,7 +9,7 @@ export default function SearchBar({ onSearch }) {
 
   const handleSearch = () => {
     if (!searchText) {
-      message.error("Vui lòng nhập từ khóa");
+      notification.error({  description: "Vui lòng nhập từ khóa", message: "Thất bại" });
       return;
     }
     console.log("Tìm kiếm với:", searchText);
