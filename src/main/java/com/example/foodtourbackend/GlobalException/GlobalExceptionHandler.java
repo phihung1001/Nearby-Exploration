@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return buildResponse(HttpStatus.BAD_REQUEST, "Bad-Request: " + ex.getMessage());
+        return buildResponse(HttpStatus.BAD_REQUEST,  ex.getMessage());
     }
 
     @ExceptionHandler(ErrorImportDataException.class)

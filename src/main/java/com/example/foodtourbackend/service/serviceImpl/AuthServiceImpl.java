@@ -8,12 +8,15 @@ import com.example.foodtourbackend.entity.Customer;
 import com.example.foodtourbackend.repository.CustomerRepository;
 import com.example.foodtourbackend.service.AuthService;
 import com.example.foodtourbackend.utils.JwtUtil;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Cookie;
+
 import java.util.Map;
 
 @Service
@@ -22,11 +25,18 @@ public class AuthServiceImpl implements AuthService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
-    public AuthServiceImpl(CustomerRepository customerRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthServiceImpl(
+            CustomerRepository customerRepository,
+            PasswordEncoder passwordEncoder,
+            JwtUtil jwtUtil,
+            UserDetailsService userDetailsService
+    ) {
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -44,6 +54,7 @@ public class AuthServiceImpl implements AuthService {
         customer.setPhoneNumber(registerRequest.getPhoneNumber());
         customer.setAddress(registerRequest.getAddress());
         customer.setGender(registerRequest.getGender());
+        customer.setRole("CUSTOMER");
         customerRepository.save(customer);
         return ResponseEntity.ok(Map.of("message","Đăng kí thành công"));
     }
@@ -67,7 +78,8 @@ public class AuthServiceImpl implements AuthService {
         refreshCookie.setMaxAge(7 * 24 * 60 * 60);
         response.addCookie(refreshCookie);
 
-        return ResponseEntity.ok(Map.of("message","Đăng nhập thành công"));
+        LoginResponse tokenRespone = new LoginResponse(accessToken);
+        return ResponseEntity.ok(tokenRespone);
     }
 
     @Override
@@ -86,11 +98,15 @@ public class AuthServiceImpl implements AuthService {
                 }
             }
         }
-        if (refreshToken == null || !jwtUtil.validateToken(refreshToken)) {
+        if (refreshToken == null) {
             throw new UnauthorizedException("Refresh token không hợp lệ hoặc đã hết hạn");
         }
 
         String email = jwtUtil.getUserEmailFromToken(refreshToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        if (!jwtUtil.validateToken(refreshToken, userDetails)) {
+            throw new UnauthorizedException("Refresh token không hợp lệ hoặc đã hết hạn");
+        }
         Customer customer = customerRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Customer không tồn tại"));
 

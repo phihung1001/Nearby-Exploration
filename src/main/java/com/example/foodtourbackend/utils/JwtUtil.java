@@ -4,12 +4,13 @@ import com.example.foodtourbackend.entity.Customer;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class JwtUtil {
@@ -34,6 +35,9 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(customer.getEmail())
                 .claim("fullName", customer.getFullName())
+                .claim("id", customer.getId())
+                .claim("role", customer.getRole())
+                .claim("phoneNumber", customer.getPhoneNumber())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(jwtSecretKey, SignatureAlgorithm.HS512)
@@ -50,39 +54,56 @@ public class JwtUtil {
                 .compact();
     }
 
+    // Kiểm tra token có hết hạn không
+    private boolean isTokenExpired(String token) {
+        final Date expiration = extractClaim(token, Claims::getExpiration);
+        return expiration.before(new Date());
+    }
+    // Lấy ID từ token
+    public Long getUserIdFromToken(String token) {
+        return extractClaim(token, claims -> claims.get("id", Long.class));
+    }
+
+
     // Lấy email từ token
     public String getUserEmailFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(jwtSecretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.getSubject();
+        return extractClaim(token, Claims::getSubject);
     }
-    // Lấy tất cả infor user
+
+    // Lấy tất cả thông tin user
     public Map<String, Object> getAllClaimsFromToken(String token) {
+        return extractAllClaims(token);
+    }
+
+    // Kiểm tra token có hợp lệ và khớp với thông tin từ userDetails
+    public boolean validateToken(String token, UserDetails userDetails) {
+        try {
+            final String email = getUserEmailFromToken(token);
+            return email.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        } catch (ExpiredJwtException e) {
+            throw new RuntimeException("Token đã hết hạn.");
+        } catch (MalformedJwtException e) {
+            throw new RuntimeException("Token không đúng định dạng.");
+        } catch (Exception e) {
+            throw new RuntimeException("Token không hợp lệ.");
+        }
+    }
+
+    // Trích xuất thông tin từ token
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    // Trích xuất tất cả claims
+    private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(jwtSecretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
-
-    // Kiểm tra token có hợp lệ không
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(jwtSecretKey)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (ExpiredJwtException e) {
-            System.out.println("Token đã hết hạn.");
-        } catch (MalformedJwtException e) {
-            System.out.println("Token không đúng định dạng.");
-        } catch (Exception e) {
-            System.out.println("Token không hợp lệ.");
-        }
-        return false;
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 }
