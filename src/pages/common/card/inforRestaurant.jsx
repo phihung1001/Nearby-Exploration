@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./inforRestaurant.module.css";
+import styles from "./InforRestaurant.module.css";
 import { EnvironmentOutlined, ClockCircleOutlined, DollarCircleOutlined } from "@ant-design/icons";
 
 export default function inforRestaurant({

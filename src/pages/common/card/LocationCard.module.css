@@ -1,0 +1,48 @@
+.locationCard {
+    max-width: 400px;
+    margin: 24px auto;
+    border-radius: 8px;
+    /* Thêm bóng đổ nhẹ cho Card */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Chỉnh màu sắc, khoảng cách cho phần text giới thiệu */
+  .locationText {
+    margin-bottom: 16px;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  /* Gom input và button thành một hàng gọn gàng */
+  .searchContainer {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  /* Tùy chỉnh nút 'Sử dụng vị trí hiện tại của tôi' */
+  .currentLocationBtn {
+    background-color: #f0f0f0;
+    color: #333;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .currentLocationBtn:hover {
+    background-color: #d9d9d9;
+  }
+  
+  /* Phần hiển thị kết quả vị trí */
+  .locationResult {
+    margin-top: 16px;
+    background-color: #fafafa;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #eee;
+  }
+  
+  .locationResult strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate,Link } from 'react-router-dom'; 
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Flex, Modal } from 'antd';
 import styles from './Login.module.css'; // Import CSS Module
@@ -84,9 +84,8 @@ export default function Login() {
                     <Form.Item name="remember" valuePropName="checked" noStyle>
                       <Checkbox>Lưu mật khẩu</Checkbox>
                     </Form.Item>
-                    <a onClick={() => navigate('/auth/reset-password') }>
-                        Quên mật khẩu
-                     </a>
+          
+                     <Link to="/auth/reset-password">Quên mật khẩu</Link>
                   </Flex>
                 </Form.Item>
                 <Form.Item>
@@ -94,9 +93,8 @@ export default function Login() {
                     Đăng nhập ngay
                   </Button>
                   Chưa có tài khoản,{' '}
-                  <a onClick={() => navigate('/auth/signup')}>
-                    Đăng ký ngay !
-                  </a>
+               
+                  <Link to="/auth/signup">Đăng ký ngay</Link>
                 </Form.Item>
             </Form>
         </div>

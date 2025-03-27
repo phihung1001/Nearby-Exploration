@@ -110,7 +110,7 @@ export default function InfoPanel({ userData, onUpdateSuccess }) {
         <Descriptions.Item label="Email">
           <MailOutlined /> {userData.email}
         </Descriptions.Item>
-        <Descriptions.Item label="age">
+        <Descriptions.Item label="Độ tuổi">
           {userData.age}
         </Descriptions.Item>
         <Descriptions.Item label="Số điện thoại">

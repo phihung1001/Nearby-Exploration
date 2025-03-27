@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../../components/header/Header";
 import Banner from "../../../components/home-baner/Banner";
-import InforRestaurant from "../card/inforRestaurant";
+import InforRestaurant from "../card/InforRestaurant";
 import styles from "./RestaurantDetail.module.css";
 import Footer from "../../../components/footer/Footer";
 import Explore from '../../../ui/explore/Explore';

@@ -7,7 +7,7 @@ export default function ExploreButton({ imageUrl, width = '100%', height = '256p
   const navigate = useNavigate();
 
   const handleExplore = () => {
-    navigate('/food-list'); // Chuyển đến trang danh sách món ăn
+    navigate('/public/exploration'); // Chuyển đến trang danh sách món ăn
   };
 
   return (

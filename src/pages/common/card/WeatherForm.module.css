@@ -1,0 +1,116 @@
+/* Container căn giữa form trên trang với nền gradient nhẹ */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ece9e6, #ffffff);
+  padding: 20px;
+}
+
+/* Card chứa thông tin thời tiết */
+.card {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  border: none;
+}
+
+/* Header của Card với nền gradient và text trắng */
+.header {
+  background: linear-gradient(90deg, #1890ff, #40a9ff);
+  padding: 16px;
+  text-align: center;
+  color: #fff;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+/* Phần chính hiển thị nhiệt độ và điều kiện thời tiết */
+.main {
+  text-align: center;
+  padding: 20px;
+}
+
+.temperature {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.condition {
+  font-size: 1.25rem;
+  color: #666;
+  margin-top: 8px;
+}
+
+/* Chi tiết thêm: độ ẩm và chỉ số UV */
+.details {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detailItem {
+  text-align: center;
+}
+
+.detailLabel {
+  font-size: 0.9rem;
+  color: #888;
+  display: block;
+}
+
+.detailValue {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Phần dự báo theo giờ */
+.forecastSection {
+  padding: 16px;
+}
+
+.forecastSection h3 {
+  text-align: center;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.forecast {
+  display: flex;
+  justify-content: space-between;
+}
+
+.forecastItem {
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.forecastTime {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 4px 0;
+}
+
+.forecastTemp {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin: 4px 0;
+}
+
+.forecastIcon {
+  font-size: 1.2rem;
+}
