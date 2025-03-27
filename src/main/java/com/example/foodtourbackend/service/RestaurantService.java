@@ -8,13 +8,13 @@ import java.util.List;
 
 @Service
 public interface RestaurantService {
-    Restaurant getById(Long id);
+  Restaurant getById(Long id);
 
-    List<Restaurant> filterRestaurants(List<Long> cityIds, List<String> districts, String name);
+  List<Restaurant> filterRestaurants(List<Long> cityIds, List<String> districts, String name);
 
-    List<Restaurant> findAll();
+  List<Restaurant> findAll();
 
-    List<Restaurant> findNearbyRestaurants(double latitude, double longitude, double radius);
+  List<Restaurant> findNearbyRestaurants(double latitude, double longitude, double radius);
 
-    Page<Restaurant> getRestaurants(int page, int size);
+  Page<Restaurant> getRestaurants(int page, int size);
 }

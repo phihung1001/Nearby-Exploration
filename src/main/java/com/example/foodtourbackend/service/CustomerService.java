@@ -10,10 +10,8 @@ import java.util.Map;
 
 @Service
 public interface CustomerService {
-    CustomerResponse getById(Long id);
-    String searchByImage(MultipartFile file);
-
+  CustomerResponse getById(Long id);
+  String searchByImage(MultipartFile file);
   CustomerResponse update(Long id,CustomerDTO customerDTO);
-
   Map<String, Object> updatePassword(Long id, UpdatePasswordRequest request);
 }
