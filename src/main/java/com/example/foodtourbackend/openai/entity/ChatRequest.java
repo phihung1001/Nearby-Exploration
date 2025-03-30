@@ -6,14 +6,13 @@ public class ChatRequest {
   @NotBlank
   private String model;
 
-  @NotBlank
   private String systemPrompt;
 
-  @NotBlank
   private String userPrompt;
 
   private boolean jsonResponse = true;
-
+  public ChatRequest() {
+  }
 
   public ChatRequest(String model, String systemPrompt, String userPrompt) {
     this.model = model;

@@ -29,10 +29,10 @@ public class WeatherController {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
     if (startHour == null) {
-      startHour = LocalDateTime.now().format(formatter);  // Định dạng chuẩn ISO 8601
+      startHour = LocalDateTime.now().format(formatter);
     }
     if (endHour == null) {
-      endHour = LocalDateTime.now().plusHours(6).format(formatter);  // Định dạng chuẩn ISO 8601
+      endHour = LocalDateTime.now().plusHours(6).format(formatter);
     }
 
     return weatherService.getWeatherData(latitude, longitude, startHour, endHour, timezone);

@@ -29,7 +29,8 @@ public class SecurityConfig {
             "/auth/**",
             "/public/**",
             "/api/weather/**",
-            "/customer/searchByImage"
+            "/customer/searchByImage",
+            "api/openai/**"
     };
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {

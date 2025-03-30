@@ -19,13 +19,8 @@ public class OpenAIController {
     this.openAIService = openAIService;
   }
 
-  @PostMapping("/chat")
-  public ResponseEntity<String> createChatCompletion(@Valid @RequestBody ChatRequest request) {
-    try {
-      String result = openAIService.createChatCompletion(request);
-      return ResponseEntity.ok(result);
-    } catch (Exception e) {
-      return ResponseEntity.status(429).body("Rate limit exceeded. Please try again later.");
-    }
+  @PostMapping("/explore")
+  public ResponseEntity<String> createChatCompletion(@Valid @RequestBody ChatRequest request) throws InterruptedException {
+      return ResponseEntity.ok(openAIService.createChatCompletion(request));
   }
 }

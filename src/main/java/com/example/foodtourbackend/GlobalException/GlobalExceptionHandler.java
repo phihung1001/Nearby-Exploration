@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ErrorImportDataException.class)
     public ResponseEntity<Map<String, Object>> handleErrorImportDataException(ErrorImportDataException exception) {
         return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDenied(AccessDeniedException ex) {
+      Map<String, String> error = new HashMap<>();
+      error.put("error", "Forbidden");
+      error.put("message", ex.getMessage());
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
     @ExceptionHandler(DuplicateException.class)

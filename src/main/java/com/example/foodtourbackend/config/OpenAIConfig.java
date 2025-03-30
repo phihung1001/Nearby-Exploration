@@ -1,4 +1,4 @@
-package com.example.foodtourbackend.openai.config;
+package com.example.foodtourbackend.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -45,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authHeader.substring(7);// Cắt bỏ "Bearer "
+        String token = authHeader.substring(7);
         try {
             String username = jwtUtil.extractUsername(token);
 

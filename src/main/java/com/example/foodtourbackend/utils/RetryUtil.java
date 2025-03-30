@@ -1,4 +1,4 @@
-package com.example.foodtourbackend.openai.Utils;
+package com.example.foodtourbackend.utils;
 
 import java.util.concurrent.Callable;
 
