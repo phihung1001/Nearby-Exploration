@@ -3,6 +3,7 @@ package com.example.foodtourbackend.openai.entity;
 import jakarta.validation.constraints.NotBlank;
 
 public class ChatRequest {
+
   @NotBlank
   private String model;
 
