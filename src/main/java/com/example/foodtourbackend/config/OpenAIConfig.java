@@ -11,6 +11,13 @@ public class OpenAIConfig {
   @Value("${openai.base.url}")
   private String baseURL;
 
+  @Value("${model.ai}")
+  private String modelAI;
+
+  public String getModelAI() {
+    return modelAI;
+  }
+
   public String getApiKey() {
     return apiKey;
   }

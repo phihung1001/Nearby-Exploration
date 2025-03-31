@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.openai.controller;
 
-import com.example.foodtourbackend.openai.entity.ChatRequest;
+import com.example.foodtourbackend.DTO.ExploreRequest;
 import com.example.foodtourbackend.openai.service.OpenAIService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class OpenAIController {
   }
 
   @PostMapping("/explore")
-  public ResponseEntity<String> createChatCompletion(@Valid @RequestBody ChatRequest request) throws InterruptedException {
+  public ResponseEntity<?> createChatCompletion(@Valid @RequestBody ExploreRequest request) {
       return ResponseEntity.ok(openAIService.createChatCompletion(request));
   }
 }

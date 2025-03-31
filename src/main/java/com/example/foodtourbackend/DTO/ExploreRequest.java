@@ -1,50 +1,71 @@
-package com.example.foodtourbackend.openai.entity;
+package com.example.foodtourbackend.DTO;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class ChatRequest {
+import java.util.List;
 
-  @NotBlank
-  private String model;
+public class ExploreRequest {
 
-  private String systemPrompt;
+  private List<String> excludedFoods;
+  private String mealType;
+  private Integer numberOfPeople;
+  private String specialRequests;
 
-  private String userPrompt;
+  @NotBlank(message = "Địa điểm không được để trống")
+  private String location;
+  private List<String> weather;
 
-  private boolean jsonResponse = true;
-  public ChatRequest() {
-  }
-
-  public ChatRequest(String model, String systemPrompt, String userPrompt) {
-    this.model = model;
-    this.systemPrompt = systemPrompt;
-    this.userPrompt = userPrompt;
+  public ExploreRequest() {
   }
 
-  public boolean isJsonResponse() {
-    return jsonResponse;
+  public ExploreRequest(List<String> excludedFoods, String mealType, Integer numberOfPeople,
+                        String specialRequests, String location, List<String> weather) {
+    this.excludedFoods = excludedFoods;
+    this.mealType = mealType;
+    this.numberOfPeople = numberOfPeople;
+    this.specialRequests = specialRequests;
+    this.location = location;
+    this.weather = weather;
   }
 
-  public void setJsonResponse(boolean jsonResponse) {
-    this.jsonResponse = jsonResponse;
+  public String getLocation() {
+    return location;
   }
-  public String getModel() {
-    return model;
+  public void setLocation(String location) {
+    this.location = location;
   }
-  public void setModel(String model) {
-    this.model = model;
+  public List<String> getWeather() {
+    return weather;
   }
-  public String getSystemPrompt() {
-    return systemPrompt;
+  public void setWeather(List<String> weather) {
+    this.weather = weather;
   }
-  public void setSystemPrompt(String systemPrompt) {
-    this.systemPrompt = systemPrompt;
+
+  public Integer getNumberOfPeople() {
+    return numberOfPeople;
   }
-  public String getUserPrompt() {
-    return userPrompt;
+  public void setNumberOfPeople(Integer numberOfPeople) {
+    this.numberOfPeople = numberOfPeople;
   }
-  public void setUserPrompt(String userPrompt) {
-    this.userPrompt = userPrompt;
+
+  public String getMealType() {
+    return mealType;
+  }
+  public void setMealType(String mealType) {
+    this.mealType = mealType;
+  }
+  public String getSpecialRequests() {
+    return specialRequests;
+  }
+  public void setSpecialRequests(String specialRequests) {
+    this.specialRequests = specialRequests;
+  }
+
+  public List<String> getExcludedFoods() {
+    return excludedFoods;
+  }
+  public void setExcludedFoods(List<String> excludedFoods) {
+    this.excludedFoods = excludedFoods;
   }
 
 }
