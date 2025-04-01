@@ -1,6 +1,4 @@
 .locationCard {
-    max-width: 400px;
-    margin: 24px auto;
     border-radius: 8px;
     /* Thêm bóng đổ nhẹ cho Card */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -12,8 +10,7 @@
     color: #555;
     line-height: 1.5;
   }
-  
-  /* Gom input và button thành một hàng gọn gàng */
+
   .searchContainer {
     width: 100%;
     margin-bottom: 16px;

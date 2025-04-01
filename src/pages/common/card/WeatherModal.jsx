@@ -4,39 +4,39 @@ import styles from './WeatherForm.module.css';
 
 export default function WeatherForm({ weatherData }) {
   return (
-    <div className={styles.container}>
-      <Card title="Thông Tin Thời Tiết" className={styles.card}>
-        <div className={styles.header}>
-          <h2>{weatherData.location}</h2>
+    <div className={styles.containerWeatherForm}>
+      <Card title="Thông Tin Thời Tiết" className={styles.cardWeatherForm}>
+        <div className={styles.headerWeatherForm}>
+          <h2> {weatherData.location}</h2>
         </div>
-        <div className={styles.main}>
-          <div className={styles.temperature}>
+        <div className={styles.mainWeatherForm}>
+          <div className={styles.temperatureWeatherForm}>
             {weatherData.temperature}°C
           </div>
-          <div className={styles.condition}>
+          <div className={styles.conditionWeatherForm}>
             {weatherData.conditionText}
           </div>
         </div>
-        <div className={styles.details}>
-          <div className={styles.detailItem}>
+        <div className={styles.detailsWeatherForm}>
+          <div className={styles.detailItemWeatherForm}>
             <span className={styles.detailLabel}>Độ ẩm:</span>
             <span className={styles.detailValue}>{weatherData.humidity}%</span>
           </div>
-          <div className={styles.detailItem}>
+          <div className={styles.detailItemWeatherForm}>
             <span className={styles.detailLabel}>Chỉ số UV:</span>
             <span className={styles.detailValue}>{weatherData.uvIndex}</span>
           </div>
         </div>
-        <div className={styles.forecastSection}>
+        <div className={styles.forecastSectionWeatherForm}>
           <h3>Dự Báo Theo Giờ</h3>
           <Row gutter={[16, 16]} className={styles.forecast}>
             {weatherData.hourlyForecasts.slice(0, 6).map((forecast, index) => (
               <Col key={index} span={4} className={styles.forecastItem}>
-                <p className={styles.forecastTime}>
-                  {new Date(forecast.time * 1000).getHours()}:00
+                <p className={styles.forecastTimeWeatherForm}>
+                {new Date(forecast.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
-                <p className={styles.forecastTemp}>{forecast.temperature}°C</p>
-                <p className={styles.forecastIcon}>{forecast.icon}</p>
+                <p className={styles.forecastTempWeatherForm}>{forecast.temperature}°C</p>
+                <p className={styles.forecastIconWeatherForm}>{forecast.icon}</p>
               </Col>
             ))}
           </Row>

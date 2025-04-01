@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './MealForm.module.css'; // Import file CSS Modules
+import { notification } from 'antd';
 
 export default function MealForm() {
   const [excludedDishes, setExcludedDishes] = useState([]);
@@ -32,7 +33,9 @@ export default function MealForm() {
       specialRequest,
     };
     console.log('Dữ liệu cài đặt:', formData);
-    alert('Cài đặt đã được lưu!');
+    notification.success({
+      message: 'Cài đặt đã được lưu!'
+  });
   };
 
   return (
