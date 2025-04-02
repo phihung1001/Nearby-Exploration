@@ -27,7 +27,7 @@ export default function HomeBodyRightContainer() {
       // Lấy tọa độ hiện tại của người dùng
       navigator.geolocation.getCurrentPosition(async (position) => {
         const { latitude, longitude } = position.coords;
-        const response = await fetch(`http://localhost:8080/public/restaurant/nearby?latitude=${latitude}&longitude=${longitude}&radius=5`);
+        const response = await fetch(`http://localhost:8080/public/restaurant/nearby?latitude=${latitude}&longitude=${longitude}&radius`);
         const data = await response.json();
         setNearbyRestaurants(data);
         setLoading(false);

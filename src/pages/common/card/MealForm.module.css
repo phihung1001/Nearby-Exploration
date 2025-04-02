@@ -115,6 +115,6 @@
   }
   
   .mealForm button[type='submit']:hover {
-    background-color: #1890ff;
+    background: linear-gradient(to right, #bd8fdb, #e060af);
   }
   

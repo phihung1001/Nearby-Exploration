@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Upload, Button, message } from "antd";
 import { UploadOutlined, CameraOutlined, PictureOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
-import { useNavigate, useLocation } from "react-router-dom"; // Dùng react-router-dom để điều hướng
+import { useNavigate, useLocation } from "react-router-dom";
 import Webcam from "react-webcam";
 
 export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, closeModal }) {
@@ -102,7 +102,6 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
         throw new Error("Network response was not ok");
       }
       const restaurants = await response.json();
-      console.log("Danh sách nhà hàng:", restaurants);
       return restaurants; // Trả về danh sách nhà hàng
     } catch (error) {
       console.error("Có lỗi xảy ra khi lấy thông tin nhà hàng:", error);

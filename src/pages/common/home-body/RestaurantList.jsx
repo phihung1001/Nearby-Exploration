@@ -44,7 +44,7 @@ export default function RestaurantList() {
   
   // Load trang đầu tiên khi render
   useEffect(() => {
-    if (page > 0 && hasMore) {
+    if (page >= 0 && hasMore) {
         fetchRestaurants(page);
     }
 }, [page]);

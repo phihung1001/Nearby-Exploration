@@ -27,7 +27,7 @@ export default function RestaurantListPage() {
   return (
     <div className={styles.container}>
       <Header />
-      <Title level={2} className={styles.title}>Danh sách nhà hàng tương tự </Title>
+      <Title level={2} className={styles.title}>Danh sách nhà hàng đề xuất </Title>
       
       <div className={styles.productContainer}>
       {restaurants.map((r) => (

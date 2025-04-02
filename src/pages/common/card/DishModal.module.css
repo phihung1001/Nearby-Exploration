@@ -33,16 +33,15 @@
   cursor: pointer;
   transition: background 0.3s;
   text-align: center;
-  background: #fff;
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
 }
 
 .dishButton:hover {
-  background: #f0f0f0;
+  background: linear-gradient(to right, #bd8fdb, #e060af);
 }
 
 .dishButton.active {
-  background: #ffebcd;
-  border-color: #ffa500;
+  background: linear-gradient(to right, #bd8fdb, #e060af);
 }
 
 .dishDetails {
@@ -51,4 +50,55 @@
   border-top: 2px solid #ddd;
   background: #fafafa;
   border-radius: 8px;
+}
+
+.restaurantList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Chia cột linh hoạt */
+  gap: 20px; /* Khoảng cách giữa các ô */
+  margin-top: 20px;
+}
+
+.restaurantItem {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.restaurantItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.restaurantItem img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.restaurantInfo {
+  margin-top: 10px;
+}
+
+.restaurantName {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.restaurantAddress {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.restaurantRating {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #f5a623; /* Màu vàng giống rating */
 }

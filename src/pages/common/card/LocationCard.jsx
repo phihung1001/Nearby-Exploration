@@ -6,9 +6,7 @@ export default function LocationCard({onLocationSelected}) {
   const [searchValue, setSearchValue] = useState('');
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY; 
-
+  
   const fetchWeatherData = async (lat, lng) => {
     setLoading(true);
     try {

@@ -12,7 +12,7 @@ export default function Home() {
 
 
   return (
-    <div style={{display:"flex", flexDirection:"column"}}>
+    <div className={styles.homeContainer}>
       <Header />
       <Banner />
       <div className={styles.homeBody}>
@@ -20,7 +20,7 @@ export default function Home() {
           <Explore imageUrl={khamphaimg} width="200px" height="300px" />
         </div>
         <div className={styles.homeBodyRightContainer}>
-            <HomeBodyRightContainer />
+          <HomeBodyRightContainer />
         </div>
       </div>
       <Footer />

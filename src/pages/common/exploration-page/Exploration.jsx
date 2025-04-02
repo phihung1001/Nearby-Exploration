@@ -22,7 +22,7 @@ export default function Exploration() {
 
   // Nhận dữ liệu từ LocationCard và hiển thị WeatherModal
 const handleLocationSelected = (data) => {
-  setWeatherData(data); // Chỉ cập nhật weatherData mà không gọi API
+  setWeatherData(data);   // Cập nhật dữ liệu thời tiết
   setIsWeatherModalVisible(true);
   console.log('Dữ liệu thời tiết:', data);
 };

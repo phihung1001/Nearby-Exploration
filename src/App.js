@@ -20,7 +20,6 @@ function App() {
         <Route path="/auth/signup" element={<Register/>} />
         <Route path="/auth/reset-password" element={<ResetPassword/>} />
         <Route path="/auth/confirm-password" element={<ChangePassword/>} />
-        <Route path="/public/food-list" element={<Login />} />
         <Route path="/public/restaurant-detail/:id" element={<RestaurantDetail />} />  
         <Route path="/public/restaurant/:restaurantId/food-detail/:foodId" element={<FoodDetail />} />
         <Route path="/public/restaurant-list" element={<RestaurantListPage />} />
