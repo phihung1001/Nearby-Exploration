@@ -7,7 +7,7 @@ export default function LocationCard({onLocationSelected}) {
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  
+  const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY; 
 
   const fetchWeatherData = async (lat, lng) => {
     setLoading(true);
@@ -34,9 +34,31 @@ export default function LocationCard({onLocationSelected}) {
     }
   };
 
-  const handleSearch = () => {
-    // TODO: Xử lý logic tìm kiếm vị trí thủ công
-    console.log('Tìm kiếm vị trí:', searchValue);
+  const handleSearch = async () => {
+    if (!searchValue) {
+      message.error('Vui lòng nhập địa điểm!');
+      return;
+    }
+    setLoading(true);
+    try {
+  
+      // Gọi OpenStreetMap Nominatim API để chuyển đổi địa điểm thành tọa độ
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${searchValue}`);
+      const data = await response.json();
+
+      if (data && data.length > 0) {
+        const { lat, lon } = data[0];
+        setLocation({ lat, lng: lon });
+        fetchWeatherData(lat, lon); // Gọi API thời tiết với tọa độ đã tìm được
+      } else {
+        message.error('Không tìm thấy địa điểm. Vui lòng kiểm tra lại!');
+      }
+    } catch (error) {
+      message.error('Lỗi khi tìm kiếm địa điểm!');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUseCurrentLocation = () => {
