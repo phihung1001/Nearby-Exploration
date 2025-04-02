@@ -10,7 +10,7 @@ import java.util.List;
 public interface RestaurantService {
   Restaurant getById(Long id);
 
-  List<Restaurant> filterRestaurants(List<Long> cityIds, List<String> districts, String name);
+  List<Restaurant> filterRestaurants(List<Long> cityIds, List<Long> districtIds, String name);
 
   List<Restaurant> findAll();
 

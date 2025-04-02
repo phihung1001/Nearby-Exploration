@@ -34,21 +34,21 @@ public class RestaurantController {
      * Lọc danh sách nhà hàng theo cityIds, districts, hoặc name.
      *
      * @param cityIds Danh sách ID thành phố
-     * @param districts Danh sách quận/huyện
+     * @param districtIds Danh sách quận/huyện
      * @param name Tên nhà hàng
      * @return ResponseEntity chứa danh sách nhà hàng lọc được
      */
   @GetMapping("/filter")
   public ResponseEntity<List<Restaurant>> filterRestaurants(
     @RequestParam(required = false) List<Long> cityIds,
-    @RequestParam(required = false) List<String> districts,
+    @RequestParam(required = false) List<Long> districtIds,
     @RequestParam(required = false) String name) {
       if ((cityIds == null || cityIds.isEmpty())
-        && (districts == null || districts.isEmpty())
+        && (districtIds == null || districtIds.isEmpty())
         && (name == null || name.isEmpty())) {
           return ResponseEntity.ok(restaurantService.findAll());
       }
-      return ResponseEntity.ok(restaurantService.filterRestaurants(cityIds, districts, name));
+      return ResponseEntity.ok(restaurantService.filterRestaurants(cityIds, districtIds, name));
     }
 
     /**

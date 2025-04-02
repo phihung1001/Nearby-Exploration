@@ -1,9 +1,12 @@
 package com.example.foodtourbackend.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class ExploreResponse {
   public String title;
+  @JsonProperty("dishes")
   public List<DishesResponse> dishesResponseList ;
 
   public ExploreResponse() {}

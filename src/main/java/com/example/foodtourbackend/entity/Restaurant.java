@@ -36,14 +36,15 @@ public class Restaurant {
 
     @Column(name = "PHOTO_URL")
     private String photoUrl;
-    private String city;
+    @Column(name = "district_id")
+    private Integer districtId;
 
     // Constructor không tham số (cần cho JPA)
     public Restaurant() {
     }
 
     // Constructor đầy đủ tham số
-    public Restaurant(Long id, Long cityId, String district, String name, String address, String phone, String email, Double latitude, Double longitude, String houseNumber, Integer totalPictures, String avgRatingText, Long totalReviews, String photoUrl, String city) {
+    public Restaurant(Long id, Long cityId, String district, String name, String address, String phone, String email, Double latitude, Double longitude, String houseNumber, Integer totalPictures, String avgRatingText, Long totalReviews, String photoUrl, Integer districtId) {
         this.id = id;
         this.cityId = cityId;
         this.district = district;
@@ -58,7 +59,7 @@ public class Restaurant {
         this.avgRatingText = avgRatingText;
         this.totalReviews = totalReviews;
         this.photoUrl = photoUrl;
-        this.city = city;
+      this.districtId = districtId;
     }
 
     // Getter và Setter cho id
@@ -165,7 +166,7 @@ public class Restaurant {
         this.photoUrl = photoUrl;
     }
 
-    // equals() và hashCode() (nên dựa vào id là đủ)
+    // equals() và hashCode()
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -186,12 +187,11 @@ public class Restaurant {
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
-
-    public String getCity() {
-        return city;
+    public Integer getDistrictId() {
+      return districtId;
+    }
+    public void setDistrictId(Integer districtId) {
+      this.districtId = districtId;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
 }

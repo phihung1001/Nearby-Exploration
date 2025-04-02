@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Implementation của RestaurantService.
@@ -52,25 +51,13 @@ public class RestaurantServiceImpl implements RestaurantService {
    * - Tên nhà hàng (name)
    *
    * @param cityIds   Danh sách ID thành phố mà nhà hàng thuộc về.
-   * @param districts Danh sách quận (districts) cần lọc.
+   * @param districtIds Danh sách quận (districts) cần lọc.
    * @param name      Tên (hoặc một phần của tên) nhà hàng cần tìm.
    * @return Danh sách các nhà hàng thỏa mãn các tiêu chí lọc.
    */
-  public List<Restaurant> filterRestaurants(List<Long> cityIds, List<String> districts, String name) {
+  public List<Restaurant> filterRestaurants(List<Long> cityIds, List<Long> districtIds, String name) {
     // Lấy danh sách nhà hàng theo cityIds và tên nhà hàng từ repository
-    List<Restaurant> results = restaurantRepository.findByCityIdsAndName(cityIds, name);
-
-    // Nếu danh sách districts không rỗng, tiến hành lọc thêm
-    if (districts != null && !districts.isEmpty()) {
-      results = results.stream()
-        .filter(r -> districts.stream()
-          .anyMatch(d ->
-            // Loại bỏ ký tự "quận", chuyển về chữ thường, loại bỏ khoảng trắng thừa
-            r.getDistrict().toLowerCase().replace("quận", "").trim()
-              .contains(d.toLowerCase().trim())
-          ))
-        .collect(Collectors.toList());
-    }
+    List<Restaurant> results = restaurantRepository.findByCityIdsAndDistrictIdsAndName(cityIds,districtIds, name);
     return results;
   }
 

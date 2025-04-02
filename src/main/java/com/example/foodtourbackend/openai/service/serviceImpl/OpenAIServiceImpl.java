@@ -14,11 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class OpenAIServiceImpl implements OpenAIService {
@@ -66,6 +63,7 @@ public class OpenAIServiceImpl implements OpenAIService {
     try {
       JsonNode responseJson = restTemplate.postForObject(url, entity, JsonNode.class);
       String answer = responseJson.path("choices").get(0).path("message").path("content").asText();
+      System.out.println("answer: " + answer);
       return DishesResponseMapper.mapAnswerToExploreResponse(answer);
 
     } catch (HttpClientErrorException ex) {
@@ -135,18 +133,9 @@ public class OpenAIServiceImpl implements OpenAIService {
       prompt.append("Hiện tại thời tiết: ").append(weatherStr).append(". ");
     }
 
-    prompt.append("Hãy đưa ra gợi ý món ăn phù hợp.");
+    prompt.append("Hãy trả về danh sách 6 món ăn gợi ý phù hợp nhất dưới dạng JSON với format sau: ");
+    prompt.append("{ \"title\": \"Tiêu đề\", \"dishes\": [ { \"name\": \"Tên món\", \"description\": \"Mô tả\" } ] }");
+    prompt.append(". Chỉ trả về JSON, không giải thích thêm.");
     return prompt.toString();
-  }
-
-  public List<String> extractDishNames(String content) {
-    List<String> dishNames = new ArrayList<>();
-    // Biểu thức regex tìm chuỗi nằm giữa ** và ** sau dấu số và dấu chấm
-    Pattern pattern = Pattern.compile("\\d+\\. \\*\\*(.*?)\\*\\*:");
-    Matcher matcher = pattern.matcher(content);
-    while (matcher.find()) {
-      dishNames.add(matcher.group(1).trim());
-    }
-    return dishNames;
   }
 }
