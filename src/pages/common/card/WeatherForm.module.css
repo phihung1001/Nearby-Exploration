@@ -8,12 +8,12 @@
   /* Card thời tiết */
   .cardWeatherForm {
     display: flex;
-    flex-direction: row; /* Hiển thị ngang */
+    flex-direction: column;
     align-items: center;
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    padding: 10px;
     transition: transform 0.2s ease-in-out;
     background: linear-gradient(to right, #74ebd5, #acb6e5);
 
@@ -27,7 +27,7 @@
   .leftWeatherForm {
     flex: 1;
     text-align: center;
-    padding-right: 20px;
+    padding-right: 10px;
     border-right: 1px solid #eee;
   }
   
@@ -53,7 +53,7 @@
   /* Cột bên phải - Chi tiết & Dự báo */
   .rightWeatherForm {
     flex: 2;
-    padding-left: 20px;
+    padding-left: 10px;
   }
   
   /* Chi tiết thời tiết */

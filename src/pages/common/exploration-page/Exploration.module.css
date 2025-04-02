@@ -64,8 +64,11 @@
   
   .bodyRight {
     width: 80%;
-    margin:20px;
+    margin:30px;
     transition: opacity 0.3s ease-in-out;
+  }
+  .bodyRightTop, .bodyRightBottom {
+    margin-bottom: 20px !important;
   }
   
   .centerView .bodyRight {

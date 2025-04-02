@@ -11,22 +11,34 @@ export default function Exploration() {
   const [isWeatherModalVisible, setIsWeatherModalVisible] = useState(false);
   const [dishesData, setDishesData] = useState(null);
   const [isDishModalVisible, setIsDishModalVisible] = useState(false);
-  
-  // Nhận dữ liệu từ LocationCard và hiển thị WeatherModal
-  const handleLocationSelected = async (data) => {
-    setWeatherData(data);
-    setIsWeatherModalVisible(true);
-    console.log('Dữ liệu thời tiết:', data); 
 
+  // Dữ liệu cài đặt món ăn từ form MealForm
+  const [mealSettings, setMealSettings] = useState({
+    excludedDishes: [],
+    mealType: 'single',
+    numberOfPeople: 1,
+    specialRequest: '',
+  });
+
+  // Nhận dữ liệu từ LocationCard và hiển thị WeatherModal
+const handleLocationSelected = (data) => {
+  setWeatherData(data); // Chỉ cập nhật weatherData mà không gọi API
+  setIsWeatherModalVisible(true);
+  console.log('Dữ liệu thời tiết:', data);
+};
+
+useEffect(() => {
+  // Chỉ gọi API khi có dữ liệu thời tiết và cài đặt món ăn
+  if (weatherData && mealSettings) {
     const fetchExploreData = async () => {
       try {
         const body = {
-          excludedFoods: [],
-          mealType: "", 
-          numberOfPeople: "1", 
-          specialRequests: "", 
-          location: data.location, 
-          weather: [data.conditionText, `${data.temperature} độ`], // Tạo mảng thời tiết
+          excludedFoods: mealSettings.excludedDishes,
+          mealType: mealSettings.mealType,
+          numberOfPeople: mealSettings.numberOfPeople.toString(),
+          specialRequests: mealSettings.specialRequest,
+          location: weatherData.location,
+          weather: [weatherData.conditionText, `${weatherData.temperature} độ`], // Tạo mảng thời tiết
         };
 
         const exploreResponse = await fetch('http://localhost:8080/api/openai/explore', {
@@ -51,7 +63,15 @@ export default function Exploration() {
     };
 
     fetchExploreData();
-  };
+  }
+}, [mealSettings, weatherData]); // Thêm mealSettings và weatherData vào dependencies
+
+// Hàm cập nhật cài đặt món ăn từ MealForm
+const handleMealSettingsChange = (newSettings) => {
+  setMealSettings(newSettings);
+};
+  
+  
   
   return (
   <div className={styles.containerExploration}>
@@ -68,7 +88,9 @@ export default function Exploration() {
           <LocationCard onLocationSelected={handleLocationSelected} />
         </div>
        <div className={styles.bodyLeftBottom}>
-          <MealForm/>     
+          <MealForm 
+              onMealSettingsChange={handleMealSettingsChange}  // Truyền hàm callback để cập nhật cài đặt
+          />     
        </div>
       </div>
       {weatherData && (

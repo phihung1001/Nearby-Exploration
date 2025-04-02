@@ -1,0 +1,54 @@
+.modalContentDishModal {
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  align-items: center !important;
+  justify-content: center !important;
+
+}
+.modalOverlayDishModal {
+  
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px 60px;
+
+}
+
+.description {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.dishList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dishButton {
+  flex: 1 1 calc(33.333% - 10px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  text-align: center;
+  background: #fff;
+}
+
+.dishButton:hover {
+  background: #f0f0f0;
+}
+
+.dishButton.active {
+  background: #ffebcd;
+  border-color: #ffa500;
+}
+
+.dishDetails {
+  margin-top: 20px;
+  padding: 15px;
+  border-top: 2px solid #ddd;
+  background: #fafafa;
+  border-radius: 8px;
+}
