@@ -72,7 +72,7 @@ export default function FilterDropdown({ onSearch }) { const [selectedProvinceId
               onChange={setSelectedDistrictId}
               disabled={!selectedProvinceId}
             />
-            <Button type="primary" onClick={handleFilterSearch} block>Tìm kiếm</Button>
+            <Button type="primary" onClick={handleFilterSearch} block>Lưu</Button>
             <Button onClick={handleResetFilters} block>Xóa bộ lọc</Button>
           </Space>
         </div>
