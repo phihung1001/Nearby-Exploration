@@ -9,8 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Implementation của RestaurantService.
  * Lớp này cung cấp các phương thức xử lý logic cho các thao tác liên quan đến nhà hàng,
@@ -50,25 +48,21 @@ public class RestaurantServiceImpl implements RestaurantService {
    * - Danh sách districts (quận)
    * - Tên nhà hàng (name)
    *
-   * @param cityIds   Danh sách ID thành phố mà nhà hàng thuộc về.
-   * @param districtIds Danh sách quận (districts) cần lọc.
+   * @param cityId  Danh sách ID thành phố mà nhà hàng thuộc về.
+   * @param districtId Danh sách quận (districts) cần lọc.
    * @param name      Tên (hoặc một phần của tên) nhà hàng cần tìm.
-   * @return Danh sách các nhà hàng thỏa mãn các tiêu chí lọc.
+   * @return Danh sách các nhà hàng thỏa mãn các tiêu chí lọc và phân trang.
    */
-  public List<Restaurant> filterRestaurants(List<Long> cityIds, List<Long> districtIds, String name) {
-    // Lấy danh sách nhà hàng theo cityIds và tên nhà hàng từ repository
-    List<Restaurant> results = restaurantRepository.findByCityIdsAndDistrictIdsAndName(cityIds,districtIds, name);
-    return results;
-  }
+  public Page<Restaurant> filterRestaurants(
+    int page, int size,
+    Integer cityId,
+    Integer districtId,
+    String name) {
+    Pageable pageable = PageRequest.of(page, size);
 
-  /**
-   * Lấy danh sách tất cả nhà hàng.
-   *
-   * @return Danh sách các nhà hàng.
-   */
-  @Override
-  public List<Restaurant> findAll() {
-    return restaurantRepository.findAll();
+    // Lấy danh sách nhà hàng theo cityIds và tên nhà hàng từ repository
+    Page<Restaurant> results = restaurantRepository.findByCityIdAndDistrictIdAndName(cityId,districtId, name, pageable);
+    return results;
   }
 
   /**
@@ -80,9 +74,15 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @return Danh sách các nhà hàng nằm trong bán kính được chỉ định.
    */
   @Override
-  public List<Restaurant> findNearbyRestaurants(double latitude, double longitude, double radius) {
-    return restaurantRepository.findNearbyRestaurants(latitude, longitude, radius);
+  public Page<Restaurant> findNearbyRestaurants(
+    int page, int size,
+    double latitude,
+    double longitude,
+    double radius, String name) {
+      Pageable pageable = PageRequest.of(page, size);
+      return restaurantRepository.findNearbyRestaurants(latitude, longitude, radius, name, pageable);
   }
+
 
   /**
    * Lấy danh sách nhà hàng theo phân trang.

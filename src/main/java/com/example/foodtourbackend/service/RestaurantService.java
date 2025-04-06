@@ -4,17 +4,13 @@ import com.example.foodtourbackend.entity.Restaurant;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public interface RestaurantService {
   Restaurant getById(Long id);
 
-  List<Restaurant> filterRestaurants(List<Long> cityIds, List<Long> districtIds, String name);
+  Page<Restaurant> filterRestaurants(int page, int size, Integer cityId, Integer districtId, String name);
 
-  List<Restaurant> findAll();
-
-  List<Restaurant> findNearbyRestaurants(double latitude, double longitude, double radius);
+  Page<Restaurant> findNearbyRestaurants(int page,int size, double latitude, double longitude, double radius, String name);
 
   Page<Restaurant> getRestaurants(int page, int size);
 }
