@@ -5,9 +5,9 @@ import com.example.foodtourbackend.DTO.RegisterRequest;
 import com.example.foodtourbackend.DTO.TokenRequest;
 import com.example.foodtourbackend.DTO.TokenResponse;
 import com.example.foodtourbackend.service.AuthService;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,19 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
   private final AuthService authService;
-
-  /**
-   * Sử dụng constructor injection để inject AuthService.
-   *
-   * @param authService Dịch vụ xử lý logic xác thực và đăng ký.
-   */
-  public AuthController(AuthService authService) {
-    this.authService = authService;
-  }
-
   /**
    * Đăng ký tài khoản (Sign Up).
    *

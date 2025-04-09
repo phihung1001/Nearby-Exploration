@@ -11,6 +11,7 @@ import com.example.foodtourbackend.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,24 +21,13 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
-
-    public AuthServiceImpl(
-            CustomerRepository customerRepository,
-            PasswordEncoder passwordEncoder,
-            JwtUtil jwtUtil,
-            UserDetailsService userDetailsService
-    ) {
-        this.customerRepository = customerRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-        this.userDetailsService = userDetailsService;
-    }
 
     @Override
     public  ResponseEntity<?> register(RegisterRequest registerRequest) {

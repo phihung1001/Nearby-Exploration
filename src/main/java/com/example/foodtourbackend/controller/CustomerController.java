@@ -3,6 +3,7 @@ package com.example.foodtourbackend.controller;
 import com.example.foodtourbackend.DTO.CustomerDTO;
 import com.example.foodtourbackend.DTO.UpdatePasswordRequest;
 import com.example.foodtourbackend.service.CustomerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/customer")
+@RequiredArgsConstructor
 public class CustomerController {
 
   private final CustomerService customerService;
-
-  /**
-   * Constructor injection cho CustomerService
-   *
-   * @param customerService Dịch vụ xử lý logic liên quan đến khách hàng
-   */
-  public CustomerController(CustomerService customerService) {
-    this.customerService = customerService;
-  }
 
   /**
    * Lấy thông tin khách hàng theo ID

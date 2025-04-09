@@ -25,5 +25,4 @@ public class Reviews {
 
     @Column(name = "AVG_RATING_TEXT")
     private String avgRatingText;
-
 }

@@ -6,6 +6,7 @@ import com.example.foodtourbackend.config.OpenAIConfig;
 import com.example.foodtourbackend.mapper.DishesResponseMapper;
 import com.example.foodtourbackend.openai.service.OpenAIService;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -18,16 +19,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class OpenAIServiceImpl implements OpenAIService {
   private static final Logger logger = LoggerFactory.getLogger(OpenAIServiceImpl.class);
   private final RestTemplate restTemplate;
   private final OpenAIConfig config;
-
-
-  public OpenAIServiceImpl(RestTemplate restTemplate, OpenAIConfig config) {
-    this.restTemplate = restTemplate;
-    this.config = config;
-  }
 
   /**
    * Gọi API OpenAI để tạo phản hồi dựa trên yêu cầu của người dùng.

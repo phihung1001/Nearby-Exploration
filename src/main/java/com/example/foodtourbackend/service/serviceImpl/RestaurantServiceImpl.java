@@ -4,6 +4,7 @@ import com.example.foodtourbackend.GlobalException.NotFoundException;
 import com.example.foodtourbackend.entity.Restaurant;
 import com.example.foodtourbackend.repository.RestaurantRepository;
 import com.example.foodtourbackend.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,18 +17,10 @@ import org.springframework.stereotype.Service;
  * cũng như phân trang danh sách nhà hàng.
  */
 @Service
+@RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService {
 
   private final RestaurantRepository restaurantRepository;
-
-  /**
-   * Constructor injection cho RestaurantRepository.
-   *
-   * @param restaurantRepository repository truy cập dữ liệu nhà hàng
-   */
-  public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {
-    this.restaurantRepository = restaurantRepository;
-  }
 
   /**
    * Lấy thông tin của một nhà hàng theo id.

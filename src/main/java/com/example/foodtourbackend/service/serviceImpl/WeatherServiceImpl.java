@@ -5,6 +5,7 @@ import com.example.foodtourbackend.entity.HourlyForecast;
 import com.example.foodtourbackend.entity.Weather;
 import com.example.foodtourbackend.service.WeatherService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -18,21 +19,12 @@ import java.util.stream.IntStream;
  * Triển khai dịch vụ thời tiết, lấy dữ liệu thời tiết từ Open-Meteo API
  * và thông tin vị trí từ OpenStreetMap (Nominatim API).
  */
+@RequiredArgsConstructor
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
   private final WebClient webClient;
   private final ObjectMapper objectMapper;
-
-  /**
-   * Constructor khởi tạo WebClient và ObjectMapper
-   * @param webClient Đối tượng WebClient để gọi API
-   * @param objectMapper Đối tượng ObjectMapper để chuyển đổi JSON thành Object
-   */
-  public WeatherServiceImpl(WebClient webClient, ObjectMapper objectMapper) {
-    this.webClient = webClient;
-    this.objectMapper = objectMapper;
-  }
 
   // Bản đồ ánh xạ mã thời tiết sang biểu tượng tương ứng
   private static final Map<Integer, String> WEATHER_ICONS = Map.of(
@@ -138,7 +130,7 @@ public class WeatherServiceImpl implements WeatherService {
             getWeatherIcon(response.getHourly().getWeather_code().get(i))
           )).collect(Collectors.toList());
 
-        weather.setHourlyForecasts(hourlyForecasts);
+        weather.setForecast(hourlyForecasts);
         return weather;
       } catch (Exception e) {
         throw new RuntimeException("Lỗi khi phân tích JSON thời tiết", e);

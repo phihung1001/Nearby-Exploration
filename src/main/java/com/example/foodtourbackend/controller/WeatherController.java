@@ -1,6 +1,7 @@
 package com.example.foodtourbackend.controller;
 
 import com.example.foodtourbackend.service.WeatherService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,13 +13,11 @@ import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/api/weather")
+@RequiredArgsConstructor
 public class WeatherController {
 
   private final WeatherService weatherService;
 
-  public WeatherController(WeatherService weatherService) {
-    this.weatherService = weatherService;
-  }
   @GetMapping("/get-weather")
   public Mono<?> getWeather(@RequestParam double latitude,
                             @RequestParam double longitude,

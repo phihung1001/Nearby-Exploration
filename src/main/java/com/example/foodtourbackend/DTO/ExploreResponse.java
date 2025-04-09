@@ -1,19 +1,23 @@
 package com.example.foodtourbackend.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ExploreResponse {
   public String title;
   @JsonProperty("dishes")
   public List<DishesResponse> dishesResponseList ;
 
-  public ExploreResponse() {}
-  public ExploreResponse(String title, List<DishesResponse> dishesResponseList) {
-    this.title = title;
-    this.dishesResponseList = dishesResponseList;
-  }
+
   public static class DishesResponse {
     public String name;
     public String description;
@@ -37,18 +41,6 @@ public class ExploreResponse {
       this.name = name;
     }
 
-  }
-  public String getTitle() {
-    return title;
-  }
-  public void setTitle(String title) {
-    this.title = title;
-  }
-  public List<DishesResponse> getDishesResponseList() {
-    return dishesResponseList;
-  }
-  public void setDishesResponseList(List<DishesResponse> dishesResponseList) {
-    this.dishesResponseList = dishesResponseList;
   }
 
 }

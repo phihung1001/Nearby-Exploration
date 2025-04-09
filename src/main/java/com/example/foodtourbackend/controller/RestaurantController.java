@@ -2,6 +2,7 @@ package com.example.foodtourbackend.controller;
 
 import com.example.foodtourbackend.entity.Restaurant;
 import com.example.foodtourbackend.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,13 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public/restaurant")
+@RequiredArgsConstructor
 public class RestaurantController {
 
   private final RestaurantService restaurantService;
-
-  public RestaurantController(RestaurantService restaurantService) {
-      this.restaurantService = restaurantService;
-  }
 
     /**
      * Lấy thông tin nhà hàng theo ID.

@@ -11,6 +11,7 @@ import com.example.foodtourbackend.entity.Customer;
 import com.example.foodtourbackend.mapper.CustomerMapper;
 import com.example.foodtourbackend.repository.CustomerRepository;
 import com.example.foodtourbackend.service.CustomerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
@@ -31,6 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
   private final CustomerRepository customerRepository;
@@ -39,11 +41,6 @@ public class CustomerServiceImpl implements CustomerService {
   private String aiServiceUrl;
   private final RestTemplate restTemplate = new RestTemplate();
   private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-  public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
-    this.customerRepository = customerRepository;
-    this.customerMapper = customerMapper;
-  }
 
   @Override
   public CustomerResponse getById(Long id) {
