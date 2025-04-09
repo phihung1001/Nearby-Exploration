@@ -10,20 +10,24 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity
 @Table(name = "category_food")
 public class CategoryFood {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "CATEGORY_NAME")
-    private String categoryName;
+    private String name;
+
+    private String description;
+    private String image;
+    private String price;
 
     @Column(name="RESTAURANT_ID")
     private Long restaurantId;
 
     @Column(name = "CITY_ID")
     private Long cityId;
-
-    private String district;
+    @Column(name = "DISTRICT_ID")
+    private Long districtId;
 }

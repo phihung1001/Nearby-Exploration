@@ -1,16 +1,18 @@
 package com.example.foodtourbackend.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegisterRequest {
-    private final String fullName;
-    private final String email;
-    private final String password;
-    private final String confirmPassword;
-    private final String phoneNumber;
-    private final String address;
-    private final String gender;
+    private String fullName;
+    private String email;
+    private String password;
+    private String confirmPassword;
+    private String phoneNumber;
+    private String address;
+    private String gender;
 }

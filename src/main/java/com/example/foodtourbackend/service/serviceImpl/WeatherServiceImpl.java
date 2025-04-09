@@ -1,8 +1,8 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
 import com.example.foodtourbackend.DTO.OpenMeteoResponse;
-import com.example.foodtourbackend.entity.HourlyForecast;
-import com.example.foodtourbackend.entity.Weather;
+import com.example.foodtourbackend.DTO.HourlyForecastDTO;
+import com.example.foodtourbackend.DTO.WeatherDTO;
 import com.example.foodtourbackend.service.WeatherService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -114,24 +114,24 @@ public class WeatherServiceImpl implements WeatherService {
 
         // Khởi tạo đối tượng Weather và ánh xạ dữ liệu
         OpenMeteoResponse.CurrentWeather currentWeather = response.getCurrent();
-        Weather weather = new Weather();
-        weather.setTemperature(currentWeather.getTemperature_2m());
-        weather.setCondition(getWeatherConditionEn(currentWeather.getWeather_code()));
-        weather.setConditionText(getWeatherConditionVi(currentWeather.getWeather_code()));
-        weather.setLocation(objectMapper.readTree(geoJson).path("display_name").asText("Unknown"));
-        weather.setHumidity(currentWeather.getRelative_humidity_2m());
-        weather.setUvIndex(currentWeather.getUv_index());
+        WeatherDTO weatherDTO = new WeatherDTO();
+        weatherDTO.setTemperature(currentWeather.getTemperature_2m());
+        weatherDTO.setCondition(getWeatherConditionEn(currentWeather.getWeather_code()));
+        weatherDTO.setConditionText(getWeatherConditionVi(currentWeather.getWeather_code()));
+        weatherDTO.setLocation(objectMapper.readTree(geoJson).path("display_name").asText("Unknown"));
+        weatherDTO.setHumidity(currentWeather.getRelative_humidity_2m());
+        weatherDTO.setUvIndex(currentWeather.getUv_index());
 
         // Tạo danh sách dự báo theo giờ
-        List<HourlyForecast> hourlyForecasts = IntStream.range(0, response.getHourly().getTime().size())
-          .mapToObj(i -> new HourlyForecast(
+        List<HourlyForecastDTO> hourlyForecastDTOS = IntStream.range(0, response.getHourly().getTime().size())
+          .mapToObj(i -> new HourlyForecastDTO(
             response.getHourly().getTime().get(i),
             response.getHourly().getTemperature_2m().get(i),
             getWeatherIcon(response.getHourly().getWeather_code().get(i))
           )).collect(Collectors.toList());
 
-        weather.setForecast(hourlyForecasts);
-        return weather;
+        weatherDTO.setForecast(hourlyForecastDTOS);
+        return weatherDTO;
       } catch (Exception e) {
         throw new RuntimeException("Lỗi khi phân tích JSON thời tiết", e);
       }

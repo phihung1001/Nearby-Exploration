@@ -1,11 +1,13 @@
 package com.example.foodtourbackend.controller;
 
+import com.example.foodtourbackend.DTO.ProviderRequestDTO;
 import com.example.foodtourbackend.entity.Restaurant;
 import com.example.foodtourbackend.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -86,5 +88,17 @@ public class RestaurantController {
     @RequestParam(defaultValue = "20") int size) {
       return ResponseEntity.ok(restaurantService.getRestaurants(page, size));
     }
+  /**
+   * Đăng kí nhà hàng và danh sách món ăn
+   *
+   * @param requestDTO Dữ liệu đăng kí nhà hàng ( tên , địa chỉ, menu món ăn ,.. )
+   * @return Trả về thông báo đăng kí thành công hay thất bại
+   */
+
+  @PreAuthorize("hasAuthority('PROVIDER')")
+  @PostMapping("/register-restaurant")
+  public ResponseEntity<?> registerRestaurant(@RequestBody ProviderRequestDTO requestDTO) {
+    return ResponseEntity.status(HttpStatus.OK).body(restaurantService.registerRestaurant(requestDTO));
+  }
 
 }

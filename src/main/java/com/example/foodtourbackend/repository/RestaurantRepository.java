@@ -1,6 +1,7 @@
 package com.example.foodtourbackend.repository;
 
 import com.example.foodtourbackend.entity.Restaurant;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -41,4 +42,5 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Pageable pageable
   );
 
+  boolean existsByPhone(@NotBlank(message = "Số điện thoại không được để trống") String phone);
 }

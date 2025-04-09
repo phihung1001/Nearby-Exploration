@@ -1,7 +1,13 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
+import com.example.foodtourbackend.DTO.ProviderRequestDTO;
+import com.example.foodtourbackend.DTO.ProviderResponseDTO;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
+import com.example.foodtourbackend.entity.CategoryFood;
 import com.example.foodtourbackend.entity.Restaurant;
+import com.example.foodtourbackend.mapper.CategoryFoodMapper;
+import com.example.foodtourbackend.mapper.RestaurantMapper;
+import com.example.foodtourbackend.repository.CategoryFoodRepository;
 import com.example.foodtourbackend.repository.RestaurantRepository;
 import com.example.foodtourbackend.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Implementation của RestaurantService.
@@ -21,6 +29,9 @@ import org.springframework.stereotype.Service;
 public class RestaurantServiceImpl implements RestaurantService {
 
   private final RestaurantRepository restaurantRepository;
+  private final RestaurantMapper restaurantMapper;
+  private final CategoryFoodMapper categoryFoodMapper;
+  private final CategoryFoodRepository categoryFoodRepository;
 
   /**
    * Lấy thông tin của một nhà hàng theo id.
@@ -87,5 +98,24 @@ public class RestaurantServiceImpl implements RestaurantService {
   public Page<Restaurant> getRestaurants(int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
     return restaurantRepository.findAll(pageable);
+  }
+
+  /**
+   * Đăng ký nhà hàng mới cùng với danh sách món ăn (nếu có).
+   *
+   * @param requestDTO Thông tin đăng ký từ client (tên, địa chỉ, món ăn, v.v.)
+   * @return ProviderResponseDTO chứa thông tin nhà hàng sau khi lưu thành công
+   */
+  @Override
+  public ProviderResponseDTO registerRestaurant(ProviderRequestDTO requestDTO) {
+    Restaurant restaurant = restaurantMapper.ProviderRequestDTOToEntity(requestDTO);
+    Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+    if (requestDTO.getDishes() != null && !requestDTO.getDishes().isEmpty()) {
+      List<CategoryFood> dishList = requestDTO.getDishes().stream().map(
+        categoryFoodMapper::CategoryFoodToCategoryFood
+      ).toList();
+      categoryFoodRepository.saveAll(dishList);
+    }
+    return restaurantMapper.EntityToProviderResponseDTO(savedRestaurant);
   }
 }

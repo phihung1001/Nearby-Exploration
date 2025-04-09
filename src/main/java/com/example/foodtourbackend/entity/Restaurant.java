@@ -19,9 +19,8 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "CITY_ID")
-    private Long cityId;
+    private Integer cityId;
 
     private String district;
     private String name;

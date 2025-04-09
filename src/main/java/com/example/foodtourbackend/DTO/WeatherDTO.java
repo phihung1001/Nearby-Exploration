@@ -1,4 +1,4 @@
-package com.example.foodtourbackend.entity;
+package com.example.foodtourbackend.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Weather {
+public class WeatherDTO {
   private double temperature;
   private String condition;
   private String conditionText;
@@ -19,5 +19,5 @@ public class Weather {
   private int humidity;
   private int uvIndex;
   // Thêm dự báo thời tiết
-  private List<HourlyForecast> forecast;
+  private List<HourlyForecastDTO> forecast;
 }

@@ -25,6 +25,7 @@ import java.util.Map;
 public class AuthServiceImpl implements AuthService {
 
     private final CustomerRepository customerRepository;
+
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;

@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CustomerDTO {
-
     private int age;
     private String fullName;
     private String password;
