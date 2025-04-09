@@ -16,4 +16,6 @@ public interface RestaurantService {
 
   Page<Restaurant> getRestaurants(int page, int size);
   ProviderResponseDTO registerRestaurant(ProviderRequestDTO requestDTO);
+
+  Object updateRestaurant(ProviderRequestDTO requestDTO, Long id);
 }

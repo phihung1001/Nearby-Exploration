@@ -96,9 +96,25 @@ public class RestaurantController {
    */
 
   @PreAuthorize("hasAuthority('PROVIDER')")
-  @PostMapping("/register-restaurant")
+  @PostMapping("/register")
   public ResponseEntity<?> registerRestaurant(@RequestBody ProviderRequestDTO requestDTO) {
     return ResponseEntity.status(HttpStatus.OK).body(restaurantService.registerRestaurant(requestDTO));
   }
+
+  /**
+   * Chỉnh sửa thông tin nhà hàng
+   *
+   * @param requestDTO Dữ liệu đăng kí nhà hàng ( tên , địa chỉ, menu món ăn ,.. )
+   * @return Trả về thông báo đăng kí thành công hay thất bại
+   */
+
+  @PreAuthorize("hasAuthority('PROVIDER')")
+  @PostMapping("/update/{id}")
+  public ResponseEntity<?> updateRestaurant(
+    @RequestBody ProviderRequestDTO requestDTO,
+    @PathVariable Long id) {
+    return ResponseEntity.status(HttpStatus.OK).body(restaurantService.updateRestaurant(requestDTO, id));
+  }
+
 
 }

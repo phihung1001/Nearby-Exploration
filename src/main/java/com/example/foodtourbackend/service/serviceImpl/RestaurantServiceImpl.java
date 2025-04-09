@@ -118,4 +118,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
     return restaurantMapper.EntityToProviderResponseDTO(savedRestaurant);
   }
+
+  @Override
+  public Object updateRestaurant(ProviderRequestDTO requestDTO, Long id) {
+    return null;
+  }
 }
