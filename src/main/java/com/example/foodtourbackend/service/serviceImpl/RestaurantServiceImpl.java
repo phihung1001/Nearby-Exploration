@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation của RestaurantService.
@@ -89,6 +90,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 
   /**
+   *
    * Lấy danh sách nhà hàng theo phân trang.
    *
    * @param page  Trang hiện tại (bắt đầu từ 0).
@@ -119,8 +121,20 @@ public class RestaurantServiceImpl implements RestaurantService {
     return restaurantMapper.EntityToProviderResponseDTO(savedRestaurant);
   }
 
+  /**
+   * Cập nhật thông tin nhà hàng mới
+   *
+   * @param requestDTO Thông tin đăng ký từ client (tên, địa chỉ, món ăn, v.v.)
+   * @param id id nhà hàng
+   * @return ProviderResponseDTO chứa thông tin nhà hàng sau khi lưu thành công
+   */
   @Override
-  public Object updateRestaurant(ProviderRequestDTO requestDTO, Long id) {
-    return null;
+  public ProviderResponseDTO updateRestaurant(ProviderRequestDTO requestDTO, Long id) {
+    Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+    if(restaurant.isEmpty()){
+      throw new NotFoundException("Không tồn tại bản ghi nhà hàng trong database");
+    }
+    restaurantMapper.UpdateProviderRequestDTOToEntity(requestDTO, restaurant.get());
+    return restaurantMapper.EntityToProviderResponseDTO(restaurantRepository.save(restaurant.get()));
   }
 }
