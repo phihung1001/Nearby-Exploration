@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -13,17 +15,22 @@ import lombok.Setter;
 @Entity
 @Table(name = "customer")
 public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private int age;
-    private String fullName;
-    private String phoneNumber;
-    private String email;
-    private String address;
-    private String role;
-    private String password;
-    private String gender;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private int age;
+  private String fullName;
+  private String phoneNumber;
+  private String email;
+  private String address;
+  private String role;
+  private String password;
+  private String gender;
+  @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Restaurant> restaurants;
+
+  @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Reviews> reviews;
 }
 
 

@@ -10,19 +10,27 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity
 @Table(name ="reivews")
 public class Reviews {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "RESTAURANT_ID")
-    private Long restaurantId;
-    @Column(name = "USER_ID")
-    private Long userId;
-    private String comment;
+  private String comment;
 
-    @Column(name = "AVG_RATING_TEXT")
-    private String avgRatingText;
+  @Column(name = "AVG_RATING_TEXT")
+  private String avgRatingText;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "restaurant_id")
+  private Restaurant restaurant;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "customer_id")
+  private Customer customer;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_food_id")
+  private CategoryFood categoryFood;
 }

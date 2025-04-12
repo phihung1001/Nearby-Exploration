@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,11 +25,15 @@ public class CategoryFood {
     private String image;
     private String price;
 
-    @Column(name="RESTAURANT_ID")
-    private Long restaurantId;
-
     @Column(name = "CITY_ID")
     private Long cityId;
     @Column(name = "DISTRICT_ID")
     private Long districtId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "categoryFood", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reviews> reviews;
 }
