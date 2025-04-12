@@ -20,16 +20,9 @@ public class CategoryFood {
     private Long id;
     @Column(name = "CATEGORY_NAME")
     private String name;
-
     private String description;
     private String image;
     private String price;
-
-    @Column(name = "CITY_ID")
-    private Long cityId;
-    @Column(name = "DISTRICT_ID")
-    private Long districtId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;

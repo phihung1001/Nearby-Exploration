@@ -1,6 +1,7 @@
 package com.example.foodtourbackend.mapper;
 
 import com.example.foodtourbackend.DTO.DishesRequestDTO;
+import com.example.foodtourbackend.DTO.DishesResponseDTO;
 import com.example.foodtourbackend.entity.CategoryFood;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -13,4 +14,5 @@ public interface CategoryFoodMapper {
    CategoryFood CategoryFoodToCategoryFood(CategoryFood categoryFood);
    CategoryFood DishesDTOToEntity(DishesRequestDTO dishesRequestDTO);
    CategoryFood UpdateDishesDTOToEntity(DishesRequestDTO dto, @MappingTarget CategoryFood entity);
+   DishesResponseDTO EntityToDishesResponseDTO(CategoryFood categoryFood);
 }

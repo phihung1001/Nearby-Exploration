@@ -1,6 +1,7 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
 import com.example.foodtourbackend.DTO.DishesRequestDTO;
+import com.example.foodtourbackend.DTO.DishesResponseDTO;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
 import com.example.foodtourbackend.GlobalException.UnauthorizedException;
 import com.example.foodtourbackend.entity.CategoryFood;
@@ -36,7 +37,7 @@ public class DishesServiceImpl implements DishesService {
    * @throws NotFoundException nếu không tìm thấy người dùng hoặc chưa có nhà hàng liên kết
    */
   @Override
-  public CategoryFood addDishes(DishesRequestDTO dishesRequestDTO) {
+  public DishesResponseDTO addDishes(DishesRequestDTO dishesRequestDTO) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || !authentication.isAuthenticated()) {
       throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
@@ -56,7 +57,7 @@ public class DishesServiceImpl implements DishesService {
     CategoryFood newFood = CategoryFoodMapper.INSTANCE.DishesDTOToEntity(dishesRequestDTO);
     // Gán restaurant_id dựa vào nhà hàng của người dùng
     newFood.setRestaurant(restaurant);
-    return categoryFoodRepository.save(newFood);
+    return categoryFoodMapper.EntityToDishesResponseDTO(categoryFoodRepository.save(newFood));
   }
 
   /**
@@ -68,7 +69,7 @@ public class DishesServiceImpl implements DishesService {
    * @throws NotFoundException nếu không tìm thấy món ăn với ID tương ứng
    */
   @Override
-  public CategoryFood updateDishes(DishesRequestDTO dishesRequestDTO, Long id) {
+  public DishesResponseDTO updateDishes(DishesRequestDTO dishesRequestDTO, Long id) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || !authentication.isAuthenticated()) {
       throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
@@ -84,6 +85,6 @@ public class DishesServiceImpl implements DishesService {
     }
 
     categoryFoodMapper.UpdateDishesDTOToEntity(dishesRequestDTO, currentFood);
-    return categoryFoodRepository.save(currentFood);
+    return categoryFoodMapper.EntityToDishesResponseDTO(categoryFoodRepository.save(currentFood));
   }
 }
