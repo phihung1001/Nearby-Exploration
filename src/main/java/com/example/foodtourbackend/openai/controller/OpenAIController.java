@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.openai.controller;
 
-import com.example.foodtourbackend.DTO.ExploreRequest;
+import com.example.foodtourbackend.DTO.ExploreRequestDTO;
 import com.example.foodtourbackend.openai.service.OpenAIService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class OpenAIController {
 
   private final OpenAIService openAIService;
   @PostMapping("/explore")
-  public ResponseEntity<?> createChatCompletion(@Valid @RequestBody ExploreRequest request) {
+  public ResponseEntity<?> createChatCompletion(@Valid @RequestBody ExploreRequestDTO request) {
       return ResponseEntity.ok(openAIService.createChatCompletion(request));
   }
 }

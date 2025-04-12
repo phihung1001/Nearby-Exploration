@@ -1,8 +1,8 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
-import com.example.foodtourbackend.DTO.CustomerDTO;
-import com.example.foodtourbackend.DTO.CustomerResponse;
-import com.example.foodtourbackend.DTO.UpdatePasswordRequest;
+import com.example.foodtourbackend.DTO.CustomerRequestDTO;
+import com.example.foodtourbackend.DTO.CustomerResponseDTO;
+import com.example.foodtourbackend.DTO.UpdatePasswordRequestDTO;
 import com.example.foodtourbackend.GlobalException.DuplicateException;
 import com.example.foodtourbackend.GlobalException.ErrorImportDataException;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
@@ -42,13 +42,21 @@ public class CustomerServiceImpl implements CustomerService {
   private final RestTemplate restTemplate = new RestTemplate();
   private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+  /**
+   * Lấy thông tin khách hàng dựa trên ID.
+   * Kiểm tra quyền truy cập: chỉ cho phép người dùng lấy đúng thông tin của chính họ.
+   *
+   * @param id ID người dùng cần truy vấn
+   * @return Thông tin khách hàng dạng DTO
+   * @throws UnauthorizedException nếu người dùng cố truy cập hồ sơ của người khác
+   * @throws NotFoundException nếu không tìm thấy người dùng
+   */
   @Override
-  public CustomerResponse getById(Long id) {
+  public CustomerResponseDTO getById(Long id) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();;
     Long userId = userDetails.getUserId();
 
-    System.out.println("userID "+ userId);
     if (!userId.equals(id)) {
         throw new UnauthorizedException("Bạn không có quyền truy cập hồ sơ này.");
     }
@@ -56,9 +64,16 @@ public class CustomerServiceImpl implements CustomerService {
     if (customer.isPresent()) {
       return customerMapper.entityToResponse(customer.get());
     }
-    throw new NotFoundException("ACCOUNT NOT FOUND");
+    throw new NotFoundException("Tài khoản không tồn tại");
   }
 
+  /**
+   * Gửi ảnh lên AI Service để xử lý nhận diện hoặc tìm kiếm.
+   *
+   * @param file File ảnh cần gửi
+   * @return Kết quả trả về từ AI Service
+   * @throws ErrorImportDataException nếu có lỗi trong quá trình gửi dữ liệu
+   */
   @Override
   public String searchByImage(MultipartFile file) {
     try {
@@ -83,13 +98,35 @@ public class CustomerServiceImpl implements CustomerService {
     }
   }
 
+  /**
+   * Cập nhật thông tin người dùng.
+   * Xác thực người dùng từ token và kiểm tra tính hợp lệ của dữ liệu trước khi lưu.
+   *
+   * @param id ID người dùng cần cập nhật
+   * @param customerRequestDTO Dữ liệu thông tin người dùng mới
+   * @return Thông tin khách hàng sau khi cập nhật
+   * @throws DuplicateException nếu email hoặc số điện thoại đã được đăng ký bởi người khác
+   * @throws IllegalArgumentException nếu dữ liệu nhập vào không hợp lệ
+   * @throws NotFoundException nếu người dùng không tồn tại
+   */
   @Override
-  public CustomerResponse update(Long id,CustomerDTO customerDTO) {
-    Customer customer = customerRepository.findById(id).orElseThrow(
-      () -> new NotFoundException("Không tìm thấy khách hàng với id: " + id));
+  public CustomerResponseDTO update(Long id, CustomerRequestDTO customerRequestDTO) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
+    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+
+    if (!userId.equals(id)) {
+      throw new UnauthorizedException("Bạn không có quyền chỉnh sửa thông tin người dùng này");
+    }
+
+    Customer customer = customerRepository.findById(userId)
+      .orElseThrow(() -> new NotFoundException("Không tìm thấy người dùng"));
 
     // Kiểm tra email mới có trùng với bản ghi nào khác không (ngoại trừ chính bản ghi hiện tại)
-    Customer existingByEmail = customerRepository.findByEmail(customerDTO.getEmail())
+    Customer existingByEmail = customerRepository.findByEmail(customerRequestDTO.getEmail())
       .orElse(null);
 
     if (existingByEmail != null && !existingByEmail.getId().equals(customer.getId())) {
@@ -97,30 +134,52 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     // Kiểm tra số điện thoại mới có trùng với bản ghi nào khác không (ngoại trừ chính bản ghi hiện tại)
-    Customer existingByPhone = customerRepository.findByPhoneNumber(customerDTO.getPhoneNumber()).orElse(null);
+    Customer existingByPhone = customerRepository.findByPhoneNumber(customerRequestDTO.getPhoneNumber()).orElse(null);
     if (existingByPhone != null && !existingByPhone.getId().equals(customer.getId())) {
         throw new DuplicateException("Số điện thoại đã được đăng ký cho một khách hàng khác.");
     }
 
     //Kiểm tra tuổi hợp lệ
-    if(customerDTO.getAge() < 0 || customerDTO.getAge() > 100) {
+    if(customerRequestDTO.getAge() < 0 || customerRequestDTO.getAge() > 100) {
       throw new IllegalArgumentException("Độ tuổi không phù hợp");
     }
-    if (!customerDTO.getPhoneNumber().matches("^(\\+84|0)[3|5|7|8|9][0-9]{8}$")) {
+    if (!customerRequestDTO.getPhoneNumber().matches("^(\\+84|0)[3|5|7|8|9][0-9]{8}$")) {
       throw new IllegalArgumentException("Số điện thoại không đúng định dạng ");
     }
-    customerMapper.updateCustomerFromDto(customerDTO, customer);
-    if (customerDTO.getPassword() != null && !customerDTO.getPassword().isEmpty()) {
-        customer.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
+
+    customerMapper.updateCustomerFromDto(customerRequestDTO, customer);
+    if (customerRequestDTO.getPassword() != null && !customerRequestDTO.getPassword().isEmpty()) {
+        customer.setPassword(passwordEncoder.encode(customerRequestDTO.getPassword()));
     }
     customerRepository.save(customer);
     return customerMapper.entityToResponse(customer);
   }
 
+  /**
+   * Đổi mật khẩu cho người dùng.
+   * Kiểm tra người dùng hợp lệ, xác nhận mật khẩu cũ và đảm bảo mật khẩu mới khác mật khẩu hiện tại.
+   *
+   * @param id ID người dùng cần đổi mật khẩu
+   * @param request Thông tin mật khẩu cũ và mới
+   * @return Thông báo thành công
+   * @throws IllegalArgumentException nếu mật khẩu cũ sai hoặc mật khẩu mới không hợp lệ
+   * @throws NotFoundException nếu không tìm thấy người dùng
+   */
   @Override
-  public Map<String, Object> updatePassword(Long id, UpdatePasswordRequest request) {
-    Customer customer = customerRepository.findById(id)
-      .orElseThrow(() -> new NotFoundException("Không tìm thấy khách hàng với id: " + id));
+  public Map<String, Object> updatePassword(Long id, UpdatePasswordRequestDTO request) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
+    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+
+    if (!userId.equals(id)) {
+      throw new UnauthorizedException("Bạn không có quyền chỉnh sửa thông tin người dùng này");
+    }
+
+    Customer customer = customerRepository.findById(userId)
+      .orElseThrow(() -> new NotFoundException("Không tìm thấy người dùng"));
 
     if (!passwordEncoder.matches(request.getOldPassword(), customer.getPassword())) {
       throw new IllegalArgumentException("Mật khẩu cũ không đúng");

@@ -1,8 +1,8 @@
 package com.example.foodtourbackend.service;
 
-import com.example.foodtourbackend.DTO.CustomerDTO;
-import com.example.foodtourbackend.DTO.CustomerResponse;
-import com.example.foodtourbackend.DTO.UpdatePasswordRequest;
+import com.example.foodtourbackend.DTO.CustomerRequestDTO;
+import com.example.foodtourbackend.DTO.CustomerResponseDTO;
+import com.example.foodtourbackend.DTO.UpdatePasswordRequestDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,8 +10,8 @@ import java.util.Map;
 
 @Service
 public interface CustomerService {
-  CustomerResponse getById(Long id);
+  CustomerResponseDTO getById(Long id);
   String searchByImage(MultipartFile file);
-  CustomerResponse update(Long id,CustomerDTO customerDTO);
-  Map<String, Object> updatePassword(Long id, UpdatePasswordRequest request);
+  CustomerResponseDTO update(Long id, CustomerRequestDTO customerRequestDTO);
+  Map<String, Object> updatePassword(Long id, UpdatePasswordRequestDTO request);
 }

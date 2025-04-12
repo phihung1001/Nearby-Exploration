@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DishesDTO {
+public class DishesRequestDTO {
   private String name;
   private String description;
   private String image;

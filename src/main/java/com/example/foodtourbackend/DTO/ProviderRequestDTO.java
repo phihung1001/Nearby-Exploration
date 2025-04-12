@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProviderRequestDTO {
-  private Integer userId;
   @NotBlank(message = "Tên nhà hàng không được để trống")
   private String name;
   @NotBlank(message = "Địa chỉ không được để trống")

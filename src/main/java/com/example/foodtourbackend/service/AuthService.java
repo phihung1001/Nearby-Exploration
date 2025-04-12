@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface AuthService {
 
-    ResponseEntity<?> register(RegisterRequest request);
+    ResponseEntity<?> register(RegisterRequestDTO request);
 
-    ResponseEntity<?> login(LoginRequest request, HttpServletResponse response);
-    ResponseEntity<?> checkUser(TokenRequest token);
-    TokenResponse refreshToken(HttpServletRequest request);
+    ResponseEntity<?> login(LoginRequestDTO request, HttpServletResponse response);
+    ResponseEntity<?> checkUser(TokenRequestDTO token);
+    TokenResponseDTO refreshToken(HttpServletRequest request);
 
 }

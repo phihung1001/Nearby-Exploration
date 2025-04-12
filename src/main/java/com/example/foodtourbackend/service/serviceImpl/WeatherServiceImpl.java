@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
-import com.example.foodtourbackend.DTO.OpenMeteoResponse;
+import com.example.foodtourbackend.DTO.OpenMeteoResponseDTO;
 import com.example.foodtourbackend.DTO.HourlyForecastDTO;
 import com.example.foodtourbackend.DTO.WeatherDTO;
 import com.example.foodtourbackend.service.WeatherService;
@@ -110,10 +110,10 @@ public class WeatherServiceImpl implements WeatherService {
       String geoJson = tuple.getT2();
 
       try {
-        OpenMeteoResponse response = objectMapper.readValue(weatherJson, OpenMeteoResponse.class);
+        OpenMeteoResponseDTO response = objectMapper.readValue(weatherJson, OpenMeteoResponseDTO.class);
 
         // Khởi tạo đối tượng Weather và ánh xạ dữ liệu
-        OpenMeteoResponse.CurrentWeather currentWeather = response.getCurrent();
+        OpenMeteoResponseDTO.CurrentWeather currentWeather = response.getCurrent();
         WeatherDTO weatherDTO = new WeatherDTO();
         weatherDTO.setTemperature(currentWeather.getTemperature_2m());
         weatherDTO.setCondition(getWeatherConditionEn(currentWeather.getWeather_code()));

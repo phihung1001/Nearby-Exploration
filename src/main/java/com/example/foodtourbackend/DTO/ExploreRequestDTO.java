@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ExploreRequest {
+public class ExploreRequestDTO {
 
   private List<String> excludedFoods;
   private String mealType;

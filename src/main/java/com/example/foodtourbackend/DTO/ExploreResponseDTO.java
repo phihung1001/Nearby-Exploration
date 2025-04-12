@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ExploreResponse {
+public class ExploreResponseDTO {
   public String title;
   @JsonProperty("dishes")
   public List<DishesResponse> dishesResponseList ;

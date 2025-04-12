@@ -1,10 +1,10 @@
 package com.example.foodtourbackend.openai.service;
 
-import com.example.foodtourbackend.DTO.ExploreRequest;
-import com.example.foodtourbackend.DTO.ExploreResponse;
+import com.example.foodtourbackend.DTO.ExploreRequestDTO;
+import com.example.foodtourbackend.DTO.ExploreResponseDTO;
 import jakarta.validation.Valid;
 
 public interface OpenAIService {
 
-  ExploreResponse createChatCompletion(@Valid ExploreRequest request);
+  ExploreResponseDTO createChatCompletion(@Valid ExploreRequestDTO request);
 }

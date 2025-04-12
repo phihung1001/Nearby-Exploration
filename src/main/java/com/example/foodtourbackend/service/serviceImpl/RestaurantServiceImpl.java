@@ -3,17 +3,22 @@ package com.example.foodtourbackend.service.serviceImpl;
 import com.example.foodtourbackend.DTO.ProviderRequestDTO;
 import com.example.foodtourbackend.DTO.ProviderResponseDTO;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
+import com.example.foodtourbackend.GlobalException.UnauthorizedException;
 import com.example.foodtourbackend.entity.CategoryFood;
+import com.example.foodtourbackend.entity.Customer;
 import com.example.foodtourbackend.entity.Restaurant;
 import com.example.foodtourbackend.mapper.CategoryFoodMapper;
 import com.example.foodtourbackend.mapper.RestaurantMapper;
 import com.example.foodtourbackend.repository.CategoryFoodRepository;
+import com.example.foodtourbackend.repository.CustomerRepository;
 import com.example.foodtourbackend.repository.RestaurantRepository;
 import com.example.foodtourbackend.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +38,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   private final RestaurantMapper restaurantMapper;
   private final CategoryFoodMapper categoryFoodMapper;
   private final CategoryFoodRepository categoryFoodRepository;
-
+  private final CustomerRepository customerRepository;
   /**
    * Lấy thông tin của một nhà hàng theo id.
    *
@@ -110,12 +115,26 @@ public class RestaurantServiceImpl implements RestaurantService {
    */
   @Override
   public ProviderResponseDTO registerRestaurant(ProviderRequestDTO requestDTO) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
+    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+
+    Customer customer = customerRepository.findById(userId)
+      .orElseThrow(() -> new NotFoundException("Không tìm thấy người dùng"));
+
     Restaurant restaurant = restaurantMapper.ProviderRequestDTOToEntity(requestDTO);
+    restaurant.setCustomer(customer);
+
     Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+
     if (requestDTO.getDishes() != null && !requestDTO.getDishes().isEmpty()) {
-      List<CategoryFood> dishList = requestDTO.getDishes().stream().map(
-        categoryFoodMapper::CategoryFoodToCategoryFood
-      ).toList();
+      List<CategoryFood> dishList = requestDTO.getDishes().stream()
+        .map(categoryFoodMapper::CategoryFoodToCategoryFood)
+        .peek(dish -> dish.setRestaurant(savedRestaurant)) // Gán nhà hàng cho từng món
+        .toList();
       categoryFoodRepository.saveAll(dishList);
     }
     return restaurantMapper.EntityToProviderResponseDTO(savedRestaurant);
@@ -130,9 +149,16 @@ public class RestaurantServiceImpl implements RestaurantService {
    */
   @Override
   public ProviderResponseDTO updateRestaurant(ProviderRequestDTO requestDTO, Long id) {
-    Optional<Restaurant> restaurant = restaurantRepository.findById(id);
-    if(restaurant.isEmpty()){
-      throw new NotFoundException("Không tồn tại bản ghi nhà hàng trong database");
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
+    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+
+    Optional<Restaurant> restaurant = restaurantRepository.findByIdAndCustomer_Id(id, userId);
+    if(restaurant.isEmpty()) {
+      throw new UnauthorizedException("Nhà hàng không tồn tại hoặc không thuộc quyền sở hữu.");
     }
     restaurantMapper.UpdateProviderRequestDTOToEntity(requestDTO, restaurant.get());
     return restaurantMapper.EntityToProviderResponseDTO(restaurantRepository.save(restaurant.get()));

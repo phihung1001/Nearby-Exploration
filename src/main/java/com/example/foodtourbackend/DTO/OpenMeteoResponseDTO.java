@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OpenMeteoResponse {
+public class OpenMeteoResponseDTO {
   private CurrentWeather current;
   private Hourly hourly;
   private HourlyUnits hourly_units;

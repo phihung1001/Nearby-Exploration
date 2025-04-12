@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.mapper;
 
-import com.example.foodtourbackend.DTO.ExploreResponse;
+import com.example.foodtourbackend.DTO.ExploreResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -8,14 +8,14 @@ import java.util.ArrayList;
 public class DishesResponseMapper {
 
   /**
-   * Map chuỗi answer từ API sang ExploreResponse DTO.
+   * Map chuỗi answer từ API sang ExploreResponseDTO DTO.
    *
    * @param answer Chuỗi trả về từ API OpenAI.
-   * @return ExploreResponse chứa tiêu đề và danh sách các món ăn (dishes).
+   * @return ExploreResponseDTO chứa tiêu đề và danh sách các món ăn (dishes).
    */
-  public static ExploreResponse mapAnswerToExploreResponse(String answer) {
+  public static ExploreResponseDTO mapAnswerToExploreResponse(String answer) {
     if (answer == null || answer.isEmpty()) {
-      return new ExploreResponse("", new ArrayList<>());
+      return new ExploreResponseDTO("", new ArrayList<>());
     }
     try {
       ObjectMapper objectMapper = new ObjectMapper();
@@ -24,10 +24,10 @@ public class DishesResponseMapper {
       if (answer.startsWith("json")) {
         answer = answer.substring(4).trim(); // Bỏ "json" và khoảng trắng
       }
-      return objectMapper.readValue(answer, ExploreResponse.class);
+      return objectMapper.readValue(answer, ExploreResponseDTO.class);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ExploreResponse("", new ArrayList<>());
+      return new ExploreResponseDTO("", new ArrayList<>());
     }
   }
 }

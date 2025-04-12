@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.mapper;
 
-import com.example.foodtourbackend.DTO.DishesDTO;
+import com.example.foodtourbackend.DTO.DishesRequestDTO;
 import com.example.foodtourbackend.entity.CategoryFood;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -11,6 +11,6 @@ import org.mapstruct.factory.Mappers;
 public interface CategoryFoodMapper {
    CategoryFoodMapper INSTANCE = Mappers.getMapper(CategoryFoodMapper.class);
    CategoryFood CategoryFoodToCategoryFood(CategoryFood categoryFood);
-   CategoryFood DishesDTOToEntity(DishesDTO dishesDTO);
-   CategoryFood UpdateDishesDTOToEntity(DishesDTO dto, @MappingTarget CategoryFood entity);
+   CategoryFood DishesDTOToEntity(DishesRequestDTO dishesRequestDTO);
+   CategoryFood UpdateDishesDTOToEntity(DishesRequestDTO dto, @MappingTarget CategoryFood entity);
 }

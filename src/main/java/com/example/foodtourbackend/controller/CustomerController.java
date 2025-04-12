@@ -1,7 +1,7 @@
 package com.example.foodtourbackend.controller;
 
-import com.example.foodtourbackend.DTO.CustomerDTO;
-import com.example.foodtourbackend.DTO.UpdatePasswordRequest;
+import com.example.foodtourbackend.DTO.CustomerRequestDTO;
+import com.example.foodtourbackend.DTO.UpdatePasswordRequestDTO;
 import com.example.foodtourbackend.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class CustomerController {
    * Lấy thông tin khách hàng theo ID
    *
    * @param id ID của khách hàng cần lấy
-   * @return Thông tin chi tiết của khách hàng (CustomerResponse )
+   * @return Thông tin chi tiết của khách hàng (CustomerResponseDTO )
    */
   @GetMapping("/{id}")
   public ResponseEntity<?> getById(@PathVariable Long id) {
@@ -41,18 +41,18 @@ public class CustomerController {
   /**
    * Cập nhật thông tin khách hàng
    *
-   * @param customerDTO Thông tin cần cập nhật (JSON trong body)
+   * @param customerRequestDTO Thông tin cần cập nhật (JSON trong body)
    * @param id          ID của khách hàng cần cập nhật
    * @return Thông tin khách hàng đã được cập nhật hoặc thông báo lỗi
    */
   @PostMapping("/update/{id}")
   public ResponseEntity<?> update(
-    @RequestBody CustomerDTO customerDTO,
+    @RequestBody CustomerRequestDTO customerRequestDTO,
     @PathVariable Long id
   ) {
     // Gọi service để cập nhật thông tin khách hàng
     // Trả về HTTP 200 (OK) kèm dữ liệu đã cập nhật nếu thành công
-    return ResponseEntity.status(HttpStatus.OK).body(customerService.update(id, customerDTO));
+    return ResponseEntity.status(HttpStatus.OK).body(customerService.update(id, customerRequestDTO));
   }
 
   /**
@@ -64,7 +64,7 @@ public class CustomerController {
    */
   @PostMapping("/update/password/{id}")
   public ResponseEntity<?> updatePassword(
-    @RequestBody UpdatePasswordRequest request,
+    @RequestBody UpdatePasswordRequestDTO request,
     @PathVariable Long id
   ) {
     // Gọi service để cập nhật mật khẩu

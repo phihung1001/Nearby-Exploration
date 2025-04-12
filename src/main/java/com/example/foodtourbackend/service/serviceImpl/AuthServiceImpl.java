@@ -31,27 +31,27 @@ public class AuthServiceImpl implements AuthService {
     private final UserDetailsService userDetailsService;
 
     @Override
-    public  ResponseEntity<?> register(RegisterRequest registerRequest) {
-        if (customerRepository.existsByEmail(registerRequest.getEmail())) {
+    public  ResponseEntity<?> register(RegisterRequestDTO registerRequestDTO) {
+        if (customerRepository.existsByEmail(registerRequestDTO.getEmail())) {
             throw new DuplicateException("Email đã được đăng ký");
         }
-        if(customerRepository.existsByPhoneNumber(registerRequest.getPhoneNumber())) {
+        if(customerRepository.existsByPhoneNumber(registerRequestDTO.getPhoneNumber())) {
             throw new DuplicateException("Số điện thoại đã được đăng ký");
         }
         Customer customer = new Customer();
-        customer.setFullName(registerRequest.getFullName());
-        customer.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        customer.setEmail(registerRequest.getEmail());
-        customer.setPhoneNumber(registerRequest.getPhoneNumber());
-        customer.setAddress(registerRequest.getAddress());
-        customer.setGender(registerRequest.getGender());
+        customer.setFullName(registerRequestDTO.getFullName());
+        customer.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
+        customer.setEmail(registerRequestDTO.getEmail());
+        customer.setPhoneNumber(registerRequestDTO.getPhoneNumber());
+        customer.setAddress(registerRequestDTO.getAddress());
+        customer.setGender(registerRequestDTO.getGender());
         customer.setRole("CUSTOMER");
         customerRepository.save(customer);
         return ResponseEntity.ok(Map.of("message","Đăng kí thành công"));
     }
 
     @Override
-    public ResponseEntity<?> login(LoginRequest request,HttpServletResponse response) {
+    public ResponseEntity<?> login(LoginRequestDTO request, HttpServletResponse response) {
         Customer customer = customerRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new NotFoundException("Email không tồn tại"));
 
@@ -69,16 +69,16 @@ public class AuthServiceImpl implements AuthService {
         refreshCookie.setMaxAge(7 * 24 * 60 * 60);
         response.addCookie(refreshCookie);
 
-        LoginResponse tokenRespone = new LoginResponse(accessToken);
+        LoginResponseDTO tokenRespone = new LoginResponseDTO(accessToken);
         return ResponseEntity.ok(tokenRespone);
     }
 
     @Override
-    public ResponseEntity<?> checkUser(TokenRequest token) {
+    public ResponseEntity<?> checkUser(TokenRequestDTO token) {
         return ResponseEntity.ok(jwtUtil.getAllClaimsFromToken(token.getToken()));
     }
 
-    public TokenResponse refreshToken(HttpServletRequest request) {
+    public TokenResponseDTO refreshToken(HttpServletRequest request) {
         String refreshToken = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -102,6 +102,6 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new NotFoundException("Customer không tồn tại"));
 
         String newAccessToken = jwtUtil.generateToken(customer);
-        return new TokenResponse(newAccessToken);
+        return new TokenResponseDTO(newAccessToken);
     }
 }

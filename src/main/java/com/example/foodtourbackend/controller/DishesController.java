@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.controller;
 
-import com.example.foodtourbackend.DTO.DishesDTO;
+import com.example.foodtourbackend.DTO.DishesRequestDTO;
 import com.example.foodtourbackend.service.DishesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,29 +22,29 @@ public class DishesController {
    * API thêm mới một món ăn vào hệ thống.
    * Chỉ người dùng có quyền PROVIDER mới có thể thực hiện.
    *
-   * @param dishesDTO Thông tin món ăn cần thêm (tên, mô tả, ảnh, giá, liên kết nhà hàng...)
+   * @param dishesRequestDTO Thông tin món ăn cần thêm (tên, mô tả, ảnh, giá, liên kết nhà hàng...)
    * @return Dữ liệu món ăn sau khi được lưu (hoặc thông báo lỗi)
    */
   @PostMapping("/add")
   @PreAuthorize("hasAuthority('PROVIDER')")
-  public ResponseEntity<?> addDishes(@RequestBody DishesDTO dishesDTO) {
-    return ResponseEntity.status(HttpStatus.OK).body(dishesService.addDishes(dishesDTO));
+  public ResponseEntity<?> addDishes(@RequestBody DishesRequestDTO dishesRequestDTO) {
+    return ResponseEntity.status(HttpStatus.OK).body(dishesService.addDishes(dishesRequestDTO));
   }
 
   /**
    * API cập nhật thông tin một món ăn theo ID.
    * Chỉ người dùng có quyền PROVIDER mới có thể thực hiện.
    *
-   * @param dishesDTO Dữ liệu mới của món ăn cần cập nhật
+   * @param dishesRequestDTO Dữ liệu mới của món ăn cần cập nhật
    * @param id ID của món ăn cần cập nhật
    * @return Dữ liệu món ăn sau khi cập nhật thành công (hoặc thông báo lỗi)
    */
   @PostMapping("update/{id}")
   @PreAuthorize("hasAuthority('PROVIDER')")
   public ResponseEntity<?> updateDishes(
-    @RequestBody DishesDTO dishesDTO,
+    @RequestBody DishesRequestDTO dishesRequestDTO,
     @PathVariable Long id) {
-    return ResponseEntity.status(HttpStatus.OK).body(dishesService.updateDishes(dishesDTO, id));
+    return ResponseEntity.status(HttpStatus.OK).body(dishesService.updateDishes(dishesRequestDTO, id));
   }
 
 }

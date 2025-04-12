@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
@@ -43,4 +44,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
   );
 
   boolean existsByPhone(@NotBlank(message = "Số điện thoại không được để trống") String phone);
+
+  Optional<Restaurant> findByIdAndCustomer_Id(Long id, Long userId);
 }

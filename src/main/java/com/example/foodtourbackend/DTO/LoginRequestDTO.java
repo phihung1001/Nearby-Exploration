@@ -1,18 +1,15 @@
 package com.example.foodtourbackend.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
-    private String fullName;
+@Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class LoginRequestDTO {
     private String email;
     private String password;
-    private String confirmPassword;
-    private String phoneNumber;
-    private String address;
-    private String gender;
 }

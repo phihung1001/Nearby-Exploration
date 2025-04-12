@@ -12,6 +12,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface RestaurantMapper {
     Restaurant ProviderRequestDTOToEntity(ProviderRequestDTO providerRequestDTO);
     ProviderResponseDTO EntityToProviderResponseDTO(Restaurant restaurant);
-    Restaurant UpdateProviderRequestDTOToEntity(ProviderRequestDTO providerRequestDTO, @MappingTarget Restaurant restaurant);
+    void UpdateProviderRequestDTOToEntity(ProviderRequestDTO providerRequestDTO, @MappingTarget Restaurant restaurant);
 }
 
