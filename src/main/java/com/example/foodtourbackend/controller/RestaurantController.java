@@ -130,5 +130,15 @@ public class RestaurantController {
     return ResponseEntity.status(HttpStatus.OK).body(restaurantService.updateRestaurant(requestDTO, id));
   }
 
+  /**
+   * Xóa thông tin nhà hàng
+   *
+   */
+  @PreAuthorize("hasAuthority('PROVIDER')")
+  @DeleteMapping("/delete/{id}")
+  public ResponseEntity<?> deleteRestaurant(@PathVariable Long id) {
+    return ResponseEntity.ok(restaurantService.delete(id));
+  }
+
 
 }

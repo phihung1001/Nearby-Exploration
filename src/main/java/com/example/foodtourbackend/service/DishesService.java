@@ -13,4 +13,6 @@ public interface DishesService {
   DishesResponseDTO updateDishes(DishesRequestDTO dishesRequestDTO, Long id);
 
   List<?> getAllDishesByRestaurantId(Long restaurantId);
+
+  String delete(Long id);
 }

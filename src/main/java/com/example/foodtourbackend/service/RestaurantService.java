@@ -20,4 +20,6 @@ public interface RestaurantService {
   ProviderResponseDTO updateRestaurant(ProviderRequestDTO requestDTO, Long id);
 
   Page<ProviderResponseDTO> getList(int page, int size);
+
+  Object delete(Long id);
 }

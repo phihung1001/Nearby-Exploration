@@ -222,4 +222,28 @@ public class RestaurantServiceImpl implements RestaurantService {
     return restaurants.map(restaurantMapper::EntityToProviderResponseDTO);
   }
 
+  /**
+   * Xóa thông tin nhà hàng
+   *
+   * @param id
+   * @return
+   */
+  @Override
+  public Object delete(Long id) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
+    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+
+    Restaurant restaurant = restaurantRepository.findById(id)
+      .orElseThrow(() -> new NotFoundException("Không tồn tại bản ghi món ăn trong database"));
+    if (! restaurant.getCustomer().getId().equals(userId)) {
+      throw new UnauthorizedException("Bạn không có quyền xóa nhà hàng này");
+    }
+    restaurantRepository.delete(restaurant);
+    return "Xóa nhà hàng thành công";
+  }
+
 }

@@ -100,4 +100,27 @@ public class DishesServiceImpl implements DishesService {
     List<CategoryFood> categoryFood = categoryFoodRepository.findAllByRestaurant_Id(restaurantId);
     return categoryFood.stream().map(categoryFoodMapper::EntityToDishesResponseDTO).collect(Collectors.toList());
   }
+
+  /**
+   * @param id
+   * @return
+   */
+  @Override
+  public String delete(Long id) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
+    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+
+    // Tìm món ăn theo ID và kiểm tra quyền sở hữu
+    CategoryFood currentFood = categoryFoodRepository.findById(id)
+      .orElseThrow(() -> new NotFoundException("Không tồn tại bản ghi món ăn trong database"));
+    if (!currentFood.getRestaurant().getCustomer().getId().equals(userId)) {
+      throw new UnauthorizedException("Bạn không có quyền chỉnh sửa món ăn này");
+    }
+    categoryFoodRepository.delete(currentFood);
+    return "Xóa món ăn thành công";
+  }
 }

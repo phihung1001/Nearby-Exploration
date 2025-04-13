@@ -60,4 +60,16 @@ public class DishesController {
     return ResponseEntity.ok(dishesService.getAllDishesByRestaurantId(restaurantId));
   }
 
+  /**
+   * Xóa món ăn
+   *
+   * @param Id món ăn
+   * @return Thông báo thành công hoặc thất bại
+   */
+  @DeleteMapping("/delete/{Id}")
+  @PreAuthorize("hasAuthority('PROVIDER')")
+  public ResponseEntity<?> deleteDishes(@PathVariable Long Id) {
+    return ResponseEntity.ok(dishesService.delete(Id));
+  }
+
 }
