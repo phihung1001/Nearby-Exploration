@@ -9,38 +9,49 @@ export default function ProfileMenu({ userData, selectedMenu, onSelectMenu }) {
       <div className={styles.avatarWrapper}>
         <Avatar
           size={150}
-          src={userData.avatar}
-          icon={!userData.avatar && <UserOutlined />}
+          src={userData?.avatar || null}
+          icon={!userData?.avatar && <UserOutlined />}
           className={styles.avatar}
         />
-        <p>{userData.fullName}</p>
+        <p>{userData?.fullName || "Người dùng"}</p>
       </div>
 
       <ul className={styles.menuList}>
         <li
-          className={`${styles.menuItem} ${selectedMenu === "info" ? styles.active : ""}`}
-          onClick={() => onSelectMenu("info")}
+          className={`${styles.menuItem} ${selectedMenu.menu === "info" ? styles.active : ""}`}
+          onClick={() => onSelectMenu({ menu: "info" })}
         >
           Thông tin cơ bản
         </li>
         <li
-          className={`${styles.menuItem} ${selectedMenu === "changePassword" ? styles.active : ""}`}
-          onClick={() => onSelectMenu("changePassword")}
+          className={`${styles.menuItem} ${selectedMenu.menu === "changePassword" ? styles.active : ""}`}
+          onClick={() => onSelectMenu({ menu: "changePassword" })}
         >
           Đổi mật khẩu
         </li>
         <li 
-          className={`${styles.menuItem} ${selectedMenu === "changeAvatar" ? styles.active : ""}`}
-          onClick={() => onSelectMenu("changeAvatar")}
+          className={`${styles.menuItem} ${selectedMenu.menu === "changeAvatar" ? styles.active : ""}`}
+          onClick={() => onSelectMenu({ menu: "changeAvatar" })}
         >
-            Cập nhật hình đại diện
+          Cập nhật hình đại diện
         </li>
-        <li className={styles.menuItem}>Quản lý địa chỉ</li>
         <li 
-        className={`${styles.menuItem} ${selectedMenu === "logout" ? styles.active : ""}`}
-          onClick={() => onSelectMenu("logout")}
+          className={`${styles.menuItem} ${selectedMenu.menu === "restaurantManagement" ? styles.active : ""}`}
+          onClick={() => onSelectMenu({ menu: "restaurantManagement" })}
         >
-            Đăng xuất
+          Quản lí nhà hàng
+        </li>
+        <li 
+          className={`${styles.menuItem} ${selectedMenu.menu === "dishesManagement" ? styles.active : ""}`}
+          onClick={() => onSelectMenu({ menu: "dishesManagement" })}
+        >
+          Quản lí món ăn
+        </li>
+        <li 
+          className={`${styles.menuItem} ${selectedMenu.menu === "logout" ? styles.active : ""}`}
+          onClick={() => onSelectMenu({ menu: "logout" })}
+        >
+          Đăng xuất
         </li>
       </ul>
     </div>

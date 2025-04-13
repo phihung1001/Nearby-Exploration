@@ -3,6 +3,8 @@ import styles from './DishModal.module.css';
 import { notification, Spin } from 'antd';
 import { useNavigate, useLocation } from "react-router-dom"; 
 import ItemRestaurant from '../card/ItemRestaurant'; // Đường dẫn đến ItemRestaurant
+import { getSearchKeywords } from '../../../untils/keywordUtils';
+
 export default function DishModal({ isOpen, onClose, data }) {
   const [activeIndex, setActiveIndex] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
@@ -11,6 +13,15 @@ export default function DishModal({ isOpen, onClose, data }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   if (!isOpen) return null;
+
+    // Hàm chuyển đổi URL ảnh lỗi
+    const fixImageUrl = (url) => {
+      if (url.startsWith("https://images.foody.vn/")) {
+        const parts = url.split('/').pop();
+        return `https://down-tx-vn.img.susercontent.com/${parts}`;
+      }
+      return url;
+    };
 
   const handleToggle = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -43,33 +54,41 @@ export default function DishModal({ isOpen, onClose, data }) {
   };
 
   const fetchRestaurants = async (latitude, longitude) => {
-    if (loading || activeIndex === null) return; // Tránh gọi API liên tục
-  
-    console.log('Fetching restaurants...', latitude, longitude);
-    setLoading(true);
+    if (loading || activeIndex === null) return;
+      setLoading(true);
     try {
-      const dishName = data.dishes[activeIndex]?.name; // Kiểm tra có dữ liệu không
-      const response = await fetch(
-        `http://localhost:8080/public/restaurant/nearby?name=${encodeURIComponent(dishName)}&latitude=${latitude}&longitude=${longitude}`
-      );
-  
-      if (!response.ok) {
-        throw new Error(`API lỗi: ${response.status}`);
+      const dishName = data.dishes[activeIndex]?.name; 
+      console.log("dishName:",dishName)
+      const searchKeywords = getSearchKeywords(dishName);
+      console.log("searchKeywords:",searchKeywords)
+
+      let allRestaurants = [];
+
+      for (const keyword of searchKeywords) {
+        const response = await fetch(
+          `http://localhost:8080/public/restaurant/nearby?name=${encodeURIComponent(keyword)}&latitude=${latitude}&longitude=${longitude}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`API lỗi: ${response.status}`);
+        }
+
+        const result = await response.json();
+        if (Array.isArray(result.content) && result.content.length > 0) {
+          allRestaurants = [...allRestaurants, ...result.content];
+        }
       }
-  
-      const restaurants = await response.json();
-      if (!Array.isArray(restaurants)) {
-        throw new Error("API không trả về danh sách hợp lệ");
+
+      if (allRestaurants.length === 0) {
+        throw new Error("Không tìm thấy nhà hàng phù hợp");
       }
-  
-      setRestaurants(restaurants);
-      console.log('Restaurants:', restaurants);
+
+      setRestaurants(allRestaurants);
       notification.success({
         message: 'Đề xuất thành công',
         description: 'Nhà hàng gần bạn đã được tìm thấy.',
       });
     } catch (error) {
-      console.error('Lỗi lấy danh sách nhà hàng:', error);
       notification.error({
         message: 'Lỗi',
         description: 'Không thể lấy danh sách nhà hàng. Vui lòng thử lại sau.',
@@ -117,16 +136,16 @@ export default function DishModal({ isOpen, onClose, data }) {
           {restaurants.length > 0 && (
             <div className={styles.restaurantList}>
               <h3>Nhà hàng gần bạn </h3>
-                {restaurants.map((r) => (
+                {restaurants.map((r, index) => (
                   <ItemRestaurant
-                    key={r.id}
+                    key={`${r.id}-${index}`} 
                     name={r.name}
                     address={r.address}
                     latestComment={r.latestComment}
                     reviewCount={r.totalReviews}
                     imageCount={r.totalPictures}
                     rating={r.avgRatingText}
-                    image={r.photoUrl}
+                    image={fixImageUrl(r.photoUrl)}
                     onClick={() => handleClick(r)}
                   />
                 ))}

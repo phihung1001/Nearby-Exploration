@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Select, Dropdown, Button, Space } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
-import provincesData  from '../assets/provinces';
-export default function FilterDropdown({ onSearch }) { const [selectedProvinceId, setSelectedProvinceId] = useState(null);
+import provincesData  from '../../assets/provinces';
+import styles from './FilterDropdown.module.css'; // 👈 import CSS module
+
+export default function FilterDropdown({ onFilterChange }) {
+  const [selectedProvinceId, setSelectedProvinceId] = useState(null);
   const [selectedDistrictId, setSelectedDistrictId] = useState(null);
   const [filterVisible, setFilterVisible] = useState(false);
 
@@ -31,11 +34,12 @@ export default function FilterDropdown({ onSearch }) { const [selectedProvinceId
       districtName: selectedDistrict?.Name,
     };
 
-    console.log("Tìm kiếm từ bộ lọc:", filterData);
+    console.log("Lưu bộ lọc:", filterData);
 
-    if (onSearch) {
-      onSearch(filterData);
+    if (onFilterChange) {
+      onFilterChange(filterData); // Truyền dữ liệu bộ lọc lên Header
     }
+
     setFilterVisible(false);
   };
 
@@ -50,13 +54,14 @@ export default function FilterDropdown({ onSearch }) { const [selectedProvinceId
     <Dropdown
       open={filterVisible}
       onOpenChange={setFilterVisible}
+      destroyPopupOnHide
       trigger={["click"]}
       overlay={
-        <div onClick={(e) => e.stopPropagation()}>
+        <div className={styles.dropdownContent} onClick={(e) => e.stopPropagation()}>
           <Space direction="vertical">
             <Select
               placeholder="Chọn tỉnh/thành"
-              style={{ width: "200px" }}
+              className={styles.selectBox}
               options={provinceOptions}
               value={selectedProvinceId}
               onChange={(value) => {
@@ -66,7 +71,7 @@ export default function FilterDropdown({ onSearch }) { const [selectedProvinceId
             />
             <Select
               placeholder="Chọn quận/huyện"
-              style={{ width: "200px" }}
+              className={styles.selectBox}
               options={districtOptions}
               value={selectedDistrictId}
               onChange={setSelectedDistrictId}

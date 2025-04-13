@@ -52,7 +52,6 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("Lỗi từ server:", errorText);
         message.error(`Có lỗi khi tải ảnh lên: ${errorText}`);
         return;
       }
@@ -78,8 +77,6 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
       if (location.pathname !== "/") {
         navigate("/");
       }
-
-      console.log("Data mới nhất: ", formattedData);
       message.success("Tải ảnh lên thành công!");
 
       // Gọi API lấy thông tin nhà hàng
@@ -89,7 +86,6 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
       navigate("/public/restaurant-list", { state: { restaurants } });
 
     } catch (error) {
-      console.error("Lỗi trong quá trình tải ảnh lên:", error);
       message.error("Có lỗi xảy ra khi tải ảnh lên!");
     }
   };
@@ -104,7 +100,7 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
       const restaurants = await response.json();
       return restaurants; // Trả về danh sách nhà hàng
     } catch (error) {
-      console.error("Có lỗi xảy ra khi lấy thông tin nhà hàng:", error);
+      message.error("Có lỗi xảy ra khi lấy thông tin nhà hàng:", error);
       return [];
     }
   };

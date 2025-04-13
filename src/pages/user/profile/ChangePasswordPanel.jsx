@@ -7,8 +7,6 @@ export default function ChangePasswordPanel({id}) {
   const handleChangePassword = async (values) => {
     try {
       const token = localStorage.getItem("token");
-      console.log("token",token);
-      console.log("id and values",id,values);
       const response = await fetch(`http://localhost:8080/customer/update/password/${id}`, {
         method: "POST",
         headers: {
@@ -18,9 +16,8 @@ export default function ChangePasswordPanel({id}) {
         body: JSON.stringify(values)
       });
       const updatedData = await response.json();
-      console.log("updatedData",updatedData);
       if (!response.ok) {
-        throw new Error(`Lỗi ${response.status}`);
+        throw new Error(`${updatedData.message}`);
       }
       notification.success({ message: "Đổi mật khẩu thành công!" });
       form.resetFields();

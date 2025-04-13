@@ -1,21 +1,13 @@
 import React, { useState } from "react";
-import { Input, Button, message ,notification} from "antd";
+import { Input, Button, notification } from "antd";
 import { SearchOutlined, CameraOutlined } from "@ant-design/icons";
 import CameraModal from "../CameraModal";  
 
-export default function SearchBar({ onSearch }) {
-  const [searchText, setSearchText] = useState("");
+export default function SearchBar({ searchText, setSearchText, onSearch }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearch = () => {
-    if (!searchText) {
-      notification.error({  description: "Vui lòng nhập từ khóa", message: "Thất bại" });
-      return;
-    }
-    console.log("Tìm kiếm với:", searchText);
-    if (onSearch) {
-      onSearch({ searchText });
-    }
+     onSearch();  // Gọi hàm onSearch khi nhấn tìm kiếm
   };
 
   const handleCameraClick = () => {
@@ -31,7 +23,7 @@ export default function SearchBar({ onSearch }) {
       <Input
         placeholder="Tìm kiếm món ăn..."
         value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+        onChange={(e) => setSearchText(e.target.value)}  // Cập nhật searchText
         onPressEnter={handleSearch}
         prefix={<SearchOutlined style={{ color: "#999" }} />}
         suffix={

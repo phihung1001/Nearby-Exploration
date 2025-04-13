@@ -30,7 +30,7 @@ export default function WeatherForm({ weatherData }) {
         <div className={styles.forecastSectionWeatherForm}>
           <h3>Dự Báo Theo Giờ</h3>
           <Row gutter={[16, 16]} className={styles.forecast}>
-            {weatherData.hourlyForecasts.slice(0, 6).map((forecast, index) => (
+            {weatherData.forecast.slice(0, 6).map((forecast, index) => (
               <Col key={index} span={4} className={styles.forecastItem}>
                 <p className={styles.forecastTimeWeatherForm}>
                 {new Date(forecast.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

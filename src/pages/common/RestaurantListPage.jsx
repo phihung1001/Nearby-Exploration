@@ -12,6 +12,17 @@ export default function RestaurantListPage() {
   const navigate = useNavigate();
   const restaurants = location.state?.restaurants || [];
 
+  console.log("restaurants list page", restaurants);
+  
+  // Hàm chuyển đổi URL ảnh lỗi
+  const fixImageUrl = (url) => {
+    if (url.startsWith("https://images.foody.vn/")) {
+      const parts = url.split('/').pop();
+      return `https://down-tx-vn.img.susercontent.com/${parts}`;
+    }
+    return url;
+  };
+
   // Xử lý khi nhấp vào nhà hàng
   const handleClick = (restaurant) => {
     console.log("restaurant-detail", restaurant);
@@ -26,9 +37,7 @@ export default function RestaurantListPage() {
 
   return (
     <div className={styles.container}>
-      <Header />
-      <Title level={2} className={styles.title}>Danh sách nhà hàng đề xuất </Title>
-      
+      <Header />      
       <div className={styles.productContainer}>
       {restaurants.map((r) => (
         <ItemRestaurant
@@ -39,7 +48,7 @@ export default function RestaurantListPage() {
           reviewCount={r.totalReviews}
           imageCount={r.totalPictures}
           rating={r.avgRatingText}
-          image={r.photoUrl}
+          image={fixImageUrl(r.photoUrl)}
           onClick={() => handleClick(r)}
         />
       ))}
