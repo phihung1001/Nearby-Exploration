@@ -28,7 +28,21 @@ public class RestaurantController {
     return ResponseEntity.status(HttpStatus.OK).body(restaurantService.getById(id));
   }
 
-    /**
+  /**
+   * Lấy danh sách nhà hàng theo Id người dùng
+   *
+   * Param id Id người dùng
+   * @return Danh sách nhà hàng mà nguời dùng đang quản lí
+   */
+  @GetMapping("list-restaurant/user")
+  public ResponseEntity<?> getList(
+    @RequestParam(defaultValue = "0") int page,
+    @RequestParam(defaultValue = "10") int size
+  ) {
+    return ResponseEntity.status(HttpStatus.OK).body(restaurantService.getList(page,size));
+  }
+
+  /**
      * Lọc danh sách nhà hàng theo cityIds, districts, hoặc name có phân trang.
      *
      * @param page Trang hiện tại (mặc định là 0)

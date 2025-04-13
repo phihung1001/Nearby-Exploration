@@ -47,4 +47,17 @@ public class DishesController {
     return ResponseEntity.status(HttpStatus.OK).body(dishesService.updateDishes(dishesRequestDTO, id));
   }
 
+  /**
+   * API lấy danh sách tất cả món ăn của một nhà hàng theo ID.
+   * Chỉ người dùng có quyền PROVIDER mới có thể thực hiện.
+   *
+   * @param restaurantId ID của nhà hàng
+   * @return Danh sách các món ăn thuộc nhà hàng đó
+   */
+  @GetMapping("/list/restaurant/{restaurantId}")
+  @PreAuthorize("hasAuthority('PROVIDER')")
+  public ResponseEntity<?> getDishesByRestaurant(@PathVariable Long restaurantId) {
+    return ResponseEntity.ok(dishesService.getAllDishesByRestaurantId(restaurantId));
+  }
+
 }

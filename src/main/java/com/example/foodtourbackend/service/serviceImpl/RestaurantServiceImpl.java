@@ -2,6 +2,7 @@ package com.example.foodtourbackend.service.serviceImpl;
 
 import com.example.foodtourbackend.DTO.ProviderRequestDTO;
 import com.example.foodtourbackend.DTO.ProviderResponseDTO;
+import com.example.foodtourbackend.GlobalException.DuplicateException;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
 import com.example.foodtourbackend.GlobalException.UnauthorizedException;
 import com.example.foodtourbackend.entity.CategoryFood;
@@ -125,6 +126,21 @@ public class RestaurantServiceImpl implements RestaurantService {
     Customer customer = customerRepository.findById(userId)
       .orElseThrow(() -> new NotFoundException("Không tìm thấy người dùng"));
 
+    // Kiểm tra email mới có trùng với bản ghi nào khác không (ngoại trừ chính bản ghi hiện tại)
+    if (requestDTO.getEmail() != null && !requestDTO.getEmail().isEmpty()) {
+      Optional<Restaurant> existingByEmail = restaurantRepository.findByEmail(requestDTO.getEmail());
+      if (existingByEmail.isPresent()) {
+        throw new DuplicateException("Email đã được đăng ký cho một nhà hàng khác.");
+      }
+    }
+
+    // Kiểm tra số điện thoại mới có trùng với bản ghi nào khác không (ngoại trừ chính bản ghi hiện tại)
+    if (requestDTO.getPhone() != null && !requestDTO.getPhone().isEmpty()) {
+      Optional<Restaurant> existingByPhone = restaurantRepository.findByPhone(requestDTO.getPhone());
+      if (existingByPhone.isPresent()) {
+        throw new DuplicateException("Số điện thoại đã được đăng ký cho một khách hàng khác.");
+      }
+    }
     Restaurant restaurant = restaurantMapper.ProviderRequestDTOToEntity(requestDTO);
     restaurant.setCustomer(customer);
 
@@ -160,7 +176,50 @@ public class RestaurantServiceImpl implements RestaurantService {
     if(restaurant.isEmpty()) {
       throw new UnauthorizedException("Nhà hàng không tồn tại hoặc không thuộc quyền sở hữu.");
     }
+
+    // Kiểm tra email mới có trùng với bản ghi nào khác không (ngoại trừ chính bản ghi hiện tại)
+    if (requestDTO.getEmail() != null && !requestDTO.getEmail().isEmpty()) {
+      Optional<Restaurant> existingByEmail = restaurantRepository.findByEmail(requestDTO.getEmail());
+      if (existingByEmail.isPresent() && !existingByEmail.get().getId().equals(restaurant.get().getId())) {
+        throw new DuplicateException("Email đã được đăng ký cho một nhà hàng khác.");
+      }
+    }
+
+
+    // Kiểm tra số điện thoại mới có trùng với bản ghi nào khác không (ngoại trừ chính bản ghi hiện tại)
+    if (requestDTO.getPhone() != null && !requestDTO.getPhone().isEmpty()) {
+      Optional<Restaurant> existingByPhone = restaurantRepository.findByPhone(requestDTO.getPhone());
+      if (existingByPhone.isPresent() && !existingByPhone.get().getId().equals(restaurant.get().getId())) {
+        throw new DuplicateException("Số điện thoại đã được đăng ký cho một khách hàng khác.");
+      }
+    }
     restaurantMapper.UpdateProviderRequestDTOToEntity(requestDTO, restaurant.get());
     return restaurantMapper.EntityToProviderResponseDTO(restaurantRepository.save(restaurant.get()));
   }
+
+  /**
+   * Lấy danh sách nhà hàng mà user_id đang quản lí
+   *
+   * @return danh sách nhà hàng mà người dùng đang quản lí
+   */
+  @Override
+  public Page<ProviderResponseDTO> getList(int page, int size) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
+    }
+
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Restaurant> restaurants = restaurantRepository.findByCustomer_Id(userId, pageable);
+
+    if (restaurants.isEmpty()) {
+      throw new NotFoundException("Bạn chưa quản lý nhà hàng nào cả.");
+    }
+
+    return restaurants.map(restaurantMapper::EntityToProviderResponseDTO);
+  }
+
 }

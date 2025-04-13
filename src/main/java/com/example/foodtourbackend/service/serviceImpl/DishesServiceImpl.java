@@ -16,6 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Triển khai các chức năng liên quan đến món ăn (CategoryFood)
  * Bao gồm: thêm mới, cập nhật món ăn
@@ -86,5 +89,15 @@ public class DishesServiceImpl implements DishesService {
 
     categoryFoodMapper.UpdateDishesDTOToEntity(dishesRequestDTO, currentFood);
     return categoryFoodMapper.EntityToDishesResponseDTO(categoryFoodRepository.save(currentFood));
+  }
+
+  /**
+   * @param restaurantId
+   * @return
+   */
+  @Override
+  public List<?> getAllDishesByRestaurantId(Long restaurantId) {
+    List<CategoryFood> categoryFood = categoryFoodRepository.findAllByRestaurant_Id(restaurantId);
+    return categoryFood.stream().map(categoryFoodMapper::EntityToDishesResponseDTO).collect(Collectors.toList());
   }
 }

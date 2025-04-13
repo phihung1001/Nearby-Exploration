@@ -43,7 +43,11 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Pageable pageable
   );
 
-  boolean existsByPhone(@NotBlank(message = "Số điện thoại không được để trống") String phone);
-
   Optional<Restaurant> findByIdAndCustomer_Id(Long id, Long userId);
+
+  Page<Restaurant> findByCustomer_Id(Long id, Pageable pageable);
+
+  Optional<Restaurant> findByEmail(String email);
+
+  Optional<Restaurant> findByPhone(@NotBlank(message = "Số điện thoại không được để trống") String phone);
 }

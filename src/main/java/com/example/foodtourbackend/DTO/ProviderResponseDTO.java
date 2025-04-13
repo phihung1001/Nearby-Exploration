@@ -1,23 +1,22 @@
 package com.example.foodtourbackend.DTO;
 
-import com.example.foodtourbackend.entity.CategoryFood;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class ProviderResponseDTO {
+  private Long id;
   private String name;
+  private String phone;
+  private String email;
   private String address;
-  private Integer cityId;
-  private Integer districtId;
+  private String city;
+  private String district;
   private String photoUrl;
   private String houseNumber;
-  private List<CategoryFood> dishes;
 }

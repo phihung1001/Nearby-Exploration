@@ -18,4 +18,6 @@ public interface RestaurantService {
   ProviderResponseDTO registerRestaurant(ProviderRequestDTO requestDTO);
 
   ProviderResponseDTO updateRestaurant(ProviderRequestDTO requestDTO, Long id);
+
+  Page<ProviderResponseDTO> getList(int page, int size);
 }

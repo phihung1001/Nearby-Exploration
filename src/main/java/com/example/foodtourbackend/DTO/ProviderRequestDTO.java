@@ -22,9 +22,7 @@ public class ProviderRequestDTO {
   private String phone;
   private String email;
   private String city;
-  private Integer cityId;
   private String district;
-  private Integer districtId;
   private String photoUrl;
   private String houseNumber;
   private List<CategoryFood> dishes;

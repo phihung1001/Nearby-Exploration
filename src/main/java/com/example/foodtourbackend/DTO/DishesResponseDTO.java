@@ -12,5 +12,7 @@ import lombok.Setter;
 public class DishesResponseDTO {
   private String name;
   private String description;
+  private String image;
   private String price;
+  private Long restaurantId;
 }
