@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Spin, notification } from "antd";
+import { Button, Spin, notification,Modal } from "antd";
 import { jwtDecode } from 'jwt-decode';
 
 export default function ProviderPanel({ onSelectMenu }) {
@@ -14,7 +14,6 @@ export default function ProviderPanel({ onSelectMenu }) {
             const decoded = jwtDecode(token);
             setRoles(Array.isArray(decoded.role) ? decoded.role : [decoded.role]);
           }
-        console.log("roles", roles);
         const response = await fetch("http://localhost:8080/public/restaurant/list-restaurant/user", {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -25,18 +24,14 @@ export default function ProviderPanel({ onSelectMenu }) {
             return;
         } else {
             setProviders(res.content);
-            console.log("data", res.content);
             setLoading(false);
         }
-     
     };
-  
     fetchData();
   }, []);
   
 
   const handleEdit = (restaurant) => {
-    console.log("restaurant",restaurant);
     onSelectMenu({ menu: "editRestaurant", restaurant });
   }
 
@@ -82,6 +77,42 @@ export default function ProviderPanel({ onSelectMenu }) {
     }
   };
   
+  // Xóa nhà hàng 
+  const handleDelete = async (restaurantId) => {
+    Modal.confirm({
+      title: "Xác nhận xoá",
+      content: "Bạn có chắc chắn muốn xoá món ăn này không?",
+      okText: "Xoá",
+      cancelText: "Huỷ",
+      onOk: async () => { try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`http://localhost:8080/public/restaurant/delete/${restaurantId}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` }
+        });
+    
+        if (!response.ok) {
+          const res = await response.json();
+          throw new Error(res.message || "Xoá thất bại!");
+        }
+    
+        notification.success({
+          message: "Thành công",
+          description: "Nhà hàng đã được xoá!"
+        });
+    
+        setProviders(prev => prev.filter(r => r.id !== restaurantId));  // xoá khỏi UI
+    
+      } catch (error) {
+        notification.error({
+          message: "Thất bại",
+          description: error.message
+        });
+      }
+    }
+    });
+  };
+  
   
 
   return (
@@ -106,7 +137,10 @@ export default function ProviderPanel({ onSelectMenu }) {
                     <h3 style={{ margin: 0 }}>{restaurant.name}</h3>
                     <p style={{ margin: "4px 0 0 0", color: "#666" }}>{restaurant.address}</p>
                   </div>
-                  <Button type="primary" onClick={() => handleEdit(restaurant)}>Chỉnh sửa</Button>
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <Button type="primary" onClick={() => handleEdit(restaurant)}>Chỉnh sửa</Button>
+                    <Button danger onClick={() => handleDelete(restaurant.id)}>Xoá</Button>
+                  </div>
                 </div>
               </li>
             ))}

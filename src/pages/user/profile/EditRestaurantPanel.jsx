@@ -13,7 +13,6 @@ export default function EditRestaurantPanel({ restaurantData, onCancel }) {
   const handleFinish = async (values) => {
     try {
       const token = localStorage.getItem("token");
-      console.log("token",token);
       const res = await fetch(`http://localhost:8080/public/restaurant/update/${restaurantData.id}`, {
         method: "POST",
         headers: {
@@ -23,7 +22,6 @@ export default function EditRestaurantPanel({ restaurantData, onCancel }) {
         body: JSON.stringify(values)
       });
       const resJson = await res.json();
-      console.log("response",resJson);
       if (!res.ok) throw new Error(resJson.message);
       notification.success({
         message: "Cập nhật nhà hàng thành công!"

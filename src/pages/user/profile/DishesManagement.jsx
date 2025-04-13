@@ -51,6 +51,7 @@ export default function DishManager() {
     form.resetFields(); // clear form khi đổi nhà hàng
   };
 
+  // Xoá món ăn
   const handleDelete = async (dishId) => {
     Modal.confirm({
       title: "Xác nhận xoá",
@@ -73,6 +74,7 @@ export default function DishManager() {
     });
   };
 
+  // Lưu món ăn (thêm mới hoặc cập nhật)  
   const handleSaveDish = async (values) => {
     try {
       const token = localStorage.getItem("token");
