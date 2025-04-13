@@ -144,14 +144,56 @@ export default function DishManager() {
         rowKey="id"
         loading={loading}
         columns={[
-          { title: "Tên món", dataIndex: "name" },
-          { title: "Giá", dataIndex: "price" },
-          { title: "Mô tả", dataIndex: "description" },
+          {
+            title: "Tên món",
+            dataIndex: "name",
+            render: (text) => (
+              <div style={{
+                maxWidth: 150,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis"
+              }} title={text}>
+                {text}
+              </div>
+            )
+          },
+          {
+            title: "Giá",
+            dataIndex: "price",
+            render: (text) => (
+              <div style={{
+                maxWidth: 80,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis"
+              }} title={text}>
+                {text}
+              </div>
+            )
+          },
+          {
+            title: "Mô tả",
+            dataIndex: "description",
+            render: (text) => (
+              <div style={{
+                maxWidth: 250,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis"
+              }} title={text}>
+                {text}
+              </div>
+            )
+          },
           {
             title: "Thao tác",
             render: (_, record) => (
-              <>
+              <div style={{
+                whiteSpace: "nowrap"
+              }}>
                 <Button 
+                  type="primary"
                   onClick={() => {
                     if (!selectedRestaurant) {
                       notification.warning({ message: "Vui lòng chọn nhà hàng trước!" });
@@ -166,7 +208,7 @@ export default function DishManager() {
                 <Button danger onClick={() => handleDelete(record.id)} style={{ marginLeft: 8 }}>
                   Xoá
                 </Button>
-              </>
+              </div>
             )
           }
         ]}

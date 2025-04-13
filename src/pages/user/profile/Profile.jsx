@@ -31,7 +31,6 @@ export default function Profile() {
     return <p style={{ color: "red" }}>Không tìm thấy người dùng.</p>;
   }
   const displayedData = localUserData || userData;
-  console.log("Profile -> displayedData", displayedData)
 
   // Xác định nội dung bên phải dựa trên selectedMenu
   let rightContent;
