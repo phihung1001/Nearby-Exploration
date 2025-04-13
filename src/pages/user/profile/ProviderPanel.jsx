@@ -5,15 +5,16 @@ import { jwtDecode } from 'jwt-decode';
 export default function ProviderPanel({ onSelectMenu }) {
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(true);
-  let roles = [];
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
         const token = localStorage.getItem("token");
         if (token) {
             const decoded = jwtDecode(token);
-            roles = decoded.roles || [];
+            setRoles(Array.isArray(decoded.role) ? decoded.role : [decoded.role]);
           }
+        console.log("roles", roles);
         const response = await fetch("http://localhost:8080/public/restaurant/list-restaurant/user", {
           headers: { Authorization: `Bearer ${token}` }
         });
