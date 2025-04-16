@@ -1,5 +1,6 @@
 package com.example.foodtourbackend.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,6 +53,20 @@ public class SecurityConfig {
                         .requestMatchers("/provider/**").hasAuthority("PROVIDER")       // Dành cho PROVIDER
                         .requestMatchers("/customer/**").hasAnyAuthority("CUSTOMER","PROVIDER")       // Dành cho CUSTOMER
                         .anyRequest().authenticated()                                  // Các API khác yêu cầu đăng nhập
+                )
+                .exceptionHandling(ex -> ex
+                  .authenticationEntryPoint((request, response, authException) -> {
+                    response.setContentType("application/json");
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write("{ \"status\": 401, \"message\": \"Bạn chưa đăng nhập \" }");
+                  })
+                  .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.setContentType("application/json");
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write("{ \"status\": 403, \"message\": \"Bạn không có quyền truy cập vào tài nguyên này\" }");
+                  })
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

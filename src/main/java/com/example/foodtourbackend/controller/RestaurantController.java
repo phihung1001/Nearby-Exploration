@@ -1,7 +1,6 @@
 package com.example.foodtourbackend.controller;
 
 import com.example.foodtourbackend.DTO.ProviderRequestDTO;
-import com.example.foodtourbackend.entity.Restaurant;
 import com.example.foodtourbackend.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -53,7 +52,7 @@ public class RestaurantController {
      * @return ResponseEntity chứa danh sách nhà hàng lọc được theo phân trang
      */
   @GetMapping("/filter")
-  public ResponseEntity<Page<Restaurant>> filterRestaurants(
+  public ResponseEntity<Page<?>> filterRestaurants(
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "20") int size,
     @RequestParam(required = false) Integer cityId,
@@ -79,7 +78,7 @@ public class RestaurantController {
      * @return ResponseEntity chứa danh sách nhà hàng gần vị trí theo phân trang
      */
   @GetMapping("/nearby")
-  public ResponseEntity<Page<Restaurant>> getNearbyRestaurants(
+  public ResponseEntity<Page<?>> getNearbyRestaurants(
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "20") int size,
     @RequestParam double latitude,
@@ -97,11 +96,12 @@ public class RestaurantController {
      * @return Danh sách nhà hàng theo phân trang
      */
   @GetMapping("/list")
-  public ResponseEntity<Page<Restaurant>> getRestaurants(
+  public ResponseEntity<Page<?>> getRestaurants(
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "20") int size) {
       return ResponseEntity.ok(restaurantService.getRestaurants(page, size));
     }
+
   /**
    * Đăng kí nhà hàng và danh sách món ăn
    *
@@ -140,5 +140,16 @@ public class RestaurantController {
     return ResponseEntity.ok(restaurantService.delete(id));
   }
 
+  /**
+   * Lưu nhà hàng yêu thích
+   *
+   * @param id nhà hàng cần lưu
+   * @return Restaurant thông tin nhà hàng đã lưu
+   */
+  @PostMapping("/save/{id}")
+  @PreAuthorize("hasAnyAuthority('CUSTOMER', 'PROVIDER')")
+  public ResponseEntity<?> save(@PathVariable Long id) {
+    return ResponseEntity.ok(restaurantService.save(id));
+  }
 
 }

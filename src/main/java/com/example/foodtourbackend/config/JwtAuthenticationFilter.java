@@ -1,5 +1,6 @@
 package com.example.foodtourbackend.config;
 
+import com.example.foodtourbackend.GlobalException.UnauthorizedException;
 import com.example.foodtourbackend.utils.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -58,20 +59,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
     } catch (ExpiredJwtException e) {
-        logger.warn("Token đã hết hạn: {}", e.getMessage());
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("Token đã hết hạn.");
-        return;
+      throw new UnauthorizedException("Token đã hết hạn. Vui lòng đăng nhập lại.");
     } catch (MalformedJwtException e) {
-        logger.warn("Token không đúng định dạng: {}", e.getMessage());
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        response.getWriter().write("Token không hợp lệ.");
-        return;
+      throw new UnauthorizedException("Token không hợp lệ. Vui lòng kiểm tra lại.");
     } catch (Exception e) {
-        logger.error("Lỗi xác thực token: {}", e.getMessage());
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("Lỗi xác thực token.");
-        return;
+      throw new UnauthorizedException("Lỗi xác thực token. Vui lòng thử lại.");
     }
     filterChain.doFilter(request, response);
   }

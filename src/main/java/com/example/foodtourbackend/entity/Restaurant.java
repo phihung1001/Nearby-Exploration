@@ -58,6 +58,10 @@ public class Restaurant {
   @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Reviews> reviews;
 
+  @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<RestaurantSave> restaurantSave;
+
+
   // equals() và hashCode()
     @Override
     public boolean equals(Object o) {

@@ -2,26 +2,33 @@ package com.example.foodtourbackend.service.serviceImpl;
 
 import com.example.foodtourbackend.DTO.ProviderRequestDTO;
 import com.example.foodtourbackend.DTO.ProviderResponseDTO;
+import com.example.foodtourbackend.DTO.RestaurantResponseDTO;
 import com.example.foodtourbackend.GlobalException.DuplicateException;
+import com.example.foodtourbackend.GlobalException.ErrorImportDataException;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
 import com.example.foodtourbackend.GlobalException.UnauthorizedException;
 import com.example.foodtourbackend.entity.CategoryFood;
 import com.example.foodtourbackend.entity.Customer;
 import com.example.foodtourbackend.entity.Restaurant;
+import com.example.foodtourbackend.entity.RestaurantSave;
 import com.example.foodtourbackend.mapper.CategoryFoodMapper;
 import com.example.foodtourbackend.mapper.RestaurantMapper;
 import com.example.foodtourbackend.repository.CategoryFoodRepository;
 import com.example.foodtourbackend.repository.CustomerRepository;
 import com.example.foodtourbackend.repository.RestaurantRepository;
+import com.example.foodtourbackend.repository.RestaurantSaveRepository;
 import com.example.foodtourbackend.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +47,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   private final CategoryFoodMapper categoryFoodMapper;
   private final CategoryFoodRepository categoryFoodRepository;
   private final CustomerRepository customerRepository;
+  private final RestaurantSaveRepository restaurantSaveRepository;
   /**
    * Lấy thông tin của một nhà hàng theo id.
    *
@@ -48,9 +56,9 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @throws NotFoundException nếu không tìm thấy nhà hàng với id được cung cấp.
    */
   @Override
-  public Restaurant getById(Long id) {
-    return restaurantRepository.findById(id)
-      .orElseThrow(() -> new NotFoundException("Nhà hàng không tồn tại"));
+  public RestaurantResponseDTO getById(Long id) {
+    return  restaurantMapper.entity2RestaurantResponseDTO(restaurantRepository.findById(id)
+      .orElseThrow(() -> new NotFoundException("Nhà hàng không tồn tại")));
   }
 
   /**
@@ -64,7 +72,7 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @param name      Tên (hoặc một phần của tên) nhà hàng cần tìm.
    * @return Danh sách các nhà hàng thỏa mãn các tiêu chí lọc và phân trang.
    */
-  public Page<Restaurant> filterRestaurants(
+  public Page<RestaurantResponseDTO> filterRestaurants(
     int page, int size,
     Integer cityId,
     Integer districtId,
@@ -73,7 +81,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     // Lấy danh sách nhà hàng theo cityIds và tên nhà hàng từ repository
     Page<Restaurant> results = restaurantRepository.findByCityIdAndDistrictIdAndName(cityId,districtId, name, pageable);
-    return results;
+    return  results.map(restaurantMapper::entity2RestaurantResponseDTO);
   }
 
   /**
@@ -85,13 +93,14 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @return Danh sách các nhà hàng nằm trong bán kính được chỉ định.
    */
   @Override
-  public Page<Restaurant> findNearbyRestaurants(
+  public Page<RestaurantResponseDTO> findNearbyRestaurants(
     int page, int size,
     double latitude,
     double longitude,
     double radius, String name) {
       Pageable pageable = PageRequest.of(page, size);
-      return restaurantRepository.findNearbyRestaurants(latitude, longitude, radius, name, pageable);
+      Page<Restaurant> results = restaurantRepository.findNearbyRestaurants(latitude, longitude, radius, name, pageable);
+      return results.map(restaurantMapper::entity2RestaurantResponseDTO);
   }
 
 
@@ -103,9 +112,10 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @param size  Số lượng nhà hàng mỗi trang.
    * @return Một đối tượng Page chứa danh sách các nhà hàng theo phân trang.
    */
-  public Page<Restaurant> getRestaurants(int page, int size) {
+  public Page<RestaurantResponseDTO> getRestaurants(int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
-    return restaurantRepository.findAll(pageable);
+    Page<Restaurant> results = restaurantRepository.findAll(pageable);
+    return results.map(restaurantMapper::entity2RestaurantResponseDTO);
   }
 
   /**
@@ -229,7 +239,7 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @return
    */
   @Override
-  public Object delete(Long id) {
+  public String delete(Long id) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || !authentication.isAuthenticated()) {
       throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
@@ -244,6 +254,40 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
     restaurantRepository.delete(restaurant);
     return "Xóa nhà hàng thành công";
+  }
+
+  /**
+   * Lưu thông tin nhà hàng yêu thích
+   *
+   * @param id nhà hàng cần luu.
+   * @return Restaurant thông tin nhà hàng đã lưu.
+   */
+  @Override
+  public ResponseEntity<?> save(Long id) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(Collections.singletonMap("message", "Vui lòng đăng nhập để lưu nhà hàng"));
+      }
+    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+    Optional<Customer> customer = customerRepository.findById(userId);
+    Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+    if (restaurant.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(Collections.singletonMap("message", "Nhà hàng không tồn tại"));
+    }
+    Optional<RestaurantSave> restaurantSave = restaurantSaveRepository.findByCustomer_idAndRestaurant_id(userId,id);
+    if (restaurantSave.isPresent()) {
+      throw new ErrorImportDataException("Nhà hàng đã lưu trước đó");
+    }
+    RestaurantSave restaurantSaveEntity = new RestaurantSave();
+    restaurantSaveEntity.setCustomer(customer.get());
+    restaurantSaveEntity.setRestaurant(restaurant.get());
+    restaurantSaveRepository.save(restaurantSaveEntity);
+    return ResponseEntity.ok(Collections.singletonMap("message", "Lưu thành công"));
   }
 
 }
