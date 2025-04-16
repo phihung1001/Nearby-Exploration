@@ -125,7 +125,7 @@ export default function DishManager() {
   };
 
   return (
-    <div style={{ padding: 24 }}>
+    <div style={{ padding: 10, height: "70vh", overflowY: "auto" }}> 
       <h2>Quản lý món ăn</h2>
 
       <Select 

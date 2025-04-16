@@ -116,7 +116,7 @@ export default function ProviderPanel({ onSelectMenu }) {
   
 
   return (
-    <div style={{ padding: "1rem" }}>
+    <div style={{ padding: 10, height: "70vh", overflowY: "auto" }}> 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
         <h2>Nhà hàng của bạn</h2>
         {roles.includes("PROVIDER") ? (<Button type="primary" onClick={handleAddRestaurant}>+ Thêm Nhà Hàng</Button>) : (

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ItemRestaurant from "../card/ItemRestaurant";
 import styles from "./Restaurant.module.css";
+import { notification } from "antd";
 
 export default function NearbyRestaurantList() {
   const [restaurants, setRestaurants] = useState([]);
@@ -67,7 +68,7 @@ export default function NearbyRestaurantList() {
     }
   }, [location]);
 
-  // Xử lý cuộn trang bằng Intersection Observer
+    // Xử lý cuộn trang bằng Intersection Observer
   useEffect(() => {
     if (!loading && hasMore) {
       const handleObserver = (entries) => {
@@ -90,6 +91,36 @@ export default function NearbyRestaurantList() {
     navigate(`/public/restaurant-detail/${restaurant.id}`, { state: restaurant });
   };
 
+  const handleSave = async (restaurant) => {
+    try {
+    const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:8080/public/restaurant/save/${restaurant.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(restaurant)
+      });
+      const data = await response.json();
+      console.log("Dữ liệu trả về:", data.message);
+      if (!response.ok) {
+         throw new Error(`${data.message}`);
+      }
+      console.log("Lưu thành công:", data);
+      notification.success({
+        message: "Lưu thành công",
+        description: `Nhà hàng "${restaurant.name}" đã được lưu vào mục yêu thích của bạn`,
+      });
+    } 
+    catch(err) {
+      notification.error({
+        message: "Lỗi khi lưu",
+        description: err.message,
+      });
+    }
+  };
+
   return (
     <div className={styles.productContainer}>
       {restaurants.map((r, index) => (
@@ -103,9 +134,10 @@ export default function NearbyRestaurantList() {
           rating={r.avgRatingText}
           image={fixImageUrl(r.photoUrl)}
           onClick={() => handleClick(r)}
+          onSave={() => handleSave(r)} 
         />
       ))}
-      {loading && <p>Đang tải...</p>}
+      {loading && <div className={styles.loadingSpinner}></div>}
       {!hasMore && <p>Đã tải hết dữ liệu.</p>}
       <div id="load-more" style={{ height: "20px" }}></div>
     </div>

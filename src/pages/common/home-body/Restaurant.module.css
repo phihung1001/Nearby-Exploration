@@ -31,3 +31,26 @@
     max-width: 300px;
     margin: 10px;
   }
+  .loadingSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .loadingSpinner::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 5px solid #ccc;
+    border-top-color: #1677ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  

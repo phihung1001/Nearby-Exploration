@@ -27,7 +27,7 @@ export default function ChangePasswordPanel({id}) {
   };
 
   return (
-    <Card>
+    <Card style={{ padding: 10, height: "70vh", overflowY: "auto" }}>
       <Form form={form} layout="vertical" onFinish={handleChangePassword}>
         <Form.Item
           label="Mật khẩu cũ"

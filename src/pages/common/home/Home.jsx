@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import ItemRestaurant from '../card/ItemRestaurant';
-import backgroundLogin from '../../../assets/Img/anh2.jpg';
+import React from 'react';
 import Header from '../../../components/header/Header';
 import Banner from '../../../components/home-baner/Banner';
 import Explore from '../../../ui/explore/Explore';

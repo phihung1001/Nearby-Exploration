@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./HomeBodyRightContainer.module.css";
 import RestaurantList from "./RestaurantList";
 import NearbyRestaurantList from "./NearbyRestaurantList"; // Import component mới
-
+import SavedRestaurantList from "./SavedRestaurantList"; // Import component mới
 export default function HomeBodyRightContainer() {
   // State quản lý tab đang chọn
   const [activeTab, setActiveTab] = useState("trangchu");
@@ -54,7 +54,7 @@ export default function HomeBodyRightContainer() {
         {activeTab === "giamgia" && <p>Danh sách nhà hàng đang giảm giá...</p>}
         {activeTab === "hot" && <p>Danh sách nhà hàng "Hot"...</p>}
         {activeTab === "gantoi" && <NearbyRestaurantList />}
-        {activeTab === "daluu" && <p>Danh sách nhà hàng đã lưu...</p>}
+        {activeTab === "daluu" &&  <SavedRestaurantList />}
       </div>
     </div>
   );

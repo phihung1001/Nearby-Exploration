@@ -39,7 +39,7 @@ export default function Profile() {
   } else if (selectedMenu.menu === "changePassword") {
     rightContent = <ChangePasswordPanel id={displayedData.id} />;
   } else if (selectedMenu.menu === "changeAvatar") {
-    rightContent = <p>Cập nhật hình đại diện</p>;
+    rightContent = <p style={{ padding: 10, height: "70vh", overflowY: "auto" }}> Cập nhật hình đại diện</p>;
   } else if (selectedMenu.menu === "restaurantManagement") {
     rightContent = <ProviderPanel onSelectMenu={setSelectedMenu} />;
   } else if( selectedMenu.menu === "addRestaurant") {
