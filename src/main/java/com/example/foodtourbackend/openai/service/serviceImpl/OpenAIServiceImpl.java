@@ -82,6 +82,43 @@ public class OpenAIServiceImpl implements OpenAIService {
   }
 
   /**
+   * @param payload
+   * @return
+   */
+  @Override
+  public Map<String, String> chatWithAi(Map<String, String> payload) {
+    String userPrompt = payload.get("message");
+    String url = config.getBaseUrl() + "/chat/completions";
+    String apiKey = config.getApiKey();
+    String modelAI = config.getModelAI();
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setBearerAuth(apiKey);
+
+    var requestBody = Map.of(
+      "model", modelAI,
+      "messages", List.of(
+        Map.of("role", "system", "content", "Bạn là trợ lý thân thiện, hãy trả lời thật ngắn gọn."),
+        Map.of("role", "user", "content", userPrompt)
+      ),
+      "max_tokens", 500
+    );
+
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+
+    try {
+      JsonNode responseJson = restTemplate.postForObject(url, entity, JsonNode.class);
+      String answer = responseJson.path("choices").get(0).path("message").path("content").asText();
+
+      return Map.of("reply", answer);
+    } catch (Exception ex) {
+      logger.error("Chat AI lỗi: {}", ex.getMessage());
+      return Map.of("reply", "Xin lỗi, AI không phản hồi. Vui lòng thử lại!");
+    }
+  }
+
+  /**
    * Tạo prompt cho người dùng dựa trên yêu cầu nhập vào.
    *
    * @param exploreRequestDTO Dữ liệu nhập vào từ người dùng
@@ -120,18 +157,22 @@ public class OpenAIServiceImpl implements OpenAIService {
    * @return Chuỗi prompt dành cho hệ thống
    */
   private String buildSystemPrompt(ExploreRequestDTO exploreRequestDTO) {
-    StringBuilder prompt = new StringBuilder("Bạn là chuyên gia ẩm thực tư vấn món ăn cho khách tại ");
-    prompt.append(exploreRequestDTO.getLocation()).append(". ");
+    StringBuilder prompt = new StringBuilder();
 
-    // Kiểm tra và thêm thông tin thời tiết nếu có
+    prompt.append("Bạn là một chuyên gia ẩm thực Việt Nam, có nhiệm vụ tư vấn danh sách món ăn phù hợp cho khách du lịch tại ")
+      .append(exploreRequestDTO.getLocation()).append(". ");
+
     if (exploreRequestDTO.getWeather() != null && !exploreRequestDTO.getWeather().isEmpty()) {
       String weatherStr = String.join(", ", exploreRequestDTO.getWeather());
-      prompt.append("Hiện tại thời tiết: ").append(weatherStr).append(". ");
+      prompt.append("Thời tiết hiện tại là: ").append(weatherStr).append(". ");
     }
 
-    prompt.append("Hãy trả về danh sách 6 món ăn gợi ý phù hợp nhất dưới dạng JSON với format sau: ");
-    prompt.append("{ \"title\": \"Tiêu đề\", \"dishes\": [ { \"name\": \"Tên món\", \"description\": \"Mô tả\" } ] }");
-    prompt.append(". Chỉ trả về JSON, không giải thích thêm.");
+    prompt.append("Dựa vào thông tin trên, hãy gợi ý đúng 6 món ăn phù hợp nhất tại địa phương. ")
+      .append("Kết quả phải trả về chính xác theo định dạng JSON bên dưới, không được thêm bất kỳ văn bản nào khác, không markdown, không giải thích. ")
+      .append("Nếu không đủ dữ liệu, hãy dựa vào hiểu biết chuyên môn về ẩm thực Việt Nam để đề xuất: ")
+      .append("{ \"title\": \"[Tiêu đề]\", \"dishes\": [ { \"name\": \"[Tên món]\", \"description\": \"[Mô tả ngắn gọn, súc tích]\" } ] }.")
+      .append(" Đảm bảo JSON hợp lệ, không có chú thích hoặc văn bản dư thừa.");
+
     return prompt.toString();
   }
 }

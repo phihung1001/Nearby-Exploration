@@ -10,14 +10,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/openai")
 @RequiredArgsConstructor
 public class OpenAIController {
 
   private final OpenAIService openAIService;
+
   @PostMapping("/explore")
   public ResponseEntity<?> createChatCompletion(@Valid @RequestBody ExploreRequestDTO request) {
-      return ResponseEntity.ok(openAIService.createChatCompletion(request));
+    return ResponseEntity.ok(openAIService.createChatCompletion(request));
   }
+
+  @PostMapping("chat")
+  public ResponseEntity<?> chatWithAI(@RequestBody Map<String, String> payload) {
+    return ResponseEntity.ok(openAIService.chatWithAi(payload));
+  }
+
 }
