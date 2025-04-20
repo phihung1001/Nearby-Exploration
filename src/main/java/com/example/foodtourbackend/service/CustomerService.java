@@ -14,4 +14,6 @@ public interface CustomerService {
   String searchByImage(MultipartFile file);
   CustomerResponseDTO update(Long id, CustomerRequestDTO customerRequestDTO);
   Map<String, Object> updatePassword(Long id, UpdatePasswordRequestDTO request);
+
+  Map<String,String> upgrade();
 }

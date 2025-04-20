@@ -199,4 +199,24 @@ public class CustomerServiceImpl implements CustomerService {
     return Map.of("message", "Đổi mật khẩu thành công");
   }
 
+  /**
+   * Api nâng cấp quyền người dùng
+   *
+   * @return message thành công hoặc thất bại
+   */
+  @Override
+  public Map<String,String> upgrade() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
+    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+    Customer customer = customerRepository.findById(userId)
+      .orElseThrow(() -> new NotFoundException("Không tìm thấy người dùng"));
+    customer.setRole("PROVIDER");
+    customerRepository.save(customer);
+    return Map.of("message","Nâng quyền thành công");
+  }
+
 }

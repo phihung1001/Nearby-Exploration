@@ -89,5 +89,14 @@ public class CustomerController {
     return ResponseEntity.ok(customerService.searchByImage(file));
   }
 
+  /**
+   * Nâng quyền người dùng
+   *
+   *
+   */
+  @PostMapping("/upgrade-provider")
+  public ResponseEntity<?> upgrade() {
+    return ResponseEntity.ok(customerService.upgrade());
+  }
 
 }
