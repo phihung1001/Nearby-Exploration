@@ -1,0 +1,139 @@
+.container {
+    width: 50vh;
+    max-width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.chatBox {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #f1f1f1;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 16px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.messageWrapper {
+    display: flex;
+}
+
+.userWrapper {
+    justify-content: flex-end;
+}
+
+.botWrapper {
+    justify-content: flex-start;
+}
+
+.message {
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    max-width: 70%;
+    word-wrap: break-word;
+    display: inline-block;
+}
+
+.user {
+    background-color: #007bff;
+    color: white;
+    border-radius: 15px 15px 0 15px;
+}
+
+.bot {
+    background-color: #f2f2f2;
+    color: black;
+    border-radius: 15px 15px 15px 0;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input {
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    resize: none;
+}
+
+.button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.header {
+    margin-top: 0px !important;
+    margin-bottom: 10px !important;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    color: #007bff;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.closeButton {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.closeButton:hover {
+    transform: rotate(90deg);
+    color: red;
+}
+
+.toggleButton {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease;
+}
+
+.toggleButton:hover {
+    background-color: #0056b3;
+}

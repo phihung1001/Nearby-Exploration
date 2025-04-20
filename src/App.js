@@ -10,6 +10,7 @@ import FoodDetail from './pages/common/food-detail/FoodDetail';
 import RestaurantListPage from "./pages/common/RestaurantListPage";
 import Profile from './pages/user/profile/Profile';
 import Exploration from './pages/common/exploration-page/Exploration';
+import ChatBot from './pages/common/chat-bot/ChatBot';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/public/restaurant-list" element={<RestaurantListPage />} />
         <Route path="/public/exploration" element={<Exploration/>} />
         <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/chatbot" element={<ChatBot />} />
     </Routes>
   </BrowserRouter>
   );
