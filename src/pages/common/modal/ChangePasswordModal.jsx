@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Button, notification } from "antd";
+import React, { useState, useEffect } from "react";
+import { Modal, Form, Input, notification } from "antd";
+import { changePassword } from "../../../services/authService";
 
 export default function ChangePasswordModal({ visible, onClose }) {
   const [form] = Form.useForm();
@@ -7,35 +8,32 @@ export default function ChangePasswordModal({ visible, onClose }) {
 
   const handleOk = async () => {
     try {
+      const { oldPassword, newPassword } = await form.validateFields();
       setLoading(true);
-      const values = await form.validateFields();
-      // Gọi API đổi mật khẩu
-      const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:8080/auth/change-password", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(values)
-      });
-      if (!response.ok) {
-        throw new Error(`Lỗi ${response.status}`);
-      }
+      await changePassword(oldPassword, newPassword);
       notification.success({ message: "Đổi mật khẩu thành công!" });
-      onClose(); // Đóng modal sau khi đổi mật khẩu
+      form.resetFields(); // reset sau khi thành công
+      onClose();
     } catch (error) {
-      console.error(error);
-      notification.error({ message: "Đổi mật khẩu thất bại!", description: error.message });
+      notification.error({
+        message: "Đổi mật khẩu thất bại!",
+        description: error.message
+      });
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (!visible) {
+      form.resetFields(); // reset mỗi khi modal đóng
+    }
+  }, [visible, form]);
+
   return (
     <Modal
       title="Đổi mật khẩu"
-      visible={visible}
+      open={visible}
       onOk={handleOk}
       onCancel={onClose}
       confirmLoading={loading}

@@ -1,50 +1,47 @@
 import React, { useState } from 'react';
 import styles from './DishModal.module.css';
 import { notification, Spin } from 'antd';
-import { useNavigate, useLocation } from "react-router-dom"; 
-import ItemRestaurant from '../card/ItemRestaurant'; // Đường dẫn đến ItemRestaurant
-import { getSearchKeywords } from '../../../untils/keywordUtils';
+import { useNavigate } from "react-router-dom";
+import ItemRestaurant from '../card/ItemRestaurant';
+import { getSearchKeywords } from '../../../utils/keywordUtils';
+import { searchNearbyRestaurantsByKeywords } from '../../../services/restaurantService';
 
 export default function DishModal({ isOpen, onClose, data }) {
   const [activeIndex, setActiveIndex] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [userLocation, setUserLocation] = useState(null);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+
   if (!isOpen) return null;
 
-    // Hàm chuyển đổi URL ảnh lỗi
-    const fixImageUrl = (url) => {
-      if (url.startsWith("https://images.foody.vn/")) {
-        const parts = url.split('/').pop();
-        return `https://down-tx-vn.img.susercontent.com/${parts}`;
-      }
-      return url;
-    };
-
-  const handleToggle = (index) => {
-    setActiveIndex(activeIndex === index ? null : index);
-    setRestaurants([]); // Reset danh sách nhà hàng khi chọn món khác
+  const fixImageUrl = (url) => {
+    if (url.startsWith("https://images.foody.vn/")) {
+      const parts = url.split('/').pop();
+      return `https://down-tx-vn.img.susercontent.com/${parts}`;
+    }
+    return url;
   };
 
-  const getUserLocation = () => {
+  const handleToggle = (index) => {
+    setActiveIndex(index === activeIndex ? null : index);
+    setRestaurants([]);
+  };
+
+  const handleSuggestRestaurants = () => {
     if (!navigator.geolocation) {
       notification.error({
-        message: 'Lỗi',
-        description: 'Trình duyệt của bạn không hỗ trợ định vị.',
+        message: 'Không hỗ trợ định vị',
+        description: 'Trình duyệt không hỗ trợ định vị.',
       });
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
-        setUserLocation({ latitude, longitude });
-        fetchRestaurants(latitude, longitude); // Gọi API ngay sau khi có tọa độ
+        await fetchRestaurants(latitude, longitude);
       },
       (error) => {
-        console.error('Lỗi lấy vị trí:', error);
         notification.error({
           message: 'Lỗi lấy vị trí',
           description: 'Không thể lấy vị trí hiện tại của bạn.',
@@ -54,51 +51,31 @@ export default function DishModal({ isOpen, onClose, data }) {
   };
 
   const fetchRestaurants = async (latitude, longitude) => {
-    if (loading || activeIndex === null) return;
-      setLoading(true);
+    if (activeIndex === null || loading) return;
+    setLoading(true);
     try {
-      const dishName = data.dishes[activeIndex]?.name; 
-      console.log("dishName:",dishName)
-      const searchKeywords = getSearchKeywords(dishName);
-      console.log("searchKeywords:",searchKeywords)
+      const dishName = data.dishes[activeIndex].name;
+      const keywords = getSearchKeywords(dishName);
 
-      let allRestaurants = [];
+      const results = await searchNearbyRestaurantsByKeywords(keywords, latitude, longitude);
+      if (results.length === 0) throw new Error("Không tìm thấy nhà hàng phù hợp.");
 
-      for (const keyword of searchKeywords) {
-        const response = await fetch(
-          `http://localhost:8080/public/restaurant/nearby?name=${encodeURIComponent(keyword)}&latitude=${latitude}&longitude=${longitude}`
-        );
-
-        if (!response.ok) {
-          throw new Error(`API lỗi: ${response.status}`);
-        }
-
-        const result = await response.json();
-        if (Array.isArray(result.content) && result.content.length > 0) {
-          allRestaurants = [...allRestaurants, ...result.content];
-        }
-      }
-
-      if (allRestaurants.length === 0) {
-        throw new Error("Không tìm thấy nhà hàng phù hợp");
-      }
-
-      setRestaurants(allRestaurants);
+      setRestaurants(results);
       notification.success({
         message: 'Đề xuất thành công',
-        description: 'Nhà hàng gần bạn đã được tìm thấy.',
+        description: 'Đã tìm thấy nhà hàng gần bạn.',
       });
     } catch (error) {
       notification.error({
         message: 'Lỗi',
-        description: 'Không thể lấy danh sách nhà hàng. Vui lòng thử lại sau.',
+        description: error.message || 'Không thể lấy danh sách nhà hàng.',
       });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
-  
+
   const handleClick = (restaurant) => {
-    console.log("restaurant-detail", restaurant);
     navigate(`/public/restaurant-detail/${restaurant.id}`, { state: restaurant });
   };
 
@@ -124,34 +101,32 @@ export default function DishModal({ isOpen, onClose, data }) {
           <div className={styles.dishDetails}>
             <h3>{data.dishes[activeIndex].name}</h3>
             <p>{data.dishes[activeIndex].description}</p>
-            <button className={styles.dishButton} onClick={getUserLocation}>
-              Đề xuất nhà hàng gần tôi.
+            <button className={styles.dishButton} onClick={handleSuggestRestaurants}>
+              Đề xuất nhà hàng gần tôi
             </button>
           </div>
         )}
 
-         {/* Hiển thị danh sách nhà hàng */}
-         {loading && <Spin />}
-         <div className="restaurantList">
-          {restaurants.length > 0 && (
-            <div className={styles.restaurantList}>
-              <h3>Nhà hàng gần bạn </h3>
-                {restaurants.map((r, index) => (
-                  <ItemRestaurant
-                    key={`${r.id}-${index}`} 
-                    name={r.name}
-                    address={r.address}
-                    latestComment={r.latestComment}
-                    reviewCount={r.totalReviews}
-                    imageCount={r.totalPictures}
-                    rating={r.avgRatingText}
-                    image={fixImageUrl(r.photoUrl)}
-                    onClick={() => handleClick(r)}
-                  />
-                ))}
-            </div>
-          )}
+        {loading && <Spin style={{ marginTop: 20 }} />}
+
+        {restaurants.length > 0 && (
+          <div className={styles.restaurantList}>
+            <h3>Nhà hàng gần bạn</h3>
+            {restaurants.map((r, index) => (
+              <ItemRestaurant
+                key={`${r.id}-${index}`}
+                name={r.name}
+                address={r.address}
+                latestComment={r.latestComment}
+                reviewCount={r.totalReviews}
+                imageCount={r.totalPictures}
+                rating={r.avgRatingText}
+                image={fixImageUrl(r.photoUrl)}
+                onClick={() => handleClick(r)}
+              />
+            ))}
           </div>
+        )}
       </div>
     </div>
   );

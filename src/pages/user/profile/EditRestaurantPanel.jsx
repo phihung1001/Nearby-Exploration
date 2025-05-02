@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input, Button, Form, notification } from "antd";
+import { updateRestaurantAPI } from "../../../services/restaurantService";
 
 export default function EditRestaurantPanel({ restaurantData, onCancel }) {
   const [loading, setLoading] = useState(true);
@@ -13,20 +14,14 @@ export default function EditRestaurantPanel({ restaurantData, onCancel }) {
   const handleFinish = async (values) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:8080/public/restaurant/update/${restaurantData.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(values)
-      });
-      const resJson = await res.json();
-      if (!res.ok) throw new Error(resJson.message);
+      await updateRestaurantAPI(restaurantData.id, values, token);
+
       notification.success({
-        message: "Cập nhật nhà hàng thành công!"
-    });
-      onCancel(); // quay về danh sách
+        message: "Cập nhật thành công",
+        description: `Thông tin nhà hàng "${values.name}" đã được lưu.`,
+      });
+
+      onCancel();
     } catch (error) {
         notification.error({
             message:"Cập nhật thất bại ",

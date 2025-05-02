@@ -18,17 +18,46 @@ export default function AuthButton() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+  
+    async function refreshAccessToken() {
+      try {
+        const res = await fetch("http://localhost:8080/auth/refresh", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include"  // nếu backend set HttpOnly cookie cho refresh token
+        });
+  
+        if (res.ok) {
+          const data = await res.json();
+          localStorage.setItem("token", data.accessToken);
+          const decoded = jwtDecode(data.accessToken);
+          setUser(decoded);
+          setUsername(decoded.fullName);
+        } else {
+          console.log("Refresh token không hợp lệ, cần đăng nhập lại");
+          localStorage.removeItem("token");
+          setUser(null);
+          setUsername(null);
+        }
+      } catch (err) {
+        console.error("Lỗi khi gọi /auth/refresh:", err);
+      }
+    }
+  
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        if (decoded && typeof decoded === "object") {
+        const currentTime = Date.now() / 1000;
+        if (decoded.exp && decoded.exp < currentTime) {
+          console.log("Token đã hết hạn, đang refresh...");
+          refreshAccessToken();  // gọi refresh nếu hết hạn
+        } else {
           setUser(decoded);
-          console.log("decode",decoded);
+          setUsername(decoded.fullName);
         }
-        
-        setUsername(decoded.fullName);
       } catch (error) {
         console.error("Lỗi giải mã token:", error);
+        localStorage.removeItem("token");
       }
     }
   }, []);

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { notification } from "antd";
 import ItemRestaurant from "../card/ItemRestaurant";
 import styles from "./Restaurant.module.css";
-import { notification } from "antd";
+import { fetchNearbyRestaurantsAPI, saveRestaurant } from "../../../services/restaurantService";
+import { getCurrentLocation } from "../../../utils/geolocation";
 
 export default function NearbyRestaurantList() {
   const [restaurants, setRestaurants] = useState([]);
@@ -10,82 +12,72 @@ export default function NearbyRestaurantList() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const observer = useRef();
+  const observerRef = useRef(null);
   const navigate = useNavigate();
 
-  // Hàm chuyển đổi URL ảnh lỗi
   const fixImageUrl = (url) => {
-  if (url.startsWith("https://images.foody.vn/")) {
-      const parts = url.split('/').pop();
+    if (url.startsWith("https://images.foody.vn/")) {
+      const parts = url.split("/").pop();
       return `https://down-tx-vn.img.susercontent.com/${parts}`;
-  }
-  return url;
+    }
+    return url;
   };
 
-  // Lấy vị trí người dùng khi component mount
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+    getCurrentLocation()
+      .then(setLocation)
+      .catch(() => {
+        notification.error({
+          message: "Thất bại",
+          description: "Không thể lấy vị trí của bạn.",
         });
-      },
-      (error) => {
-        console.error("Lỗi khi lấy vị trí:", error);
-      }
-    );
+      });
   }, []);
 
-  // Hàm fetch API lấy danh sách nhà hàng gần bạn với phân trang
   const fetchNearbyRestaurants = useCallback(async () => {
     if (loading || !hasMore || !location) return;
     setLoading(true);
+
     try {
-      const response = await fetch(
-        `http://localhost:8080/public/restaurant/nearby?latitude=${location.latitude}&longitude=${location.longitude}&page=${page}`
-      );
-      const data = await response.json();
-      console.log("Dữ liệu nhà hàng gần bạn:", data);
-      if (data && data.content.length > 0) {
+      const data = await fetchNearbyRestaurantsAPI({ latitude: location.latitude, longitude: location.longitude, page });
+
+      if (data.content?.length > 0) {
         setRestaurants((prev) => [...prev, ...data.content]);
-        setPage((prevPage) => prevPage + 1);
-        setHasMore(true);
+        setPage((prev) => prev + 1);
       } else {
         setHasMore(false);
       }
     } catch (error) {
-      console.error("Lỗi khi tải nhà hàng:", error);
+      notification.error({
+        message: "Lỗi",
+        description: error.message,
+      });
     } finally {
       setLoading(false);
     }
   }, [location, page, loading, hasMore]);
 
-  // Khi có vị trí, fetch trang đầu tiên
   useEffect(() => {
     if (location) {
       fetchNearbyRestaurants();
     }
   }, [location]);
 
-    // Xử lý cuộn trang bằng Intersection Observer
   useEffect(() => {
-    if (!loading && hasMore) {
-      const handleObserver = (entries) => {
-        const target = entries[0];
-        if (target.isIntersecting) {
-          fetchNearbyRestaurants();
-        }
-      };
+    const target = document.querySelector("#load-more");
+    if (!target || !hasMore || loading) return;
 
-      observer.current = new IntersectionObserver(handleObserver);
-      if (observer.current && observer.current.observe) {
-        observer.current.observe(document.querySelector("#load-more"));
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        fetchNearbyRestaurants();
       }
-    }
+    });
 
-    return () => observer.current && observer.current.disconnect();
-  }, [loading, hasMore, fetchNearbyRestaurants]);
+    observer.observe(target);
+    observerRef.current = observer;
+
+    return () => observer.disconnect();
+  }, [fetchNearbyRestaurants, loading, hasMore]);
 
   const handleClick = (restaurant) => {
     navigate(`/public/restaurant-detail/${restaurant.id}`, { state: restaurant });
@@ -93,39 +85,25 @@ export default function NearbyRestaurantList() {
 
   const handleSave = async (restaurant) => {
     try {
-    const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8080/public/restaurant/save/${restaurant.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(restaurant)
-      });
-      const data = await response.json();
-      console.log("Dữ liệu trả về:", data.message);
-      if (!response.ok) {
-         throw new Error(`${data.message}`);
-      }
-      console.log("Lưu thành công:", data);
+      const token = localStorage.getItem("token");
+      await saveRestaurant(restaurant, token);
       notification.success({
         message: "Lưu thành công",
-        description: `Nhà hàng "${restaurant.name}" đã được lưu vào mục yêu thích của bạn`,
+        description: `Nhà hàng "${restaurant.name}" đã được lưu.`,
       });
-    } 
-    catch(err) {
+    } catch (error) {
       notification.error({
         message: "Lỗi khi lưu",
-        description: err.message,
+        description: error.message,
       });
     }
   };
 
   return (
     <div className={styles.productContainer}>
-      {restaurants.map((r, index) => (
+      {restaurants.map((r) => (
         <ItemRestaurant
-          key={`${r.id}-${index}`}
+          key={r.id}
           name={r.name}
           address={r.address}
           latestComment={r.latestComment}
@@ -134,7 +112,7 @@ export default function NearbyRestaurantList() {
           rating={r.avgRatingText}
           image={fixImageUrl(r.photoUrl)}
           onClick={() => handleClick(r)}
-          onSave={() => handleSave(r)} 
+          onSave={() => handleSave(r)}
         />
       ))}
       {loading && <div className={styles.loadingSpinner}></div>}

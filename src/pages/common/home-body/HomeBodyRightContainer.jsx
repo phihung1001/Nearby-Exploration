@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "./HomeBodyRightContainer.module.css";
 import RestaurantList from "./RestaurantList";
-import NearbyRestaurantList from "./NearbyRestaurantList"; // Import component mới
-import SavedRestaurantList from "./SavedRestaurantList"; // Import component mới
+import NearbyRestaurantList from "./NearbyRestaurantList";
+import SavedRestaurantList from "./SavedRestaurantList"; 
 export default function HomeBodyRightContainer() {
   // State quản lý tab đang chọn
   const [activeTab, setActiveTab] = useState("trangchu");
