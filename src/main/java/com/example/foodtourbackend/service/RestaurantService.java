@@ -1,6 +1,8 @@
 package com.example.foodtourbackend.service;
 
+import com.example.foodtourbackend.DTO.request.CommentDTO;
 import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
+import com.example.foodtourbackend.DTO.response.ListResponse;
 import com.example.foodtourbackend.DTO.response.ProviderResponseDTO;
 import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
 import org.springframework.data.domain.Page;
@@ -25,4 +27,6 @@ public interface RestaurantService {
   Object delete(Long id);
 
   ResponseEntity<?> save(Long id);
+
+  ResponseEntity<ListResponse<CommentDTO>> getAllComment(Long id);
 }

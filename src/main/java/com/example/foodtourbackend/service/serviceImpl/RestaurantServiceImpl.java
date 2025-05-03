@@ -1,6 +1,8 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
+import com.example.foodtourbackend.DTO.request.CommentDTO;
 import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
+import com.example.foodtourbackend.DTO.response.ListResponse;
 import com.example.foodtourbackend.DTO.response.ProviderResponseDTO;
 import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
 import com.example.foodtourbackend.GlobalException.DuplicateException;
@@ -13,10 +15,8 @@ import com.example.foodtourbackend.entity.Restaurant;
 import com.example.foodtourbackend.entity.RestaurantSave;
 import com.example.foodtourbackend.mapper.CategoryFoodMapper;
 import com.example.foodtourbackend.mapper.RestaurantMapper;
-import com.example.foodtourbackend.repository.CategoryFoodRepository;
-import com.example.foodtourbackend.repository.CustomerRepository;
-import com.example.foodtourbackend.repository.RestaurantRepository;
-import com.example.foodtourbackend.repository.RestaurantSaveRepository;
+import com.example.foodtourbackend.mapper.ReviewMapper;
+import com.example.foodtourbackend.repository.*;
 import com.example.foodtourbackend.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,6 +48,8 @@ public class RestaurantServiceImpl implements RestaurantService {
   private final CategoryFoodRepository categoryFoodRepository;
   private final CustomerRepository customerRepository;
   private final RestaurantSaveRepository restaurantSaveRepository;
+  private final ReviewRepository reviewRepository;
+  private final ReviewMapper reviewMapper;
   /**
    * Lấy thông tin của một nhà hàng theo id.
    *
@@ -292,6 +294,24 @@ public class RestaurantServiceImpl implements RestaurantService {
     restaurantSaveEntity.setRestaurant(restaurant.get());
     restaurantSaveRepository.save(restaurantSaveEntity);
     return ResponseEntity.ok(Collections.singletonMap("message", "Lưu thành công"));
+  }
+
+  /**
+   * @param id
+   * @return
+   */
+  @Override
+  public ResponseEntity<ListResponse<CommentDTO>> getAllComment(Long id) {
+    Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+    if (restaurant.isEmpty()) {
+      throw new NotFoundException("Nhà hàng không tồn tại");
+    }
+    List<CommentDTO> commentDTOList = reviewRepository.findAllByRestaurant_id(id)
+      .stream()
+      .map(reviewMapper::reviews2CommentDTO)
+      .toList();
+    ListResponse response = new ListResponse("Thành công", commentDTOList);
+    return ResponseEntity.ok(response);
   }
 
 }

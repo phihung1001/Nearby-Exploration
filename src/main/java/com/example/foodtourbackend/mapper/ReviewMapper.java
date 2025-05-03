@@ -9,4 +9,5 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
   nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ReviewMapper {
   Reviews commentDTO2Reviews(CommentDTO commentDTO);
+  CommentDTO reviews2CommentDTO(Reviews reviews);
 }

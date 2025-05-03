@@ -152,4 +152,13 @@ public class RestaurantController {
     return ResponseEntity.ok(restaurantService.save(id));
   }
 
+  /**
+   * Get list comment
+   *
+   * @return danh sách các comment
+   */
+  @GetMapping("/get-all-comment/{id}")
+  public ResponseEntity<?> getAllComment(@PathVariable Long id) {
+    return ResponseEntity.ok(restaurantService.getAllComment(id));
+  }
 }
