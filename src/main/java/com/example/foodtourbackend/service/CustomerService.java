@@ -4,6 +4,7 @@ import com.example.foodtourbackend.DTO.request.CommentDTO;
 import com.example.foodtourbackend.DTO.request.CustomerRequestDTO;
 import com.example.foodtourbackend.DTO.request.UpdatePasswordRequestDTO;
 import com.example.foodtourbackend.DTO.response.ApiResponse;
+import com.example.foodtourbackend.DTO.response.CommentResponseDTO;
 import com.example.foodtourbackend.DTO.response.CustomerResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,5 @@ public interface CustomerService {
 
   Map<String,String> upgrade();
 
-  ResponseEntity<ApiResponse<CommentDTO>> comment(CommentDTO commentDTO);
+  ResponseEntity<ApiResponse<CommentResponseDTO>> comment(Long id, CommentDTO commentDTO);
 }

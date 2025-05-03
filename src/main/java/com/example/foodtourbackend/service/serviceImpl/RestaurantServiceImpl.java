@@ -1,7 +1,7 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
-import com.example.foodtourbackend.DTO.request.CommentDTO;
 import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
+import com.example.foodtourbackend.DTO.response.CommentResponseDTO;
 import com.example.foodtourbackend.DTO.response.ListResponse;
 import com.example.foodtourbackend.DTO.response.ProviderResponseDTO;
 import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
@@ -301,14 +301,14 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @return
    */
   @Override
-  public ResponseEntity<ListResponse<CommentDTO>> getAllComment(Long id) {
+  public ResponseEntity<ListResponse<CommentResponseDTO>> getAllComment(Long id) {
     Optional<Restaurant> restaurant = restaurantRepository.findById(id);
     if (restaurant.isEmpty()) {
       throw new NotFoundException("Nhà hàng không tồn tại");
     }
-    List<CommentDTO> commentDTOList = reviewRepository.findAllByRestaurant_id(id)
+    List<CommentResponseDTO> commentDTOList = reviewRepository.findAllByRestaurant_id(id)
       .stream()
-      .map(reviewMapper::reviews2CommentDTO)
+      .map(reviewMapper::reviews2CommentResponseDTO)
       .toList();
     ListResponse response = new ListResponse("Thành công", commentDTOList);
     return ResponseEntity.ok(response);

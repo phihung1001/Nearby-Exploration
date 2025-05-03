@@ -1,7 +1,7 @@
 package com.example.foodtourbackend.service;
 
-import com.example.foodtourbackend.DTO.request.CommentDTO;
 import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
+import com.example.foodtourbackend.DTO.response.CommentResponseDTO;
 import com.example.foodtourbackend.DTO.response.ListResponse;
 import com.example.foodtourbackend.DTO.response.ProviderResponseDTO;
 import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
@@ -28,5 +28,5 @@ public interface RestaurantService {
 
   ResponseEntity<?> save(Long id);
 
-  ResponseEntity<ListResponse<CommentDTO>> getAllComment(Long id);
+  ResponseEntity<ListResponse<CommentResponseDTO>> getAllComment(Long id);
 }

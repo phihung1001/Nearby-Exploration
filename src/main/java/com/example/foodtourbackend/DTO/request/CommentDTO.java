@@ -12,5 +12,4 @@ import lombok.Setter;
 public class CommentDTO {
   private String comment;
   private Double avgRatingText;
-  private Long restaurant_id;
 }

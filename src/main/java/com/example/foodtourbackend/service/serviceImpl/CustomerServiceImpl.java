@@ -4,6 +4,7 @@ import com.example.foodtourbackend.DTO.request.CommentDTO;
 import com.example.foodtourbackend.DTO.request.CustomerRequestDTO;
 import com.example.foodtourbackend.DTO.request.UpdatePasswordRequestDTO;
 import com.example.foodtourbackend.DTO.response.ApiResponse;
+import com.example.foodtourbackend.DTO.response.CommentResponseDTO;
 import com.example.foodtourbackend.DTO.response.CustomerResponseDTO;
 import com.example.foodtourbackend.GlobalException.DuplicateException;
 import com.example.foodtourbackend.GlobalException.ErrorImportDataException;
@@ -35,6 +36,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -231,11 +233,14 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   /**
-   * @param commentDTO
+   * Api người dùng review về nhà hàng
+   *
+   * @param id là id nhà hàng
+   * @param commentDTO là nội dung comment
    * @return thành công hoặc thất bại
    */
   @Override
-  public ResponseEntity<ApiResponse<CommentDTO>> comment(CommentDTO commentDTO) {
+  public ResponseEntity<ApiResponse<CommentResponseDTO>> comment(Long id, CommentDTO commentDTO) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || !authentication.isAuthenticated()) {
       throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
@@ -243,7 +248,7 @@ public class CustomerServiceImpl implements CustomerService {
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
     Long userId = userDetails.getUserId();
 
-    Optional<Restaurant> restaurant = restaurantRepository.findById(commentDTO.getRestaurant_id());
+    Optional<Restaurant> restaurant = restaurantRepository.findById(id);
     if (restaurant.isEmpty()) {
       throw new NotFoundException("Nhà hàng không tồn tại");
     }
@@ -251,11 +256,14 @@ public class CustomerServiceImpl implements CustomerService {
     if (customer.isEmpty()) {
       throw new NotFoundException("Bạn chưa đăng nhập");
     }
+
     Reviews reviews = reviewMapper.commentDTO2Reviews(commentDTO);
     reviews.setRestaurant(restaurant.get());
     reviews.setCustomer(customer.get());
+    reviews.setCreatedAt(LocalDateTime.now());
     reviewRepository.save(reviews);
-    ApiResponse<CommentDTO> response = new ApiResponse<>("Bình luận thành công", commentDTO);
+    CommentResponseDTO savedCommentDTO = reviewMapper.reviews2CommentResponseDTO(reviews);
+    ApiResponse<CommentResponseDTO> response = new ApiResponse<>("Bình luận thành công", savedCommentDTO);
     return ResponseEntity.ok(response);
   }
 

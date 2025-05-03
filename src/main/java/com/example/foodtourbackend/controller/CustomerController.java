@@ -106,10 +106,11 @@ public class CustomerController {
    * commentDTO là body request
    * @return thành công hoặc lỗi
    */
-  @PostMapping("/comment")
+  @PostMapping("/comment/{id}")
   public ResponseEntity<?> comment(
+    @PathVariable Long id,
     @RequestBody CommentDTO commentDTO) {
-    return ResponseEntity.ok(customerService.comment(commentDTO));
+    return ResponseEntity.ok(customerService.comment(id,commentDTO));
   }
 
 }
