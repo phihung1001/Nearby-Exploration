@@ -1,4 +1,4 @@
-package com.example.foodtourbackend.DTO;
+package com.example.foodtourbackend.DTO.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

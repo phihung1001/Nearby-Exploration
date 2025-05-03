@@ -1,5 +1,6 @@
-package com.example.foodtourbackend.DTO;
+package com.example.foodtourbackend.DTO.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DishesResponseDTO {
-  private Long id;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class DishesRequestDTO {
   private String name;
   private String description;
   private String image;

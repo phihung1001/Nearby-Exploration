@@ -1,14 +1,14 @@
-package com.example.foodtourbackend.DTO;
+package com.example.foodtourbackend.DTO.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class LoginResponseDTO {
-    private String accessToken;
+public class TokenRequestDTO {
+    private String token;
 }

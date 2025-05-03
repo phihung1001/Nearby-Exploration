@@ -1,7 +1,7 @@
 
 package com.example.foodtourbackend.service.serviceImpl;
 
-import com.example.foodtourbackend.DTO.RestaurantResponseDTO;
+import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
 import com.example.foodtourbackend.GlobalException.UnauthorizedException;
 import com.example.foodtourbackend.entity.RestaurantSave;
 import com.example.foodtourbackend.mapper.RestaurantMapper;

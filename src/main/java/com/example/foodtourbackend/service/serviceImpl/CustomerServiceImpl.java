@@ -1,15 +1,22 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
-import com.example.foodtourbackend.DTO.CustomerRequestDTO;
-import com.example.foodtourbackend.DTO.CustomerResponseDTO;
-import com.example.foodtourbackend.DTO.UpdatePasswordRequestDTO;
+import com.example.foodtourbackend.DTO.request.CommentDTO;
+import com.example.foodtourbackend.DTO.request.CustomerRequestDTO;
+import com.example.foodtourbackend.DTO.request.UpdatePasswordRequestDTO;
+import com.example.foodtourbackend.DTO.response.ApiResponse;
+import com.example.foodtourbackend.DTO.response.CustomerResponseDTO;
 import com.example.foodtourbackend.GlobalException.DuplicateException;
 import com.example.foodtourbackend.GlobalException.ErrorImportDataException;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
 import com.example.foodtourbackend.GlobalException.UnauthorizedException;
 import com.example.foodtourbackend.entity.Customer;
+import com.example.foodtourbackend.entity.Restaurant;
+import com.example.foodtourbackend.entity.Reviews;
 import com.example.foodtourbackend.mapper.CustomerMapper;
+import com.example.foodtourbackend.mapper.ReviewMapper;
 import com.example.foodtourbackend.repository.CustomerRepository;
+import com.example.foodtourbackend.repository.RestaurantRepository;
+import com.example.foodtourbackend.repository.ReviewRepository;
 import com.example.foodtourbackend.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +43,11 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
   private final CustomerRepository customerRepository;
+  private final RestaurantRepository restaurantRepository;
+  private final ReviewRepository reviewRepository;
   private final CustomerMapper customerMapper;
+  private final ReviewMapper reviewMapper;
+
   @Value("${ai.service.url}")
   private String aiServiceUrl;
   private final RestTemplate restTemplate = new RestTemplate();
@@ -94,7 +105,7 @@ public class CustomerServiceImpl implements CustomerService {
 
       return response.getBody();
     } catch (Exception e) {
-      throw new ErrorImportDataException("Gửi file tới AI Service thất bại: " + e.getMessage());
+      throw new ErrorImportDataException("Gửi ảnh tới AI Service thất bại: " + e.getMessage());
     }
   }
 
@@ -217,6 +228,35 @@ public class CustomerServiceImpl implements CustomerService {
     customer.setRole("PROVIDER");
     customerRepository.save(customer);
     return Map.of("message","Nâng quyền thành công");
+  }
+
+  /**
+   * @param commentDTO
+   * @return thành công hoặc thất bại
+   */
+  @Override
+  public ResponseEntity<ApiResponse<CommentDTO>> comment(CommentDTO commentDTO) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new UnauthorizedException("Chưa đăng nhập hoặc token không hợp lệ");
+    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    Long userId = userDetails.getUserId();
+
+    Optional<Restaurant> restaurant = restaurantRepository.findById(commentDTO.getRestaurant_id());
+    if (restaurant.isEmpty()) {
+      throw new NotFoundException("Nhà hàng không tồn tại");
+    }
+    Optional<Customer> customer = customerRepository.findById(userId);
+    if (customer.isEmpty()) {
+      throw new NotFoundException("Bạn chưa đăng nhập");
+    }
+    Reviews reviews = reviewMapper.commentDTO2Reviews(commentDTO);
+    reviews.setRestaurant(restaurant.get());
+    reviews.setCustomer(customer.get());
+    reviewRepository.save(reviews);
+    ApiResponse<CommentDTO> response = new ApiResponse<>("Bình luận thành công", commentDTO);
+    return ResponseEntity.ok(response);
   }
 
 }

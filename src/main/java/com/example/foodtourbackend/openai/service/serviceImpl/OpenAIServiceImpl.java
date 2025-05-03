@@ -1,7 +1,7 @@
 package com.example.foodtourbackend.openai.service.serviceImpl;
 
-import com.example.foodtourbackend.DTO.ExploreRequestDTO;
-import com.example.foodtourbackend.DTO.ExploreResponseDTO;
+import com.example.foodtourbackend.DTO.request.ExploreRequestDTO;
+import com.example.foodtourbackend.DTO.response.ExploreResponseDTO;
 import com.example.foodtourbackend.config.OpenAIConfig;
 import com.example.foodtourbackend.mapper.DishesResponseMapper;
 import com.example.foodtourbackend.openai.service.OpenAIService;

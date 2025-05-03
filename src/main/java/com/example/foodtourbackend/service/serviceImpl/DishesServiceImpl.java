@@ -1,7 +1,7 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
-import com.example.foodtourbackend.DTO.DishesRequestDTO;
-import com.example.foodtourbackend.DTO.DishesResponseDTO;
+import com.example.foodtourbackend.DTO.request.DishesRequestDTO;
+import com.example.foodtourbackend.DTO.response.DishesResponseDTO;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
 import com.example.foodtourbackend.GlobalException.UnauthorizedException;
 import com.example.foodtourbackend.entity.CategoryFood;

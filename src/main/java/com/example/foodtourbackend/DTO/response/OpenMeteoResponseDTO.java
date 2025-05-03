@@ -1,4 +1,4 @@
-package com.example.foodtourbackend.DTO;
+package com.example.foodtourbackend.DTO.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;

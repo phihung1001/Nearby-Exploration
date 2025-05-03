@@ -1,4 +1,4 @@
-package com.example.foodtourbackend.DTO;
+package com.example.foodtourbackend.DTO.request;
 
 import com.example.foodtourbackend.entity.CategoryFood;
 import jakarta.validation.constraints.NotBlank;

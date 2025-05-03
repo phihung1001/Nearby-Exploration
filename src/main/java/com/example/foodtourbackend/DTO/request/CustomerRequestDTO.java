@@ -1,18 +1,20 @@
-package com.example.foodtourbackend.DTO;
+package com.example.foodtourbackend.DTO.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequestDTO {
+@AllArgsConstructor
+@Getter
+@Setter
+public class CustomerRequestDTO {
+    private int age;
     private String fullName;
-    private String email;
     private String password;
-    private String confirmPassword;
     private String phoneNumber;
+    private String email;
     private String address;
     private String gender;
 }

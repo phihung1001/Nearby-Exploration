@@ -1,4 +1,4 @@
-package com.example.foodtourbackend.DTO;
+package com.example.foodtourbackend.DTO.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

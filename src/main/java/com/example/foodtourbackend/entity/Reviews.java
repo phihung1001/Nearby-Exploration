@@ -20,7 +20,7 @@ public class Reviews {
   private String comment;
 
   @Column(name = "AVG_RATING_TEXT")
-  private String avgRatingText;
+  private Double avgRatingText;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "restaurant_id")

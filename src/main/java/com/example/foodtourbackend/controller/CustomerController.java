@@ -1,7 +1,8 @@
 package com.example.foodtourbackend.controller;
 
-import com.example.foodtourbackend.DTO.CustomerRequestDTO;
-import com.example.foodtourbackend.DTO.UpdatePasswordRequestDTO;
+import com.example.foodtourbackend.DTO.request.CommentDTO;
+import com.example.foodtourbackend.DTO.request.CustomerRequestDTO;
+import com.example.foodtourbackend.DTO.request.UpdatePasswordRequestDTO;
 import com.example.foodtourbackend.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -92,11 +93,23 @@ public class CustomerController {
   /**
    * Nâng quyền người dùng
    *
-   *
+   * @return thành công hoặc lỗi
    */
   @PostMapping("/upgrade-provider")
   public ResponseEntity<?> upgrade() {
     return ResponseEntity.ok(customerService.upgrade());
+  }
+
+  /**
+   * Comment nhà hàng
+   *
+   * commentDTO là body request
+   * @return thành công hoặc lỗi
+   */
+  @PostMapping("/comment")
+  public ResponseEntity<?> comment(
+    @RequestBody CommentDTO commentDTO) {
+    return ResponseEntity.ok(customerService.comment(commentDTO));
   }
 
 }

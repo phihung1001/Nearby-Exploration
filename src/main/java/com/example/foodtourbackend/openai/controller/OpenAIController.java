@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.openai.controller;
 
-import com.example.foodtourbackend.DTO.ExploreRequestDTO;
+import com.example.foodtourbackend.DTO.request.ExploreRequestDTO;
 import com.example.foodtourbackend.openai.service.OpenAIService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

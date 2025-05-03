@@ -1,8 +1,8 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
-import com.example.foodtourbackend.DTO.ProviderRequestDTO;
-import com.example.foodtourbackend.DTO.ProviderResponseDTO;
-import com.example.foodtourbackend.DTO.RestaurantResponseDTO;
+import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
+import com.example.foodtourbackend.DTO.response.ProviderResponseDTO;
+import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
 import com.example.foodtourbackend.GlobalException.DuplicateException;
 import com.example.foodtourbackend.GlobalException.ErrorImportDataException;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
@@ -95,10 +95,14 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   public Page<RestaurantResponseDTO> findNearbyRestaurants(
     int page, int size,
-    double latitude,
-    double longitude,
+    Double latitude,
+    Double longitude,
     double radius, String name) {
       Pageable pageable = PageRequest.of(page, size);
+      if(latitude == null || longitude == null ) {
+        System.out.println("latitude or longitude is null");
+        throw new NotFoundException("Cho phép hệ thống truy cập vị trí của bạn để lấy danh sách nhà hàng.");
+      }
       Page<Restaurant> results = restaurantRepository.findNearbyRestaurants(latitude, longitude, radius, name, pageable);
       return results.map(restaurantMapper::entity2RestaurantResponseDTO);
   }

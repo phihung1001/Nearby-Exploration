@@ -1,6 +1,9 @@
 package com.example.foodtourbackend.controller;
 
-import com.example.foodtourbackend.DTO.*;
+import com.example.foodtourbackend.DTO.request.LoginRequestDTO;
+import com.example.foodtourbackend.DTO.request.RegisterRequestDTO;
+import com.example.foodtourbackend.DTO.request.TokenRequestDTO;
+import com.example.foodtourbackend.DTO.response.TokenResponseDTO;
 import com.example.foodtourbackend.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

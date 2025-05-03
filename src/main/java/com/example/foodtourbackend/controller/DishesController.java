@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.controller;
 
-import com.example.foodtourbackend.DTO.DishesRequestDTO;
+import com.example.foodtourbackend.DTO.request.DishesRequestDTO;
 import com.example.foodtourbackend.service.DishesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

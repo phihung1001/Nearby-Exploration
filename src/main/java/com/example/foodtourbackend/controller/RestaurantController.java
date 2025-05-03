@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.controller;
 
-import com.example.foodtourbackend.DTO.ProviderRequestDTO;
+import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
 import com.example.foodtourbackend.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -81,8 +81,8 @@ public class RestaurantController {
   public ResponseEntity<Page<?>> getNearbyRestaurants(
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "20") int size,
-    @RequestParam double latitude,
-    @RequestParam double longitude,
+    @RequestParam(required = false) Double latitude,
+    @RequestParam(required = false) Double longitude,
     @RequestParam(defaultValue = "15") double radius,
     @RequestParam(required = false) String name) {
       return ResponseEntity.ok(restaurantService.findNearbyRestaurants(page, size, latitude, longitude, radius, name));

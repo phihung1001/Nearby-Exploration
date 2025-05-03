@@ -1,8 +1,8 @@
 package com.example.foodtourbackend.mapper;
 
-import com.example.foodtourbackend.DTO.ProviderRequestDTO;
-import com.example.foodtourbackend.DTO.ProviderResponseDTO;
-import com.example.foodtourbackend.DTO.RestaurantResponseDTO;
+import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
+import com.example.foodtourbackend.DTO.response.ProviderResponseDTO;
+import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
 import com.example.foodtourbackend.entity.Restaurant;
 import com.example.foodtourbackend.entity.RestaurantSave;
 import org.mapstruct.Mapper;

@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.mapper;
 
-import com.example.foodtourbackend.DTO.ExploreResponseDTO;
+import com.example.foodtourbackend.DTO.response.ExploreResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;

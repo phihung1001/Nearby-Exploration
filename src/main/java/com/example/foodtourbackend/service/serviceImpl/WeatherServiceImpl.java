@@ -1,6 +1,6 @@
 package com.example.foodtourbackend.service.serviceImpl;
 
-import com.example.foodtourbackend.DTO.OpenMeteoResponseDTO;
+import com.example.foodtourbackend.DTO.response.OpenMeteoResponseDTO;
 import com.example.foodtourbackend.DTO.HourlyForecastDTO;
 import com.example.foodtourbackend.DTO.WeatherDTO;
 import com.example.foodtourbackend.service.WeatherService;
