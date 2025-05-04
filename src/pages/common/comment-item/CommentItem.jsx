@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./CommentItem.module.css";
-import { LikeOutlined, MessageOutlined, WarningOutlined } from "@ant-design/icons";
+import { LikeOutlined, MessageOutlined } from "@ant-design/icons";
 
 const CommentItem = ({ avatar, username, date, content, rating }) => {
   return (
@@ -24,9 +24,6 @@ const CommentItem = ({ avatar, username, date, content, rating }) => {
         </span>
         <span className={styles.actionItem}>
           <MessageOutlined /> Thảo luận
-        </span>
-        <span className={styles.actionItem}>
-          <WarningOutlined /> Báo lỗi
         </span>
       </div>
     </div>

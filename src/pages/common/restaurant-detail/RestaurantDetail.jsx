@@ -12,12 +12,18 @@ import RestaurantMenu from "../restaurant-menu/RestaurantMenu";
 import CommentItem from "../comment-item/CommentItem";
 import logo from "../../../../src/assets/Img/account.png";
 import defaultImage from "../../../../src/assets/Img/loginpage.jpg";
-import { getRestaurantById } from "../../../services/restaurantService"; // 💡 Import service
+import { getRestaurantById } from "../../../services/restaurantService"; 
+import { getCommentsByRestaurantId } from "../../../services/commentService"; 
 
 export default function RestaurantDetail() {
   const { id } = useParams();
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [comments, setComments] = useState([]);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [refreshComments, setRefreshComments] = useState(false);
+  const size = 3;
 
   const myRatings = {
     viTri: 7.8,
@@ -36,23 +42,62 @@ export default function RestaurantDetail() {
     return url;
   };
 
-  useEffect(() => {
-    const fetchRestaurant = async () => {
-      try {
-        const data = await getRestaurantById(id);
-        if (data && data.id) {
-          setRestaurant(data);
-        }
-      } catch (error) {
-        console.error("Lỗi tải dữ liệu:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+ useEffect(() => {
+  const fetchRestaurant = async () => {
+    try {
+      const data = await getRestaurantById(id);
+      if (data && data.id) setRestaurant(data);
+    } catch (err) {
+      console.error("Lỗi tải nhà hàng:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchRestaurant();
-  }, [id]);
+  fetchRestaurant();
+}, [id]);
 
+useEffect(() => {
+  setComments([]);
+  setPage(0);
+  setHasMore(true);
+}, [id]);
+
+useEffect(() => {
+  const loadComments = async () => {
+    try {
+      const response = await getCommentsByRestaurantId(id, page, size);
+      const newComments = response.body || [];
+
+      setComments((prev) => {
+        const existingIds = new Set(prev.map((c) => c.id));
+        const filtered = newComments.filter((c) => !existingIds.has(c.id));
+        return [...prev, ...filtered];
+      });
+
+      if (newComments.length < size) setHasMore(false);
+    } catch (err) {
+      console.error("Lỗi tải bình luận:", err);
+    }
+  };
+
+  if (id) loadComments();
+}, [page, id, refreshComments]);
+
+// Cuộn đến cuối để tăng page
+useEffect(() => {
+  const handleScroll = () => {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 200 &&
+      hasMore
+    ) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [hasMore]);
   if (loading) return <p>Đang tải...</p>;
   if (!restaurant) return <p>Không tìm thấy nhà hàng.</p>;
 
@@ -81,8 +126,9 @@ export default function RestaurantDetail() {
               branchLink="#"
               ratings={myRatings}
               address={restaurant.address}
-              time="Chưa mở cửa (10:00 - 22:00)"
+              time="Đang mở cửa (10:00 - 22:00)"
               price="10.000đ - 1.000.000đ"
+              phone={restaurant.phone}
             />
           </div>
         </div>
@@ -92,35 +138,21 @@ export default function RestaurantDetail() {
             <Explore imageUrl={khamphaimg} width="200px" height="300px" />
           </div>
           <div>
-            <RestaurantMenu />
-            <CommentItem
-              avatar={logo}
-              username="Oanh Vũ"
-              date="27/2/2025 9:17"
-              content="Đi đoàn 40 người vào chủ nhật tới, 2/3/2025 có phải đặt trước ko ạ?"
-              rating="10"
-            />
-            <CommentItem
-              avatar={logo}
-              username="Phi Hùng"
-              date="27/2/2025 9:17"
-              content="Món nào cũng ngon, ăn xong là thấy vui vẻ cả ngày, đúng là đồ ăn ngon cũng có thể làm tâm trạng tốt hơn!"
-              rating="10"
-            />
-            <CommentItem
-              avatar={logo}
-              username="Tiên Tiên"
-              date="27/2/2025 9:17"
-              content="Kiểu gì cũng sẽ đặt lại quán này, không thể tìm được nơi nào khác hợp khẩu vị hơn!"
-              rating="10"
-            />
-            <CommentItem
-              avatar={logo}
-              username="Linh Linh"
-              date="27/2/2025 9:17"
-              content="Cảm giác lần đầu ăn mà như đã quen thuộc từ lâu, hợp miệng đến lạ luôn!"
-              rating="10"
-            />
+            <RestaurantMenu restaurantId={restaurant.id} />
+            {comments.length > 0 ? (
+              comments.map((comment, index) => (
+                <CommentItem
+                  key={index}
+                  avatar={logo} 
+                  username={comment.customer?.fullName || "Người dùng ẩn danh"}
+                  date={comment.createdAt}
+                  content={comment.comment}
+                  rating={comment.avgRatingText}
+                />
+              ))
+            ) : (
+              <p>Chưa có bình luận nào.</p>
+            )}
           </div>
           <div className={styles.reviewSumary}>
             <ReviewSummary
@@ -139,6 +171,8 @@ export default function RestaurantDetail() {
                 ],
                 overall: restaurant.avgRatingText,
               }}
+              restaurantId={restaurant.id}
+              onCommentSuccess={() => setRefreshComments((prev) => !prev)}
             />
           </div>
         </div>

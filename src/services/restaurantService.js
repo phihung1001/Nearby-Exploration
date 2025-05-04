@@ -130,3 +130,17 @@ const BASE_URL = 'http://localhost:8080/public/restaurant'
         throw error;
       }
     }
+
+    // api lấy all món ăn của nhà hàng
+    export const getDishesByRestaurantId = async (restaurantId) => {
+      try {
+        const response = await fetch(`http://localhost:8080/public/dishes/get-all-dishes/${restaurantId}`);
+        if (!response.ok) {
+          throw new Error("Không thể tải dữ liệu món ăn");
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+        throw error;
+      }
+    };

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./InforRestaurant.module.css";
-import { EnvironmentOutlined, ClockCircleOutlined, DollarCircleOutlined } from "@ant-design/icons";
+import { EnvironmentOutlined, ClockCircleOutlined, DollarCircleOutlined, PhoneOutlined } from "@ant-design/icons";
 
 export default function inforRestaurant({
   breadcrumb = "Hà Nội > Quận Hai Bà Trưng > Khu vực Hồ Thiền Quang",
@@ -18,6 +18,7 @@ export default function inforRestaurant({
   address = "19 Lê Đại Hành, P. Lê Đại Hành, Quận Hai Bà Trưng, Hà Nội",
   time = "Chưa mở cửa (10:00 - 22:00)",
   price = "50.000đ - 100.000đ",
+  phone = "0123456789",
 }) {
   return (
     <div className={styles.detailContainer}>
@@ -83,6 +84,10 @@ export default function inforRestaurant({
         <p>
           <DollarCircleOutlined className={styles.icon} />
           {price}
+        </p>
+        <p>
+          <PhoneOutlined className={styles.icon} />
+          {phone}
         </p>
       </div>
     </div>
