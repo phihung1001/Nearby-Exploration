@@ -37,21 +37,7 @@ export default function Header() {
     if (filterData?.districtId) {
       searchParams.append('districtId', filterData.districtId);
     }
-  
-    const url = `http://localhost:8080/public/restaurant/filter?${searchParams.toString()}`;
-
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Lỗi khi gọi API");
-      }
-
-      const restaurants = await response.json();
-      navigate("/public/restaurant-list", { state: { restaurants: restaurants.content} });
-    } catch (error) {
-      message.error("Lỗi gọi API:", error);
-    }
+      navigate(`/public/restaurant-list?${searchParams.toString()}`);
   };
 
   return (
