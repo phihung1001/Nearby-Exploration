@@ -8,7 +8,6 @@ import com.example.foodtourbackend.entity.CategoryFood;
 import com.example.foodtourbackend.entity.Restaurant;
 import com.example.foodtourbackend.mapper.CategoryFoodMapper;
 import com.example.foodtourbackend.repository.CategoryFoodRepository;
-import com.example.foodtourbackend.repository.CustomerRepository;
 import com.example.foodtourbackend.repository.RestaurantRepository;
 import com.example.foodtourbackend.service.DishesService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class DishesServiceImpl implements DishesService {
   private final CategoryFoodRepository categoryFoodRepository;
   private final CategoryFoodMapper categoryFoodMapper;
-  private final CustomerRepository customerRepository;
   private final RestaurantRepository restaurantRepository;
 
   /**
@@ -122,5 +121,23 @@ public class DishesServiceImpl implements DishesService {
     }
     categoryFoodRepository.delete(currentFood);
     return "Xóa món ăn thành công";
+  }
+
+  /**
+   * @param id
+   * @return
+   */
+  @Override
+  public List<DishesResponseDTO> GetAllDishes(Long id) {
+    Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+    if(restaurant.isEmpty()) {
+      throw new NotFoundException("Nhà hàng không tồn tại");
+    }
+    List<CategoryFood> categoryFoods = categoryFoodRepository.findAllByRestaurant_Id(restaurant.get().getId());
+    List<DishesResponseDTO> listDishes = categoryFoods
+      .stream()
+      .map(categoryFoodMapper::EntityToDishesResponseDTO)
+      .toList();
+    return listDishes;
   }
 }

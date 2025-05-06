@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 public interface AuthService {
 
     ResponseEntity<?> register(RegisterRequestDTO request);
-
     ResponseEntity<?> login(LoginRequestDTO request, HttpServletResponse response);
     ResponseEntity<?> checkUser(TokenRequestDTO token);
     TokenResponseDTO refreshToken(HttpServletRequest request);

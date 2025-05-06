@@ -79,7 +79,7 @@ public class WeatherServiceImpl implements WeatherService {
    * @param timezone Múi giờ
    * @return Đối tượng Mono chứa thông tin thời tiết
    */
-  public Mono<?> getWeatherData(double latitude, double longitude, String startHour, String endHour, String timezone) {
+  public Mono<WeatherDTO> getWeatherData(double latitude, double longitude, String startHour, String endHour, String timezone) {
     String weatherApiUrl = "https://api.open-meteo.com/v1/forecast";
     String geoApiUrl = "https://nominatim.openstreetmap.org/reverse";
 

@@ -1,13 +1,10 @@
 package com.example.foodtourbackend.DTO.request;
 
-import com.example.foodtourbackend.entity.CategoryFood;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Setter
 @Getter
@@ -25,5 +22,4 @@ public class ProviderRequestDTO {
   private String district;
   private String photoUrl;
   private String houseNumber;
-  private List<CategoryFood> dishes;
 }

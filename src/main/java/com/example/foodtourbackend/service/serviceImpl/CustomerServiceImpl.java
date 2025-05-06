@@ -28,7 +28,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -49,11 +48,12 @@ public class CustomerServiceImpl implements CustomerService {
   private final ReviewRepository reviewRepository;
   private final CustomerMapper customerMapper;
   private final ReviewMapper reviewMapper;
+  private final PasswordEncoder passwordEncoder;
+
 
   @Value("${ai.service.url}")
   private String aiServiceUrl;
   private final RestTemplate restTemplate = new RestTemplate();
-  private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   /**
    * Lấy thông tin khách hàng dựa trên ID.
@@ -96,10 +96,10 @@ public class CustomerServiceImpl implements CustomerService {
       MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
       body.add("file", new ByteArrayResource(file.getBytes()) {
-          @Override
-          public String getFilename() {
-              return file.getOriginalFilename(); // Cần trả về tên file để AI Service nhận diện
-          }
+      @Override
+      public String getFilename() {
+          return file.getOriginalFilename(); // Cần trả về tên file để AI Service nhận diện
+      }
       });
       HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 

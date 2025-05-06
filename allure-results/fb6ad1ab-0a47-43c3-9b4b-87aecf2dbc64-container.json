@@ -1,0 +1,1 @@
+{"uuid":"fb6ad1ab-0a47-43c3-9b4b-87aecf2dbc64","name":"getRestaurants_shouldReturnPaginatedRestaurants_whenAuthenticated()","children":["161f12d1-af4e-407d-858c-d6f05983bd29"],"befores":[],"afters":[],"start":1746545860187,"stop":1746545861940}

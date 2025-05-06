@@ -1,0 +1,192 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DishesController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.foodtourbackend.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: DishesController (com.example.foodtourbackend.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DishesController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.foodtourbackend.controller;
+&nbsp;
+&nbsp;import com.example.foodtourbackend.DTO.request.DishesRequestDTO;
+&nbsp;import com.example.foodtourbackend.service.DishesService;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Controller xử lý các thao tác liên quan đến món ăn (dishes) của nhà hàng.
+&nbsp; * Các API trong controller này yêu cầu người dùng có vai trò PROVIDER.
+&nbsp; */
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/public/dishes&quot;)
+<b class="nc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class DishesController {
+&nbsp;  private final DishesService dishesService;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * API thêm mới một món ăn vào hệ thống.
+&nbsp;   * Chỉ người dùng có quyền PROVIDER mới có thể thực hiện.
+&nbsp;   *
+&nbsp;   * @param dishesRequestDTO Thông tin món ăn cần thêm (tên, mô tả, ảnh, giá, liên kết nhà hàng...)
+&nbsp;   * @return Dữ liệu món ăn sau khi được lưu (hoặc thông báo lỗi)
+&nbsp;   */
+&nbsp;  @PostMapping(&quot;/add&quot;)
+&nbsp;  @PreAuthorize(&quot;hasAuthority(&#39;PROVIDER&#39;)&quot;)
+&nbsp;  public ResponseEntity&lt;?&gt; addDishes(@RequestBody DishesRequestDTO dishesRequestDTO) {
+<b class="nc">&nbsp;    return ResponseEntity.status(HttpStatus.OK).body(dishesService.addDishes(dishesRequestDTO));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * API cập nhật thông tin một món ăn theo ID.
+&nbsp;   * Chỉ người dùng có quyền PROVIDER mới có thể thực hiện.
+&nbsp;   *
+&nbsp;   * @param dishesRequestDTO Dữ liệu mới của món ăn cần cập nhật
+&nbsp;   * @param id ID của món ăn cần cập nhật
+&nbsp;   * @return Dữ liệu món ăn sau khi cập nhật thành công (hoặc thông báo lỗi)
+&nbsp;   */
+&nbsp;  @PostMapping(&quot;update/{id}&quot;)
+&nbsp;  @PreAuthorize(&quot;hasAuthority(&#39;PROVIDER&#39;)&quot;)
+&nbsp;  public ResponseEntity&lt;?&gt; updateDishes(
+&nbsp;    @RequestBody DishesRequestDTO dishesRequestDTO,
+&nbsp;    @PathVariable Long id) {
+<b class="nc">&nbsp;    return ResponseEntity.status(HttpStatus.OK).body(dishesService.updateDishes(dishesRequestDTO, id));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * API lấy danh sách tất cả món ăn của một nhà hàng theo ID.
+&nbsp;   * Chỉ người dùng có quyền PROVIDER mới có thể thực hiện.
+&nbsp;   *
+&nbsp;   * @param restaurantId ID của nhà hàng
+&nbsp;   * @return Danh sách các món ăn thuộc nhà hàng đó
+&nbsp;   */
+&nbsp;  @GetMapping(&quot;/list/restaurant/{restaurantId}&quot;)
+&nbsp;  @PreAuthorize(&quot;hasAuthority(&#39;PROVIDER&#39;)&quot;)
+&nbsp;  public ResponseEntity&lt;?&gt; getDishesByRestaurant(@PathVariable Long restaurantId) {
+<b class="nc">&nbsp;    return ResponseEntity.ok(dishesService.getAllDishesByRestaurantId(restaurantId));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Xóa món ăn
+&nbsp;   *
+&nbsp;   * @param Id món ăn
+&nbsp;   * @return Thông báo thành công hoặc thất bại
+&nbsp;   */
+&nbsp;  @DeleteMapping(&quot;/delete/{Id}&quot;)
+&nbsp;  @PreAuthorize(&quot;hasAuthority(&#39;PROVIDER&#39;)&quot;)
+&nbsp;  public ResponseEntity&lt;?&gt; deleteDishes(@PathVariable Long Id) {
+<b class="nc">&nbsp;    return ResponseEntity.ok(dishesService.delete(Id));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Lấy danh sách món ăn của nhà hàng
+&nbsp;   *
+&nbsp;   * @param id nhà hàng
+&nbsp;   * @return danh sách móna ăn của nhà hàng
+&nbsp;   */
+&nbsp;  @GetMapping(&quot;/get-all-dishes/{id}&quot;)
+&nbsp;  public ResponseEntity&lt;?&gt; getAllDishes(
+&nbsp;    @PathVariable Long id
+&nbsp;  ) {
+<b class="nc">&nbsp;    return ResponseEntity.ok(dishesService.GetAllDishes(id));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-06 23:21</div>
+</div>
+</body>
+</html>

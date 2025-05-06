@@ -158,7 +158,10 @@ public class RestaurantController {
    * @return danh sách các comment
    */
   @GetMapping("/get-all-comment/{id}")
-  public ResponseEntity<?> getAllComment(@PathVariable Long id) {
-    return ResponseEntity.ok(restaurantService.getAllComment(id));
+  public ResponseEntity<?> getAllComment(
+    @RequestParam(defaultValue = "0") int page,
+    @RequestParam(defaultValue = "3") int size,
+    @PathVariable Long id) {
+    return ResponseEntity.ok(restaurantService.getAllComment(page, size, id));
   }
 }

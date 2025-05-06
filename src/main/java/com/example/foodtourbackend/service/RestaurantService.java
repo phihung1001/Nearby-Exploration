@@ -2,12 +2,13 @@ package com.example.foodtourbackend.service;
 
 import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
 import com.example.foodtourbackend.DTO.response.CommentResponseDTO;
-import com.example.foodtourbackend.DTO.response.ListResponse;
 import com.example.foodtourbackend.DTO.response.ProviderResponseDTO;
 import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface RestaurantService {
@@ -28,5 +29,5 @@ public interface RestaurantService {
 
   ResponseEntity<?> save(Long id);
 
-  ResponseEntity<ListResponse<CommentResponseDTO>> getAllComment(Long id);
+  ResponseEntity<List<CommentResponseDTO>> getAllComment(int page, int size, Long id);
 }

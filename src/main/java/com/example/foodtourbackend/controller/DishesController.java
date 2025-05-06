@@ -72,4 +72,17 @@ public class DishesController {
     return ResponseEntity.ok(dishesService.delete(Id));
   }
 
+  /**
+   * Lấy danh sách món ăn của nhà hàng
+   *
+   * @param id nhà hàng
+   * @return danh sách móna ăn của nhà hàng
+   */
+  @GetMapping("/get-all-dishes/{id}")
+  public ResponseEntity<?> getAllDishes(
+    @PathVariable Long id
+  ) {
+    return ResponseEntity.ok(dishesService.GetAllDishes(id));
+  }
+
 }

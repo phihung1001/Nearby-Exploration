@@ -9,6 +9,7 @@ import com.example.foodtourbackend.GlobalException.DuplicateException;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
 import com.example.foodtourbackend.GlobalException.UnauthorizedException;
 import com.example.foodtourbackend.entity.Customer;
+import com.example.foodtourbackend.mapper.CustomerMapper;
 import com.example.foodtourbackend.repository.CustomerRepository;
 import com.example.foodtourbackend.service.AuthService;
 import com.example.foodtourbackend.utils.JwtUtil;
@@ -28,84 +29,76 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final CustomerRepository customerRepository;
+  private final CustomerRepository customerRepository;
+  private final CustomerMapper customerMapper;
+  private final PasswordEncoder passwordEncoder;
+  private final JwtUtil jwtUtil;
+  private final UserDetailsService userDetailsService;
 
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+  @Override
+  public  ResponseEntity<?> register(RegisterRequestDTO registerRequestDTO) {
+      if (customerRepository.existsByEmail(registerRequestDTO.getEmail())) {
+          throw new DuplicateException("Email đã được đăng ký");
+      }
+      if(customerRepository.existsByPhoneNumber(registerRequestDTO.getPhoneNumber())) {
+          throw new DuplicateException("Số điện thoại đã được đăng ký");
+      }
+      Customer customer = customerMapper.RegisterRequestDTO2Entity(registerRequestDTO);
+      customer.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
+      customer.setRole("CUSTOMER");
+      customerRepository.save(customer);
+      return ResponseEntity.ok(Map.of("message","Đăng kí thành công"));
+  }
+  @Override
+  public ResponseEntity<?> login(LoginRequestDTO request, HttpServletResponse response) {
+      Customer customer = customerRepository.findByEmail(request.getEmail())
+              .orElseThrow(() -> new NotFoundException("Email không tồn tại"));
 
-    @Override
-    public  ResponseEntity<?> register(RegisterRequestDTO registerRequestDTO) {
-        if (customerRepository.existsByEmail(registerRequestDTO.getEmail())) {
-            throw new DuplicateException("Email đã được đăng ký");
-        }
-        if(customerRepository.existsByPhoneNumber(registerRequestDTO.getPhoneNumber())) {
-            throw new DuplicateException("Số điện thoại đã được đăng ký");
-        }
-        Customer customer = new Customer();
-        customer.setFullName(registerRequestDTO.getFullName());
-        customer.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
-        customer.setEmail(registerRequestDTO.getEmail());
-        customer.setPhoneNumber(registerRequestDTO.getPhoneNumber());
-        customer.setAddress(registerRequestDTO.getAddress());
-        customer.setGender(registerRequestDTO.getGender());
-        customer.setRole("CUSTOMER");
-        customerRepository.save(customer);
-        return ResponseEntity.ok(Map.of("message","Đăng kí thành công"));
-    }
+      if (!passwordEncoder.matches(request.getPassword(), customer.getPassword())) {
+          throw new UnauthorizedException("Mật khẩu không chính xác");
+      }
+      String accessToken = jwtUtil.generateToken(customer);
+      String refreshToken = jwtUtil.generateRefreshToken(customer);
+      // Tạo cookie chứa refresh token
+      Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
+      refreshCookie.setHttpOnly(true);           // Không cho phép truy cập từ JavaScript
+      refreshCookie.setSecure(false);
+      refreshCookie.setPath("/");                  // Cookie được gửi với mọi request
+      refreshCookie.setMaxAge(7 * 24 * 60 * 60);
+      response.addCookie(refreshCookie);
 
-    @Override
-    public ResponseEntity<?> login(LoginRequestDTO request, HttpServletResponse response) {
-        Customer customer = customerRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new NotFoundException("Email không tồn tại"));
+      LoginResponseDTO tokenRespone = new LoginResponseDTO(accessToken);
+      return ResponseEntity.ok(tokenRespone);
+  }
 
-        if (!passwordEncoder.matches(request.getPassword(), customer.getPassword())) {
-            throw new UnauthorizedException("Mật khẩu không chính xác");
-        }
-        String accessToken = jwtUtil.generateToken(customer);
-        String refreshToken = jwtUtil.generateRefreshToken(customer);
+  @Override
+  public ResponseEntity<?> checkUser(TokenRequestDTO token) {
+      return ResponseEntity.ok(jwtUtil.getAllClaimsFromToken(token.getToken()));
+  }
 
-        // Tạo cookie chứa refresh token
-        Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
-        refreshCookie.setHttpOnly(true);           // Không cho phép truy cập từ JavaScript
-        refreshCookie.setSecure(false);
-        refreshCookie.setPath("/");                  // Cookie được gửi với mọi request
-        refreshCookie.setMaxAge(7 * 24 * 60 * 60);
-        response.addCookie(refreshCookie);
+  public TokenResponseDTO refreshToken(HttpServletRequest request) {
+      String refreshToken = null;
+      Cookie[] cookies = request.getCookies();
+      if (cookies != null) {
+          for (Cookie cookie : cookies) {
+              if ("refreshToken".equals(cookie.getName())) {
+                  refreshToken = cookie.getValue();
+                  break;
+              }
+          }
+      }
+      if (refreshToken == null) {
+          throw new UnauthorizedException("Refresh token không hợp lệ hoặc đã hết hạn");
+      }
 
-        LoginResponseDTO tokenRespone = new LoginResponseDTO(accessToken);
-        return ResponseEntity.ok(tokenRespone);
-    }
-
-    @Override
-    public ResponseEntity<?> checkUser(TokenRequestDTO token) {
-        return ResponseEntity.ok(jwtUtil.getAllClaimsFromToken(token.getToken()));
-    }
-
-    public TokenResponseDTO refreshToken(HttpServletRequest request) {
-        String refreshToken = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("refreshToken".equals(cookie.getName())) {
-                    refreshToken = cookie.getValue();
-                    break;
-                }
-            }
-        }
-        if (refreshToken == null) {
-            throw new UnauthorizedException("Refresh token không hợp lệ hoặc đã hết hạn");
-        }
-
-        String email = jwtUtil.getUserEmailFromToken(refreshToken);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        if (!jwtUtil.validateToken(refreshToken, userDetails)) {
-            throw new UnauthorizedException("Refresh token không hợp lệ hoặc đã hết hạn");
-        }
-        Customer customer = customerRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("Customer không tồn tại"));
-
-        String newAccessToken = jwtUtil.generateToken(customer);
-        return new TokenResponseDTO(newAccessToken);
-    }
+      String email = jwtUtil.getUserEmailFromToken(refreshToken);
+      UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+      if (!jwtUtil.validateToken(refreshToken, userDetails)) {
+          throw new UnauthorizedException("Refresh token không hợp lệ hoặc đã hết hạn");
+      }
+      Customer customer = customerRepository.findByEmail(email)
+              .orElseThrow(() -> new NotFoundException("Customer không tồn tại"));
+      String newAccessToken = jwtUtil.generateToken(customer);
+      return new TokenResponseDTO(newAccessToken);
+  }
 }

@@ -15,4 +15,6 @@ public interface DishesService {
   List<?> getAllDishesByRestaurantId(Long restaurantId);
 
   String delete(Long id);
+
+  List<?> GetAllDishes(Long id);
 }

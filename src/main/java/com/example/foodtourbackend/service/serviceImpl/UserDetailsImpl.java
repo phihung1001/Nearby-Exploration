@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
+
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
     private final Long userId;

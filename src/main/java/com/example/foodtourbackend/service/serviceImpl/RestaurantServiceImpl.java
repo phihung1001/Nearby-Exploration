@@ -2,17 +2,13 @@ package com.example.foodtourbackend.service.serviceImpl;
 
 import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
 import com.example.foodtourbackend.DTO.response.CommentResponseDTO;
-import com.example.foodtourbackend.DTO.response.ListResponse;
 import com.example.foodtourbackend.DTO.response.ProviderResponseDTO;
 import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
 import com.example.foodtourbackend.GlobalException.DuplicateException;
 import com.example.foodtourbackend.GlobalException.ErrorImportDataException;
 import com.example.foodtourbackend.GlobalException.NotFoundException;
 import com.example.foodtourbackend.GlobalException.UnauthorizedException;
-import com.example.foodtourbackend.entity.CategoryFood;
-import com.example.foodtourbackend.entity.Customer;
-import com.example.foodtourbackend.entity.Restaurant;
-import com.example.foodtourbackend.entity.RestaurantSave;
+import com.example.foodtourbackend.entity.*;
 import com.example.foodtourbackend.mapper.CategoryFoodMapper;
 import com.example.foodtourbackend.mapper.RestaurantMapper;
 import com.example.foodtourbackend.mapper.ReviewMapper;
@@ -162,13 +158,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     Restaurant savedRestaurant = restaurantRepository.save(restaurant);
 
-    if (requestDTO.getDishes() != null && !requestDTO.getDishes().isEmpty()) {
-      List<CategoryFood> dishList = requestDTO.getDishes().stream()
-        .map(categoryFoodMapper::CategoryFoodToCategoryFood)
-        .peek(dish -> dish.setRestaurant(savedRestaurant)) // Gán nhà hàng cho từng món
-        .toList();
-      categoryFoodRepository.saveAll(dishList);
-    }
     return restaurantMapper.EntityToProviderResponseDTO(savedRestaurant);
   }
 
@@ -241,8 +230,8 @@ public class RestaurantServiceImpl implements RestaurantService {
   /**
    * Xóa thông tin nhà hàng
    *
-   * @param id
-   * @return
+   * @param id là id nhà hàng
+   * @return message thành công hoặc thất bại
    */
   @Override
   public String delete(Long id) {
@@ -297,21 +286,25 @@ public class RestaurantServiceImpl implements RestaurantService {
   }
 
   /**
-   * @param id
-   * @return
+   * API get all comment của nhà hàng theo phân trang
+   *
+   * @param id là id nhà hàng
+   * @return danh sách comment của nhà hàng
    */
   @Override
-  public ResponseEntity<ListResponse<CommentResponseDTO>> getAllComment(Long id) {
+  public ResponseEntity<List<CommentResponseDTO>> getAllComment(int page, int size, Long id) {
     Optional<Restaurant> restaurant = restaurantRepository.findById(id);
     if (restaurant.isEmpty()) {
       throw new NotFoundException("Nhà hàng không tồn tại");
     }
-    List<CommentResponseDTO> commentDTOList = reviewRepository.findAllByRestaurant_id(id)
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Reviews> pagedReviews = reviewRepository.findAllByRestaurant_Id(id, pageable);
+
+    List<CommentResponseDTO> commentDTOList = pagedReviews.getContent()
       .stream()
       .map(reviewMapper::reviews2CommentResponseDTO)
       .toList();
-    ListResponse response = new ListResponse("Thành công", commentDTOList);
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(commentDTOList);
   }
 
 }

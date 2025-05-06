@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CategoryFoodMapper {
    CategoryFoodMapper INSTANCE = Mappers.getMapper(CategoryFoodMapper.class);
-   CategoryFood CategoryFoodToCategoryFood(CategoryFood categoryFood);
+   CategoryFood CategoryFoodToCategoryFood(DishesRequestDTO categoryFood);
    CategoryFood DishesDTOToEntity(DishesRequestDTO dishesRequestDTO);
    CategoryFood UpdateDishesDTOToEntity(DishesRequestDTO dto, @MappingTarget CategoryFood entity);
    DishesResponseDTO EntityToDishesResponseDTO(CategoryFood categoryFood);
