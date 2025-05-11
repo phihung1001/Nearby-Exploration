@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > RestaurantController</title>
+  <title>Coverage Report > RestaurantSaveServiceImpl</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,10 +19,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">com.example.foodtourbackend.controller</a>
+    <a href="../index.html">com.example.foodtourbackend.service.serviceImpl</a>
 </div>
 
-<h1>Coverage Summary for Class: RestaurantController (com.example.foodtourbackend.controller)</h1>
+<h1>Coverage Summary for Class: RestaurantSaveServiceImpl (com.example.foodtourbackend.service.serviceImpl)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -45,37 +45,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">RestaurantController</td>
+  <td class="name">RestaurantSaveServiceImpl</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/11)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/6)
+    (4/4)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/13)
+    (9/9)
   </span>
 </td>
 </tr>
@@ -87,171 +87,48 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package com.example.foodtourbackend.controller;
+<code class="sourceCode" id="sourceCode">&nbsp;
+&nbsp;package com.example.foodtourbackend.service.serviceImpl;
 &nbsp;
-&nbsp;import com.example.foodtourbackend.DTO.request.ProviderRequestDTO;
-&nbsp;import com.example.foodtourbackend.service.RestaurantService;
+&nbsp;import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
+&nbsp;import com.example.foodtourbackend.GlobalException.UnauthorizedException;
+&nbsp;import com.example.foodtourbackend.entity.RestaurantSave;
+&nbsp;import com.example.foodtourbackend.mapper.RestaurantMapper;
+&nbsp;import com.example.foodtourbackend.repository.CustomerRepository;
+&nbsp;import com.example.foodtourbackend.repository.RestaurantSaveRepository;
+&nbsp;import com.example.foodtourbackend.service.RestaurantSaveService;
 &nbsp;import lombok.RequiredArgsConstructor;
 &nbsp;import org.springframework.data.domain.Page;
-&nbsp;import org.springframework.http.HttpStatus;
-&nbsp;import org.springframework.http.ResponseEntity;
-&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
-&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.data.domain.PageRequest;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.security.core.Authentication;
+&nbsp;import org.springframework.security.core.context.SecurityContextHolder;
+&nbsp;import org.springframework.stereotype.Service;
 &nbsp;
-&nbsp;@RestController
-&nbsp;@RequestMapping(&quot;/public/restaurant&quot;)
-<b class="nc">&nbsp;@RequiredArgsConstructor</b>
-&nbsp;public class RestaurantController {
-&nbsp;
-&nbsp;  private final RestaurantService restaurantService;
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Lấy thông tin nhà hàng theo ID.
-&nbsp;     *
-&nbsp;     * @param id ID nhà hàng
-&nbsp;     * @return ResponseEntity chứa thông tin nhà hàng
-&nbsp;     */
-&nbsp;  @GetMapping(&quot;/{id}&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; getById(@PathVariable Long id) {
-<b class="nc">&nbsp;    return ResponseEntity.status(HttpStatus.OK).body(restaurantService.getById(id));</b>
-&nbsp;  }
-&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class RestaurantSaveServiceImpl implements RestaurantSaveService {
+&nbsp;  private final RestaurantSaveRepository restaurantSaveRepository;
+&nbsp;  private final RestaurantMapper restaurantMapper;
+&nbsp;  private final CustomerRepository customerRepository;
 &nbsp;  /**
-&nbsp;   * Lấy danh sách nhà hàng theo Id người dùng
+&nbsp;   * API lấy danh sách nhà hàng đã lưu có phân trang
 &nbsp;   *
-&nbsp;   * Param id Id người dùng
-&nbsp;   * @return Danh sách nhà hàng mà nguời dùng đang quản lí
+&nbsp;   * @param page  Trang hiện tại (bắt đầu từ 0).
+&nbsp;   * @param size  Số lượng nhà hàng mỗi trang.
+&nbsp;   * @return danh sachs nha hang
 &nbsp;   */
-&nbsp;  @GetMapping(&quot;list-restaurant/user&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; getList(
-&nbsp;    @RequestParam(defaultValue = &quot;0&quot;) int page,
-&nbsp;    @RequestParam(defaultValue = &quot;10&quot;) int size
-&nbsp;  ) {
-<b class="nc">&nbsp;    return ResponseEntity.status(HttpStatus.OK).body(restaurantService.getList(page,size));</b>
-&nbsp;  }
-&nbsp;
-&nbsp;  /**
-&nbsp;     * Lọc danh sách nhà hàng theo cityIds, districts, hoặc name có phân trang.
-&nbsp;     *
-&nbsp;     * @param page Trang hiện tại (mặc định là 0)
-&nbsp;     * @param size Số lượng nhà hàng mỗi trang (mặc định là 20)
-&nbsp;     * @param cityId Danh sách ID thành phố
-&nbsp;     * @param districtId Danh sách quận/huyện
-&nbsp;     * @param name Tên nhà hàng
-&nbsp;     * @return ResponseEntity chứa danh sách nhà hàng lọc được theo phân trang
-&nbsp;     */
-&nbsp;  @GetMapping(&quot;/filter&quot;)
-&nbsp;  public ResponseEntity&lt;Page&lt;?&gt;&gt; filterRestaurants(
-&nbsp;    @RequestParam(defaultValue = &quot;0&quot;) int page,
-&nbsp;    @RequestParam(defaultValue = &quot;20&quot;) int size,
-&nbsp;    @RequestParam(required = false) Integer cityId,
-&nbsp;    @RequestParam(required = false) Integer districtId,
-&nbsp;    @RequestParam(required = false) String name) {
-<b class="nc">&nbsp;      if (cityId == null</b>
-&nbsp;        &amp;&amp; districtId == null
-&nbsp;        &amp;&amp; name == null ) {
-<b class="nc">&nbsp;          return ResponseEntity.ok(restaurantService.getRestaurants(page,size));</b>
-&nbsp;      }
-<b class="nc">&nbsp;      return ResponseEntity.ok(restaurantService.filterRestaurants(page, size,cityId, districtId, name));</b>
+&nbsp;  @Override
+&nbsp;  public Page&lt;RestaurantResponseDTO&gt; getRestaurants(int page, int size) {
+<b class="fc">&nbsp;    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();</b>
+<b class="fc">&nbsp;    if (authentication == null || !authentication.isAuthenticated()) {</b>
+<b class="fc">&nbsp;      throw new UnauthorizedException(&quot;Chưa đăng nhập hoặc token không hợp lệ&quot;);</b>
 &nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Api Tìm kiếm nhà hàng gần vị trí hiện tại có phân trang
-&nbsp;     *
-&nbsp;     * @param page Trang hiện tại (mặc định là 0)
-&nbsp;     * @param size Số lượng nhà hàng mỗi trang (mặc định là 20)
-&nbsp;     * @param latitude Vĩ độ
-&nbsp;     * @param longitude Kinh độ
-&nbsp;     * @param radius Bán kính tìm kiếm (mặc định 5km)
-&nbsp;     * @param name tên nhà hàng tìm kiếm
-&nbsp;     * @return ResponseEntity chứa danh sách nhà hàng gần vị trí theo phân trang
-&nbsp;     */
-&nbsp;  @GetMapping(&quot;/nearby&quot;)
-&nbsp;  public ResponseEntity&lt;Page&lt;?&gt;&gt; getNearbyRestaurants(
-&nbsp;    @RequestParam(defaultValue = &quot;0&quot;) int page,
-&nbsp;    @RequestParam(defaultValue = &quot;20&quot;) int size,
-&nbsp;    @RequestParam(required = false) Double latitude,
-&nbsp;    @RequestParam(required = false) Double longitude,
-&nbsp;    @RequestParam(defaultValue = &quot;15&quot;) double radius,
-&nbsp;    @RequestParam(required = false) String name) {
-<b class="nc">&nbsp;      return ResponseEntity.ok(restaurantService.findNearbyRestaurants(page, size, latitude, longitude, radius, name));</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * API lấy danh sách nhà hàng có phân trang
-&nbsp;     *
-&nbsp;     * @param page Trang hiện tại (mặc định là 0)
-&nbsp;     * @param size Số lượng nhà hàng mỗi trang (mặc định là 20)
-&nbsp;     * @return Danh sách nhà hàng theo phân trang
-&nbsp;     */
-&nbsp;  @GetMapping(&quot;/list&quot;)
-&nbsp;  public ResponseEntity&lt;Page&lt;?&gt;&gt; getRestaurants(
-&nbsp;    @RequestParam(defaultValue = &quot;0&quot;) int page,
-&nbsp;    @RequestParam(defaultValue = &quot;20&quot;) int size) {
-<b class="nc">&nbsp;      return ResponseEntity.ok(restaurantService.getRestaurants(page, size));</b>
-&nbsp;    }
-&nbsp;
-&nbsp;  /**
-&nbsp;   * Đăng kí nhà hàng và danh sách món ăn
-&nbsp;   *
-&nbsp;   * @param requestDTO Dữ liệu đăng kí nhà hàng ( tên , địa chỉ, menu món ăn ,.. )
-&nbsp;   * @return Trả về thông báo đăng kí thành công hay thất bại
-&nbsp;   */
-&nbsp;
-&nbsp;  @PreAuthorize(&quot;hasAuthority(&#39;PROVIDER&#39;)&quot;)
-&nbsp;  @PostMapping(&quot;/register&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; registerRestaurant(@RequestBody ProviderRequestDTO requestDTO) {
-<b class="nc">&nbsp;    return ResponseEntity.status(HttpStatus.OK).body(restaurantService.registerRestaurant(requestDTO));</b>
-&nbsp;  }
-&nbsp;
-&nbsp;  /**
-&nbsp;   * Chỉnh sửa thông tin nhà hàng
-&nbsp;   *
-&nbsp;   * @param requestDTO Dữ liệu đăng kí nhà hàng ( tên , địa chỉ, menu món ăn ,.. )
-&nbsp;   * @return Trả về thông báo đăng kí thành công hay thất bại
-&nbsp;   */
-&nbsp;
-&nbsp;  @PreAuthorize(&quot;hasAuthority(&#39;PROVIDER&#39;)&quot;)
-&nbsp;  @PostMapping(&quot;/update/{id}&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; updateRestaurant(
-&nbsp;    @RequestBody ProviderRequestDTO requestDTO,
-&nbsp;    @PathVariable Long id) {
-<b class="nc">&nbsp;    return ResponseEntity.status(HttpStatus.OK).body(restaurantService.updateRestaurant(requestDTO, id));</b>
-&nbsp;  }
-&nbsp;
-&nbsp;  /**
-&nbsp;   * Xóa thông tin nhà hàng
-&nbsp;   *
-&nbsp;   */
-&nbsp;  @PreAuthorize(&quot;hasAuthority(&#39;PROVIDER&#39;)&quot;)
-&nbsp;  @DeleteMapping(&quot;/delete/{id}&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; deleteRestaurant(@PathVariable Long id) {
-<b class="nc">&nbsp;    return ResponseEntity.ok(restaurantService.delete(id));</b>
-&nbsp;  }
-&nbsp;
-&nbsp;  /**
-&nbsp;   * Lưu nhà hàng yêu thích
-&nbsp;   *
-&nbsp;   * @param id nhà hàng cần lưu
-&nbsp;   * @return Restaurant thông tin nhà hàng đã lưu
-&nbsp;   */
-&nbsp;  @PostMapping(&quot;/save/{id}&quot;)
-&nbsp;  @PreAuthorize(&quot;hasAnyAuthority(&#39;CUSTOMER&#39;, &#39;PROVIDER&#39;)&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; save(@PathVariable Long id) {
-<b class="nc">&nbsp;    return ResponseEntity.ok(restaurantService.save(id));</b>
-&nbsp;  }
-&nbsp;
-&nbsp;  /**
-&nbsp;   * Get list comment
-&nbsp;   *
-&nbsp;   * @return danh sách các comment
-&nbsp;   */
-&nbsp;  @GetMapping(&quot;/get-all-comment/{id}&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; getAllComment(
-&nbsp;    @RequestParam(defaultValue = &quot;0&quot;) int page,
-&nbsp;    @RequestParam(defaultValue = &quot;3&quot;) int size,
-&nbsp;    @PathVariable Long id) {
-<b class="nc">&nbsp;    return ResponseEntity.ok(restaurantService.getAllComment(page, size, id));</b>
+<b class="fc">&nbsp;    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();</b>
+<b class="fc">&nbsp;    Long userId = userDetails.getUserId();</b>
+<b class="fc">&nbsp;    Pageable pageable = PageRequest.of(page, size);</b>
+<b class="fc">&nbsp;    Page&lt;RestaurantSave&gt; results = restaurantSaveRepository.findByCustomer_Id(userId,pageable);</b>
+<b class="fc">&nbsp;    return results.map(restaurantMapper::entitySave2RestaurantResponseDTO);</b>
 &nbsp;  }
 &nbsp;}
 </code>
@@ -277,7 +154,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-06 23:21</div>
+    <div style="float:right;">generated on 2025-05-07 03:18</div>
 </div>
 </body>
 </html>

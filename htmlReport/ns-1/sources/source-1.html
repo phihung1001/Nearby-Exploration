@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > AuthController</title>
+  <title>Coverage Report > AuthServiceImpl</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,10 +19,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">com.example.foodtourbackend.controller</a>
+    <a href="../index.html">com.example.foodtourbackend.service.serviceImpl</a>
 </div>
 
-<h1>Coverage Summary for Class: AuthController (com.example.foodtourbackend.controller)</h1>
+<h1>Coverage Summary for Class: AuthServiceImpl (com.example.foodtourbackend.service.serviceImpl)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -37,33 +37,45 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 <th class="coverageStat 
 ">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
   Line, %
 </th>
 </tr>
 <tr>
-  <td class="name">AuthController</td>
+  <td class="name">AuthServiceImpl</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/5)
+    (5/5)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    87.5%
   </span>
   <span class="absValue">
-    (0/6)
+    (14/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (41/41)
   </span>
 </td>
 </tr>
@@ -75,88 +87,108 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package com.example.foodtourbackend.controller;
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.foodtourbackend.service.serviceImpl;
 &nbsp;
 &nbsp;import com.example.foodtourbackend.DTO.request.LoginRequestDTO;
 &nbsp;import com.example.foodtourbackend.DTO.request.RegisterRequestDTO;
 &nbsp;import com.example.foodtourbackend.DTO.request.TokenRequestDTO;
+&nbsp;import com.example.foodtourbackend.DTO.response.LoginResponseDTO;
 &nbsp;import com.example.foodtourbackend.DTO.response.TokenResponseDTO;
+&nbsp;import com.example.foodtourbackend.GlobalException.DuplicateException;
+&nbsp;import com.example.foodtourbackend.GlobalException.NotFoundException;
+&nbsp;import com.example.foodtourbackend.GlobalException.UnauthorizedException;
+&nbsp;import com.example.foodtourbackend.entity.Customer;
+&nbsp;import com.example.foodtourbackend.mapper.CustomerMapper;
+&nbsp;import com.example.foodtourbackend.repository.CustomerRepository;
 &nbsp;import com.example.foodtourbackend.service.AuthService;
+&nbsp;import com.example.foodtourbackend.utils.JwtUtil;
+&nbsp;import jakarta.servlet.http.Cookie;
 &nbsp;import jakarta.servlet.http.HttpServletRequest;
 &nbsp;import jakarta.servlet.http.HttpServletResponse;
 &nbsp;import lombok.RequiredArgsConstructor;
-&nbsp;import org.springframework.http.HttpStatus;
 &nbsp;import org.springframework.http.ResponseEntity;
-&nbsp;import org.springframework.web.bind.annotation.PostMapping;
-&nbsp;import org.springframework.web.bind.annotation.RequestBody;
-&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
-&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import org.springframework.security.core.userdetails.UserDetails;
+&nbsp;import org.springframework.security.core.userdetails.UserDetailsService;
+&nbsp;import org.springframework.security.crypto.password.PasswordEncoder;
+&nbsp;import org.springframework.stereotype.Service;
 &nbsp;
-&nbsp;/**
-&nbsp; * Controller chịu trách nhiệm xử lý các yêu cầu liên quan đến xác thực (authentication)
-&nbsp; * và đăng ký tài khoản (registration).
-&nbsp; *
-&nbsp; * Bao gồm:
-&nbsp; * 1. Đăng ký tài khoản mới (signup)
-&nbsp; * 2. Đăng nhập (signin)
-&nbsp; * 3. Kiểm tra token (getUserToken)
-&nbsp; * 4. Tạo mới token (refresh)
-&nbsp; */
-&nbsp;@RestController
-&nbsp;@RequestMapping(&quot;/auth&quot;)
-<b class="nc">&nbsp;@RequiredArgsConstructor</b>
-&nbsp;public class AuthController {
+&nbsp;import java.util.Map;
 &nbsp;
-&nbsp;  private final AuthService authService;
-&nbsp;  /**
-&nbsp;   * Đăng ký tài khoản (Sign Up).
-&nbsp;   *
-&nbsp;   * @param registerRequestDTO Dữ liệu đăng ký tài khoản (tên, email, mật khẩu, v.v.)
-&nbsp;   * @return Trả về thông tin tài khoản vừa được đăng ký, hoặc lỗi nếu không hợp lệ.
-&nbsp;   */
-&nbsp;  @PostMapping(&quot;/signup&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; register(@RequestBody RegisterRequestDTO registerRequestDTO) {
-&nbsp;    // Gọi service để thực hiện đăng ký
-&nbsp;    // Trả về HTTP 200 (OK) nếu thành công, kèm dữ liệu tài khoản mới
-<b class="nc">&nbsp;    return ResponseEntity.status(HttpStatus.OK).body(authService.register(registerRequestDTO));</b>
+&nbsp;@Service
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class AuthServiceImpl implements AuthService {
+&nbsp;
+&nbsp;  private final CustomerRepository customerRepository;
+&nbsp;  private final CustomerMapper customerMapper;
+&nbsp;  private final PasswordEncoder passwordEncoder;
+&nbsp;  private final JwtUtil jwtUtil;
+&nbsp;  private final UserDetailsService userDetailsService;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public  ResponseEntity&lt;?&gt; register(RegisterRequestDTO registerRequestDTO) {
+<b class="fc">&nbsp;      if (customerRepository.existsByEmail(registerRequestDTO.getEmail())) {</b>
+<b class="fc">&nbsp;          throw new DuplicateException(&quot;Email đã được đăng ký&quot;);</b>
+&nbsp;      }
+<b class="fc">&nbsp;      if(customerRepository.existsByPhoneNumber(registerRequestDTO.getPhoneNumber())) {</b>
+<b class="fc">&nbsp;          throw new DuplicateException(&quot;Số điện thoại đã được đăng ký&quot;);</b>
+&nbsp;      }
+<b class="fc">&nbsp;      Customer customer = customerMapper.RegisterRequestDTO2Entity(registerRequestDTO);</b>
+<b class="fc">&nbsp;      customer.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));</b>
+<b class="fc">&nbsp;      customer.setRole(&quot;CUSTOMER&quot;);</b>
+<b class="fc">&nbsp;      customerRepository.save(customer);</b>
+<b class="fc">&nbsp;      return ResponseEntity.ok(Map.of(&quot;message&quot;,&quot;Đăng kí thành công&quot;));</b>
+&nbsp;  }
+&nbsp;  @Override
+&nbsp;  public ResponseEntity&lt;?&gt; login(LoginRequestDTO request, HttpServletResponse response) {
+<b class="fc">&nbsp;      Customer customer = customerRepository.findByEmail(request.getEmail())</b>
+<b class="fc">&nbsp;              .orElseThrow(() -&gt; new NotFoundException(&quot;Email không tồn tại&quot;));</b>
+&nbsp;
+<b class="fc">&nbsp;      if (!passwordEncoder.matches(request.getPassword(), customer.getPassword())) {</b>
+<b class="fc">&nbsp;          throw new UnauthorizedException(&quot;Mật khẩu không chính xác&quot;);</b>
+&nbsp;      }
+<b class="fc">&nbsp;      String accessToken = jwtUtil.generateToken(customer);</b>
+<b class="fc">&nbsp;      String refreshToken = jwtUtil.generateRefreshToken(customer);</b>
+&nbsp;      // Tạo cookie chứa refresh token
+<b class="fc">&nbsp;      Cookie refreshCookie = new Cookie(&quot;refreshToken&quot;, refreshToken);</b>
+<b class="fc">&nbsp;      refreshCookie.setHttpOnly(true);           // Không cho phép truy cập từ JavaScript</b>
+<b class="fc">&nbsp;      refreshCookie.setSecure(false);</b>
+<b class="fc">&nbsp;      refreshCookie.setPath(&quot;/&quot;);                  // Cookie được gửi với mọi request</b>
+<b class="fc">&nbsp;      refreshCookie.setMaxAge(7 * 24 * 60 * 60);</b>
+<b class="fc">&nbsp;      response.addCookie(refreshCookie);</b>
+&nbsp;
+<b class="fc">&nbsp;      LoginResponseDTO tokenRespone = new LoginResponseDTO(accessToken);</b>
+<b class="fc">&nbsp;      return ResponseEntity.ok(tokenRespone);</b>
 &nbsp;  }
 &nbsp;
-&nbsp;  /**
-&nbsp;   * Đăng nhập (Sign In).
-&nbsp;   *
-&nbsp;   * @param loginRequestDTO Thông tin đăng nhập (email, password)
-&nbsp;   * @param response     HttpServletResponse, dùng để set cookie refresh token nếu cần
-&nbsp;   * @return Trả về token (JWT) hoặc thông báo lỗi nếu thông tin không hợp lệ.
-&nbsp;   */
-&nbsp;  @PostMapping(&quot;/signin&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; login(@RequestBody LoginRequestDTO loginRequestDTO, HttpServletResponse response) {
-&nbsp;    // Gọi service để xác thực và trả về JWT
-<b class="nc">&nbsp;    return authService.login(loginRequestDTO, response);</b>
+&nbsp;  @Override
+&nbsp;  public ResponseEntity&lt;?&gt; checkUser(TokenRequestDTO token) {
+<b class="fc">&nbsp;      return ResponseEntity.ok(jwtUtil.getAllClaimsFromToken(token.getToken()));</b>
 &nbsp;  }
 &nbsp;
-&nbsp;  /**
-&nbsp;   * Kiểm tra token người dùng (getUserToken).
-&nbsp;   *
-&nbsp;   * @param token TokenRequestDTO chứa token cần kiểm tra
-&nbsp;   * @return Thông tin người dùng tương ứng với token hoặc lỗi nếu token không hợp lệ
-&nbsp;   */
-&nbsp;  @PostMapping(&quot;/getUserToken&quot;)
-&nbsp;  public ResponseEntity&lt;?&gt; checkUser(@RequestBody TokenRequestDTO token) {
-&nbsp;    // Gọi service để kiểm tra token
-<b class="nc">&nbsp;    return authService.checkUser(token);</b>
-&nbsp;  }
+&nbsp;  public TokenResponseDTO refreshToken(HttpServletRequest request) {
+<b class="fc">&nbsp;      String refreshToken = null;</b>
+<b class="fc">&nbsp;      Cookie[] cookies = request.getCookies();</b>
+<b class="fc">&nbsp;      if (cookies != null) {</b>
+<b class="pc">&nbsp;          for (Cookie cookie : cookies) {</b>
+<b class="pc">&nbsp;              if (&quot;refreshToken&quot;.equals(cookie.getName())) {</b>
+<b class="fc">&nbsp;                  refreshToken = cookie.getValue();</b>
+&nbsp;                  break;
+&nbsp;              }
+&nbsp;          }
+&nbsp;      }
+<b class="fc">&nbsp;      if (refreshToken == null) {</b>
+<b class="fc">&nbsp;          throw new UnauthorizedException(&quot;Refresh token không hợp lệ hoặc đã hết hạn&quot;);</b>
+&nbsp;      }
 &nbsp;
-&nbsp;  /**
-&nbsp;   * Refresh token - tạo mới Access Token dựa trên Refresh Token.
-&nbsp;   *
-&nbsp;   * @param request HttpServletRequest, có thể chứa refresh token trong cookie
-&nbsp;   * @return TokenResponseDTO chứa Access Token mới hoặc lỗi nếu refresh token không hợp lệ
-&nbsp;   */
-&nbsp;  @PostMapping(&quot;/refresh&quot;)
-&nbsp;  public ResponseEntity&lt;TokenResponseDTO&gt; refreshToken(HttpServletRequest request) {
-&nbsp;    // Gọi service để sinh Access Token mới
-<b class="nc">&nbsp;    TokenResponseDTO tokenResponseDTO = authService.refreshToken(request);</b>
-<b class="nc">&nbsp;    return ResponseEntity.ok(tokenResponseDTO);</b>
+<b class="fc">&nbsp;      String email = jwtUtil.getUserEmailFromToken(refreshToken);</b>
+<b class="fc">&nbsp;      UserDetails userDetails = userDetailsService.loadUserByUsername(email);</b>
+<b class="fc">&nbsp;      if (!jwtUtil.validateToken(refreshToken, userDetails)) {</b>
+<b class="fc">&nbsp;          throw new UnauthorizedException(&quot;Refresh token không hợp lệ hoặc đã hết hạn&quot;);</b>
+&nbsp;      }
+<b class="fc">&nbsp;      Customer customer = customerRepository.findByEmail(email)</b>
+<b class="fc">&nbsp;              .orElseThrow(() -&gt; new NotFoundException(&quot;Customer không tồn tại&quot;));</b>
+<b class="fc">&nbsp;      String newAccessToken = jwtUtil.generateToken(customer);</b>
+<b class="fc">&nbsp;      return new TokenResponseDTO(newAccessToken);</b>
 &nbsp;  }
 &nbsp;}
 </code>
@@ -182,7 +214,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-06 23:21</div>
+    <div style="float:right;">generated on 2025-05-07 03:18</div>
 </div>
 </body>
 </html>

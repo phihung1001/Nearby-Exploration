@@ -44,26 +44,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">UserDetailsServiceImpl</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/2)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/8)
+    (8/8)
   </span>
 </td>
 </tr>
@@ -89,20 +89,20 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.util.Collections;
 &nbsp;
 &nbsp;@Service
-<b class="nc">&nbsp;@RequiredArgsConstructor</b>
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
 &nbsp;public class UserDetailsServiceImpl implements UserDetailsService {
 &nbsp;
 &nbsp;    private final CustomerRepository customerRepository;
 &nbsp;    @Override
 &nbsp;    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-<b class="nc">&nbsp;        Customer customer = customerRepository.findByEmail(email)</b>
-<b class="nc">&nbsp;                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;Người dùng không tồn tại với email: &quot; + email));</b>
+<b class="fc">&nbsp;        Customer customer = customerRepository.findByEmail(email)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;Người dùng không tồn tại với email: &quot; + email));</b>
 &nbsp;
-<b class="nc">&nbsp;        return new UserDetailsImpl(</b>
-<b class="nc">&nbsp;                customer.getId(),</b>
-<b class="nc">&nbsp;                customer.getEmail(),</b>
-<b class="nc">&nbsp;                customer.getPassword(),</b>
-<b class="nc">&nbsp;                Collections.singletonList(new SimpleGrantedAuthority(customer.getRole()))</b>
+<b class="fc">&nbsp;        return new UserDetailsImpl(</b>
+<b class="fc">&nbsp;                customer.getId(),</b>
+<b class="fc">&nbsp;                customer.getEmail(),</b>
+<b class="fc">&nbsp;                customer.getPassword(),</b>
+<b class="fc">&nbsp;                Collections.singletonList(new SimpleGrantedAuthority(customer.getRole()))</b>
 &nbsp;        );
 &nbsp;    }
 &nbsp;}
@@ -129,7 +129,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-06 22:47</div>
+    <div style="float:right;">generated on 2025-05-07 03:18</div>
 </div>
 </body>
 </html>

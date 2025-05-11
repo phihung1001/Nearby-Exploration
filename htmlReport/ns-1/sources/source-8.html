@@ -44,26 +44,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">WeatherServiceImpl</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/10)
+    (10/10)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    98.1%
   </span>
   <span class="absValue">
-    (0/52)
+    (51/52)
   </span>
 </td>
 </tr>
@@ -96,7 +96,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp; * Triển khai dịch vụ thời tiết, lấy dữ liệu thời tiết từ Open-Meteo API
 &nbsp; * và thông tin vị trí từ OpenStreetMap (Nominatim API).
 &nbsp; */
-<b class="nc">&nbsp;@RequiredArgsConstructor</b>
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
 &nbsp;@Service
 &nbsp;public class WeatherServiceImpl implements WeatherService {
 &nbsp;
@@ -104,20 +104,20 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;  private final ObjectMapper objectMapper;
 &nbsp;
 &nbsp;  // Bản đồ ánh xạ mã thời tiết sang biểu tượng tương ứng
-<b class="nc">&nbsp;  private static final Map&lt;Integer, String&gt; WEATHER_ICONS = Map.of(</b>
-<b class="nc">&nbsp;    0, &quot;☀️&quot;, 1, &quot;🌤️&quot;, 2, &quot;⛅&quot;, 3, &quot;☁️&quot;,</b>
-<b class="nc">&nbsp;    45, &quot;🌫️&quot;, 51, &quot;🌦️&quot;, 61, &quot;🌧️&quot;,</b>
-<b class="nc">&nbsp;    71, &quot;❄️&quot;, 80, &quot;🌦️&quot;, 95, &quot;⛈️&quot;</b>
+<b class="fc">&nbsp;  private static final Map&lt;Integer, String&gt; WEATHER_ICONS = Map.of(</b>
+<b class="fc">&nbsp;    0, &quot;☀️&quot;, 1, &quot;🌤️&quot;, 2, &quot;⛅&quot;, 3, &quot;☁️&quot;,</b>
+<b class="fc">&nbsp;    45, &quot;🌫️&quot;, 51, &quot;🌦️&quot;, 61, &quot;🌧️&quot;,</b>
+<b class="fc">&nbsp;    71, &quot;❄️&quot;, 80, &quot;🌦️&quot;, 95, &quot;⛈️&quot;</b>
 &nbsp;  );
 &nbsp;
 &nbsp;  // Bản đồ mã thời tiết sang mô tả điều kiện thời tiết bằng tiếng Anh
-<b class="nc">&nbsp;  private static final Map&lt;Integer, String&gt; WEATHER_CONDITIONS_EN = Map.of(</b>
-<b class="nc">&nbsp;    0, &quot;Clear&quot;, 1, &quot;Mainly Clear&quot;, 2, &quot;Partly Cloudy&quot;, 3, &quot;Overcast&quot;</b>
+<b class="fc">&nbsp;  private static final Map&lt;Integer, String&gt; WEATHER_CONDITIONS_EN = Map.of(</b>
+<b class="fc">&nbsp;    0, &quot;Clear&quot;, 1, &quot;Mainly Clear&quot;, 2, &quot;Partly Cloudy&quot;, 3, &quot;Overcast&quot;</b>
 &nbsp;  );
 &nbsp;
 &nbsp;  // Bản đồ mã thời tiết sang mô tả điều kiện thời tiết bằng tiếng Việt
-<b class="nc">&nbsp;  private static final Map&lt;Integer, String&gt; WEATHER_CONDITIONS_VI = Map.of(</b>
-<b class="nc">&nbsp;    0, &quot;Trời quang&quot;, 1, &quot;Có nắng nhẹ&quot;, 2, &quot;Có mây rải rác&quot;, 3, &quot;Trời âm u&quot;</b>
+<b class="fc">&nbsp;  private static final Map&lt;Integer, String&gt; WEATHER_CONDITIONS_VI = Map.of(</b>
+<b class="fc">&nbsp;    0, &quot;Trời quang&quot;, 1, &quot;Có nắng nhẹ&quot;, 2, &quot;Có mây rải rác&quot;, 3, &quot;Trời âm u&quot;</b>
 &nbsp;  );
 &nbsp;
 &nbsp;  /**
@@ -126,7 +126,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;   * @return Biểu tượng tương ứng hoặc mặc định là 🌡️
 &nbsp;   */
 &nbsp;  private String getWeatherIcon(int code) {
-<b class="nc">&nbsp;    return WEATHER_ICONS.getOrDefault(code, &quot;🌡️&quot;);</b>
+<b class="fc">&nbsp;    return WEATHER_ICONS.getOrDefault(code, &quot;🌡️&quot;);</b>
 &nbsp;  }
 &nbsp;
 &nbsp;  /**
@@ -135,7 +135,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;   * @return Mô tả tương ứng hoặc &quot;Unknown&quot; nếu không xác định được
 &nbsp;   */
 &nbsp;  private String getWeatherConditionEn(int code) {
-<b class="nc">&nbsp;    return WEATHER_CONDITIONS_EN.getOrDefault(code, &quot;Unknown&quot;);</b>
+<b class="fc">&nbsp;    return WEATHER_CONDITIONS_EN.getOrDefault(code, &quot;Unknown&quot;);</b>
 &nbsp;  }
 &nbsp;
 &nbsp;  /**
@@ -144,7 +144,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;   * @return Mô tả tương ứng hoặc &quot;Không xác định&quot; nếu không tìm thấy
 &nbsp;   */
 &nbsp;  private String getWeatherConditionVi(int code) {
-<b class="nc">&nbsp;    return WEATHER_CONDITIONS_VI.getOrDefault(code, &quot;Không xác định&quot;);</b>
+<b class="fc">&nbsp;    return WEATHER_CONDITIONS_VI.getOrDefault(code, &quot;Không xác định&quot;);</b>
 &nbsp;  }
 &nbsp;
 &nbsp;  /**
@@ -156,59 +156,59 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;   * @param timezone Múi giờ
 &nbsp;   * @return Đối tượng Mono chứa thông tin thời tiết
 &nbsp;   */
-&nbsp;  public Mono&lt;?&gt; getWeatherData(double latitude, double longitude, String startHour, String endHour, String timezone) {
-<b class="nc">&nbsp;    String weatherApiUrl = &quot;https://api.open-meteo.com/v1/forecast&quot;;</b>
-<b class="nc">&nbsp;    String geoApiUrl = &quot;https://nominatim.openstreetmap.org/reverse&quot;;</b>
+&nbsp;  public Mono&lt;WeatherDTO&gt; getWeatherData(double latitude, double longitude, String startHour, String endHour, String timezone) {
+<b class="fc">&nbsp;    String weatherApiUrl = &quot;https://api.open-meteo.com/v1/forecast&quot;;</b>
+<b class="fc">&nbsp;    String geoApiUrl = &quot;https://nominatim.openstreetmap.org/reverse&quot;;</b>
 &nbsp;
 &nbsp;    // Gọi API thời tiết
-<b class="nc">&nbsp;    Mono&lt;String&gt; weatherJsonMono = webClient.mutate().baseUrl(weatherApiUrl).build().get()</b>
-<b class="nc">&nbsp;      .uri(uriBuilder -&gt; uriBuilder.queryParam(&quot;latitude&quot;, latitude)</b>
-<b class="nc">&nbsp;        .queryParam(&quot;longitude&quot;, longitude)</b>
-<b class="nc">&nbsp;        .queryParam(&quot;hourly&quot;, &quot;temperature_2m,weather_code,relative_humidity_2m,uv_index&quot;)</b>
-<b class="nc">&nbsp;        .queryParam(&quot;start_hour&quot;, startHour)</b>
-<b class="nc">&nbsp;        .queryParam(&quot;end_hour&quot;, endHour)</b>
-<b class="nc">&nbsp;        .queryParam(&quot;current&quot;, &quot;temperature_2m,weather_code,relative_humidity_2m,uv_index&quot;)</b>
-<b class="nc">&nbsp;        .queryParam(&quot;timezone&quot;, timezone)</b>
-<b class="nc">&nbsp;        .build())</b>
-<b class="nc">&nbsp;      .retrieve().bodyToMono(String.class).onErrorReturn(&quot;{}&quot;);</b>
+<b class="fc">&nbsp;    Mono&lt;String&gt; weatherJsonMono = webClient.mutate().baseUrl(weatherApiUrl).build().get()</b>
+<b class="fc">&nbsp;      .uri(uriBuilder -&gt; uriBuilder.queryParam(&quot;latitude&quot;, latitude)</b>
+<b class="fc">&nbsp;        .queryParam(&quot;longitude&quot;, longitude)</b>
+<b class="fc">&nbsp;        .queryParam(&quot;hourly&quot;, &quot;temperature_2m,weather_code,relative_humidity_2m,uv_index&quot;)</b>
+<b class="fc">&nbsp;        .queryParam(&quot;start_hour&quot;, startHour)</b>
+<b class="fc">&nbsp;        .queryParam(&quot;end_hour&quot;, endHour)</b>
+<b class="fc">&nbsp;        .queryParam(&quot;current&quot;, &quot;temperature_2m,weather_code,relative_humidity_2m,uv_index&quot;)</b>
+<b class="fc">&nbsp;        .queryParam(&quot;timezone&quot;, timezone)</b>
+<b class="fc">&nbsp;        .build())</b>
+<b class="fc">&nbsp;      .retrieve().bodyToMono(String.class).onErrorReturn(&quot;{}&quot;);</b>
 &nbsp;
 &nbsp;    // Gọi API vị trí
-<b class="nc">&nbsp;    Mono&lt;String&gt; geoJsonMono = webClient.mutate().baseUrl(geoApiUrl).build().get()</b>
-<b class="nc">&nbsp;      .uri(uriBuilder -&gt; uriBuilder.queryParam(&quot;format&quot;, &quot;json&quot;)</b>
-<b class="nc">&nbsp;        .queryParam(&quot;lat&quot;, latitude)</b>
-<b class="nc">&nbsp;        .queryParam(&quot;lon&quot;, longitude)</b>
-<b class="nc">&nbsp;        .queryParam(&quot;zoom&quot;, 10)</b>
-<b class="nc">&nbsp;        .build())</b>
-<b class="nc">&nbsp;      .retrieve().bodyToMono(String.class).onErrorReturn(&quot;{}&quot;);</b>
+<b class="fc">&nbsp;    Mono&lt;String&gt; geoJsonMono = webClient.mutate().baseUrl(geoApiUrl).build().get()</b>
+<b class="fc">&nbsp;      .uri(uriBuilder -&gt; uriBuilder.queryParam(&quot;format&quot;, &quot;json&quot;)</b>
+<b class="fc">&nbsp;        .queryParam(&quot;lat&quot;, latitude)</b>
+<b class="fc">&nbsp;        .queryParam(&quot;lon&quot;, longitude)</b>
+<b class="fc">&nbsp;        .queryParam(&quot;zoom&quot;, 10)</b>
+<b class="fc">&nbsp;        .build())</b>
+<b class="fc">&nbsp;      .retrieve().bodyToMono(String.class).onErrorReturn(&quot;{}&quot;);</b>
 &nbsp;
 &nbsp;    // Xử lý kết quả từ cả hai API
-<b class="nc">&nbsp;    return Mono.zip(weatherJsonMono, geoJsonMono).map(tuple -&gt; {</b>
-<b class="nc">&nbsp;      String weatherJson = tuple.getT1();</b>
-<b class="nc">&nbsp;      String geoJson = tuple.getT2();</b>
+<b class="fc">&nbsp;    return Mono.zip(weatherJsonMono, geoJsonMono).map(tuple -&gt; {</b>
+<b class="fc">&nbsp;      String weatherJson = tuple.getT1();</b>
+<b class="fc">&nbsp;      String geoJson = tuple.getT2();</b>
 &nbsp;
 &nbsp;      try {
-<b class="nc">&nbsp;        OpenMeteoResponseDTO response = objectMapper.readValue(weatherJson, OpenMeteoResponseDTO.class);</b>
+<b class="fc">&nbsp;        OpenMeteoResponseDTO response = objectMapper.readValue(weatherJson, OpenMeteoResponseDTO.class);</b>
 &nbsp;
 &nbsp;        // Khởi tạo đối tượng Weather và ánh xạ dữ liệu
-<b class="nc">&nbsp;        OpenMeteoResponseDTO.CurrentWeather currentWeather = response.getCurrent();</b>
-<b class="nc">&nbsp;        WeatherDTO weatherDTO = new WeatherDTO();</b>
-<b class="nc">&nbsp;        weatherDTO.setTemperature(currentWeather.getTemperature_2m());</b>
-<b class="nc">&nbsp;        weatherDTO.setCondition(getWeatherConditionEn(currentWeather.getWeather_code()));</b>
-<b class="nc">&nbsp;        weatherDTO.setConditionText(getWeatherConditionVi(currentWeather.getWeather_code()));</b>
-<b class="nc">&nbsp;        weatherDTO.setLocation(objectMapper.readTree(geoJson).path(&quot;display_name&quot;).asText(&quot;Unknown&quot;));</b>
-<b class="nc">&nbsp;        weatherDTO.setHumidity(currentWeather.getRelative_humidity_2m());</b>
-<b class="nc">&nbsp;        weatherDTO.setUvIndex(currentWeather.getUv_index());</b>
+<b class="fc">&nbsp;        OpenMeteoResponseDTO.CurrentWeather currentWeather = response.getCurrent();</b>
+<b class="fc">&nbsp;        WeatherDTO weatherDTO = new WeatherDTO();</b>
+<b class="fc">&nbsp;        weatherDTO.setTemperature(currentWeather.getTemperature_2m());</b>
+<b class="fc">&nbsp;        weatherDTO.setCondition(getWeatherConditionEn(currentWeather.getWeather_code()));</b>
+<b class="fc">&nbsp;        weatherDTO.setConditionText(getWeatherConditionVi(currentWeather.getWeather_code()));</b>
+<b class="fc">&nbsp;        weatherDTO.setLocation(objectMapper.readTree(geoJson).path(&quot;display_name&quot;).asText(&quot;Unknown&quot;));</b>
+<b class="fc">&nbsp;        weatherDTO.setHumidity(currentWeather.getRelative_humidity_2m());</b>
+<b class="fc">&nbsp;        weatherDTO.setUvIndex(currentWeather.getUv_index());</b>
 &nbsp;
 &nbsp;        // Tạo danh sách dự báo theo giờ
-<b class="nc">&nbsp;        List&lt;HourlyForecastDTO&gt; hourlyForecastDTOS = IntStream.range(0, response.getHourly().getTime().size())</b>
-<b class="nc">&nbsp;          .mapToObj(i -&gt; new HourlyForecastDTO(</b>
-<b class="nc">&nbsp;            response.getHourly().getTime().get(i),</b>
-<b class="nc">&nbsp;            response.getHourly().getTemperature_2m().get(i),</b>
-<b class="nc">&nbsp;            getWeatherIcon(response.getHourly().getWeather_code().get(i))</b>
-<b class="nc">&nbsp;          )).collect(Collectors.toList());</b>
+<b class="fc">&nbsp;        List&lt;HourlyForecastDTO&gt; hourlyForecastDTOS = IntStream.range(0, response.getHourly().getTime().size())</b>
+<b class="fc">&nbsp;          .mapToObj(i -&gt; new HourlyForecastDTO(</b>
+<b class="fc">&nbsp;            response.getHourly().getTime().get(i),</b>
+<b class="fc">&nbsp;            response.getHourly().getTemperature_2m().get(i),</b>
+<b class="fc">&nbsp;            getWeatherIcon(response.getHourly().getWeather_code().get(i))</b>
+<b class="fc">&nbsp;          )).collect(Collectors.toList());</b>
 &nbsp;
-<b class="nc">&nbsp;        weatherDTO.setForecast(hourlyForecastDTOS);</b>
-<b class="nc">&nbsp;        return weatherDTO;</b>
+<b class="fc">&nbsp;        weatherDTO.setForecast(hourlyForecastDTOS);</b>
+<b class="fc">&nbsp;        return weatherDTO;</b>
 &nbsp;      } catch (Exception e) {
 <b class="nc">&nbsp;        throw new RuntimeException(&quot;Lỗi khi phân tích JSON thời tiết&quot;, e);</b>
 &nbsp;      }
@@ -238,7 +238,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-06 22:47</div>
+    <div style="float:right;">generated on 2025-05-07 03:18</div>
 </div>
 </body>
 </html>

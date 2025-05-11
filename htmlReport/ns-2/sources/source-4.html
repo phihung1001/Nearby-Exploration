@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > RestaurantSaveServiceImpl</title>
+  <title>Coverage Report > WeatherService</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,65 +19,17 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">com.example.foodtourbackend.service.serviceImpl</a>
+    <a href="../index.html">com.example.foodtourbackend.service</a>
 </div>
 
-<h1>Coverage Summary for Class: RestaurantSaveServiceImpl (com.example.foodtourbackend.service.serviceImpl)</h1>
+<h1>Coverage Summary for Class: WeatherService (com.example.foodtourbackend.service)</h1>
 
 <table class="coverageStats">
 <tr>
   <th class="name">Class</th>
-<th class="coverageStat 
-">
-  Class, %
-</th>
-<th class="coverageStat 
-">
-  Method, %
-</th>
-<th class="coverageStat 
-">
-  Branch, %
-</th>
-<th class="coverageStat 
-">
-  Line, %
-</th>
 </tr>
 <tr>
-  <td class="name">RestaurantSaveServiceImpl</td>
-<td class="coverageStat">
-  <span class="percent">
-    100%
-  </span>
-  <span class="absValue">
-    (1/1)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    100%
-  </span>
-  <span class="absValue">
-    (2/2)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    100%
-  </span>
-  <span class="absValue">
-    (4/4)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    100%
-  </span>
-  <span class="absValue">
-    (9/9)
-  </span>
-</td>
+  <td class="name">WeatherService</td>
 </tr>
 
 </table>
@@ -87,49 +39,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;
-&nbsp;package com.example.foodtourbackend.service.serviceImpl;
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.foodtourbackend.service;
 &nbsp;
-&nbsp;import com.example.foodtourbackend.DTO.response.RestaurantResponseDTO;
-&nbsp;import com.example.foodtourbackend.GlobalException.UnauthorizedException;
-&nbsp;import com.example.foodtourbackend.entity.RestaurantSave;
-&nbsp;import com.example.foodtourbackend.mapper.RestaurantMapper;
-&nbsp;import com.example.foodtourbackend.repository.CustomerRepository;
-&nbsp;import com.example.foodtourbackend.repository.RestaurantSaveRepository;
-&nbsp;import com.example.foodtourbackend.service.RestaurantSaveService;
-&nbsp;import lombok.RequiredArgsConstructor;
-&nbsp;import org.springframework.data.domain.Page;
-&nbsp;import org.springframework.data.domain.PageRequest;
-&nbsp;import org.springframework.data.domain.Pageable;
-&nbsp;import org.springframework.security.core.Authentication;
-&nbsp;import org.springframework.security.core.context.SecurityContextHolder;
-&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import reactor.core.publisher.Mono;
 &nbsp;
-&nbsp;@Service
-<b class="fc">&nbsp;@RequiredArgsConstructor</b>
-&nbsp;public class RestaurantSaveServiceImpl implements RestaurantSaveService {
-&nbsp;  private final RestaurantSaveRepository restaurantSaveRepository;
-&nbsp;  private final RestaurantMapper restaurantMapper;
-&nbsp;  private final CustomerRepository customerRepository;
-&nbsp;  /**
-&nbsp;   * API lấy danh sách nhà hàng đã lưu có phân trang
-&nbsp;   *
-&nbsp;   * @param page  Trang hiện tại (bắt đầu từ 0).
-&nbsp;   * @param size  Số lượng nhà hàng mỗi trang.
-&nbsp;   * @return danh sachs nha hang
-&nbsp;   */
-&nbsp;  @Override
-&nbsp;  public Page&lt;RestaurantResponseDTO&gt; getRestaurants(int page, int size) {
-<b class="fc">&nbsp;    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();</b>
-<b class="fc">&nbsp;    if (authentication == null || !authentication.isAuthenticated()) {</b>
-<b class="fc">&nbsp;      throw new UnauthorizedException(&quot;Chưa đăng nhập hoặc token không hợp lệ&quot;);</b>
-&nbsp;    }
-<b class="fc">&nbsp;    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();</b>
-<b class="fc">&nbsp;    Long userId = userDetails.getUserId();</b>
-<b class="fc">&nbsp;    Pageable pageable = PageRequest.of(page, size);</b>
-<b class="fc">&nbsp;    Page&lt;RestaurantSave&gt; results = restaurantSaveRepository.findByCustomer_Id(userId,pageable);</b>
-<b class="fc">&nbsp;    return results.map(restaurantMapper::entitySave2RestaurantResponseDTO);</b>
-&nbsp;  }
+&nbsp;public interface WeatherService {
+&nbsp;
+&nbsp;  Mono&lt;?&gt; getWeatherData(double latitude, double longitude, String startHour, String endHour, String timezone);
 &nbsp;}
 </code>
 </pre>
@@ -154,7 +70,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-05-06 23:21</div>
+    <div style="float:right;">generated on 2025-05-07 03:18</div>
 </div>
 </body>
 </html>

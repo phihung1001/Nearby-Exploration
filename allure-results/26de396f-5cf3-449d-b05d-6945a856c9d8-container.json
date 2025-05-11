@@ -1,0 +1,1 @@
+{"uuid":"26de396f-5cf3-449d-b05d-6945a856c9d8","name":"getRestaurants_shouldThrowUnauthorizedException_whenNotAuthenticated()","children":["f67d00f5-0f58-4bef-a663-6fe662993e7e"],"befores":[],"afters":[],"start":1746562568786,"stop":1746562568798}

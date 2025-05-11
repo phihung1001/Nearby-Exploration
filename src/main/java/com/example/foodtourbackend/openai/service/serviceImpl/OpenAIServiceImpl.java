@@ -158,8 +158,7 @@ public class OpenAIServiceImpl implements OpenAIService {
    */
   private String buildSystemPrompt(ExploreRequestDTO exploreRequestDTO) {
     StringBuilder prompt = new StringBuilder();
-
-    prompt.append("Bạn là một chuyên gia ẩm thực Việt Nam, có nhiệm vụ tư vấn danh sách món ăn phù hợp cho khách du lịch tại ")
+    prompt.append("Bạn là một chuyên gia ẩm thực Việt Nam, có nhiệm vụ tư vấn danh sách món ăn địa phương phù hợp cho khách du lịch tại ")
       .append(exploreRequestDTO.getLocation()).append(". ");
 
     if (exploreRequestDTO.getWeather() != null && !exploreRequestDTO.getWeather().isEmpty()) {
