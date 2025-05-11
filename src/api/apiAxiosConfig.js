@@ -18,7 +18,8 @@ api.interceptors.response.use(
           { withCredentials: true }
         );
         localStorage.setItem("accessToken", data.accessToken);
-        originalRequest.headers["Authorization"] = "Bearer " + data.accessToken;
+        api.defaults.headers.common["Authorization"] = `Bearer ${data.accessToken}`;
+        originalRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
         window.location.href = "/auth/signin";
