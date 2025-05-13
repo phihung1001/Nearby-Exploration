@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { notification } from "antd";
 import Header from "../../../components/header/Header";
 import Banner from "../../../components/home-baner/Banner";
 import InforRestaurant from "../card/InforRestaurant";
@@ -48,7 +49,10 @@ export default function RestaurantDetail() {
       const data = await getRestaurantById(id);
       if (data && data.id) setRestaurant(data);
     } catch (err) {
-      console.error("Lỗi tải nhà hàng:", err);
+      notification.error({
+        message: "Thất bại",
+        description: `Lỗi tải nhà hàng:", err`
+      });
     } finally {
       setLoading(false);
     }
@@ -77,7 +81,10 @@ useEffect(() => {
 
       if (newComments.length < size) setHasMore(false);
     } catch (err) {
-      console.error("Lỗi tải bình luận:", err);
+      notification.error({
+        message: "Thất bại",
+        description: `Lỗi tải bình luận:", err`    
+      });
     }
   };
 
@@ -102,7 +109,7 @@ useEffect(() => {
   if (!restaurant) return <p>Không tìm thấy nhà hàng.</p>;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div className = {styles.pageWrapper} style={{ display: "flex", flexDirection: "column" }}>
       <Header />
       <div className={styles.containerDetail}>
         <div className={styles.bannerDetail}>

@@ -18,8 +18,10 @@ export default function Header() {
   };
 
   // Hàm xử lý tìm kiếm
-  const handleSearch = async () => {
-    if (!searchText && !filterData) {
+  const handleSearch = async (customSearchText) => {
+    const textToSearch = customSearchText ?? searchText;
+
+    if (!textToSearch && !filterData) {
       // Nếu không có từ khóa tìm kiếm và không có bộ lọc
       notification.error({
         message: "Tìm kiếm thất bại",
@@ -28,8 +30,8 @@ export default function Header() {
       return;
     }
     const searchParams = new URLSearchParams();
-    if (searchText) {
-      searchParams.append('name', searchText);
+    if (textToSearch ) {
+      searchParams.append('name', textToSearch);
     }
     if (filterData?.provinceId) {
       searchParams.append('cityId', filterData.provinceId);
@@ -40,6 +42,11 @@ export default function Header() {
       navigate(`/public/restaurant-list?${searchParams.toString()}`);
   };
 
+  const handleImageSearch = async (label) => {
+    setSearchText(label);  // Gán từ ảnh vào search
+    await handleSearch(label); // Gọi tìm kiếm lại
+  };
+
   return (
     <div className={styles.headerContainer}>
       <div className={styles.headerRight}>
@@ -48,7 +55,12 @@ export default function Header() {
         </Link>      
       </div>
       <div className={styles.headerRight}>
-        <SearchBar searchText={searchText} setSearchText={setSearchText} onSearch={handleSearch} />
+        <SearchBar
+          searchText={searchText} 
+          setSearchText={setSearchText} 
+          onSearch={handleSearch} 
+          onImageSearch={handleImageSearch}
+        />
         <FilterDropdown onFilterChange={handleFilterChange} />
       </div>
       <div className={styles.headerRight}>

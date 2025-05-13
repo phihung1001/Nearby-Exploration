@@ -136,6 +136,15 @@ export default function Register() {
               <Input.Password />
             </Form.Item>
 
+             <Form.Item
+              className={styles.antFormItem}
+              name="age"
+              label="Độ tuổi"
+              rules={[{ required: true, message: 'Yêu cầu nhập tuổi của bạnbạn' }]}
+            >
+              <Input />
+            </Form.Item>
+
             <Form.Item
               className={styles.antFormItem}
               name="address"

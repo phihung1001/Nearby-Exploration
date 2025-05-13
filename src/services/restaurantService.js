@@ -34,7 +34,6 @@ const BASE_URL = 'http://localhost:8080/public/restaurant'
     if (!response.ok) {
       throw new Error(data.message || "Không thể lưu nhà hàng.");
     }
-  
     return data;
   }
 
@@ -115,7 +114,7 @@ const BASE_URL = 'http://localhost:8080/public/restaurant'
     return allRestaurants;
   }
 
-    // api lấy lấy thông tin nhà hànghàng
+    // api lấy lấy thông tin nhà hàng
     export async function getRestaurantById(id) {
         try {
             const response = await fetch(`${BASE_URL}/${id}`);

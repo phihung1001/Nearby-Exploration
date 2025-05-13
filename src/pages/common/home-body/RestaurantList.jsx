@@ -113,6 +113,7 @@ export default function RestaurantList() {
       });
     }
   };
+  
   return (
     <div className={styles.productContainer}>
       {restaurants.map((r, index) => (

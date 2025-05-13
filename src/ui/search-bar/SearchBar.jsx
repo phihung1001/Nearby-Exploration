@@ -3,7 +3,7 @@ import { Input, Button, notification } from "antd";
 import { SearchOutlined, CameraOutlined } from "@ant-design/icons";
 import CameraModal from "../CameraModal";  
 
-export default function SearchBar({ searchText, setSearchText, onSearch }) {
+export default function SearchBar({ searchText, setSearchText, onSearch ,onImageSearch}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearch = () => {
@@ -15,6 +15,11 @@ export default function SearchBar({ searchText, setSearchText, onSearch }) {
   };
 
   const handleModalCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleImageUploadSearch = (label) => {
+    if (onImageSearch) onImageSearch(label);
     setIsModalOpen(false);
   };
 
@@ -38,7 +43,11 @@ export default function SearchBar({ searchText, setSearchText, onSearch }) {
         Tìm kiếm
       </Button>
 
-      <CameraModal open={isModalOpen} onCancel={handleModalCancel} />
+      <CameraModal 
+        open={isModalOpen} 
+        onCancel={handleModalCancel} 
+        onUpload={handleImageUploadSearch} 
+      />
     </div>
   );
 }

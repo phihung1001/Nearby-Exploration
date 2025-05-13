@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Typography, Spin, Empty } from "antd";
+import { notification, Spin, Empty } from "antd";
 import ItemRestaurant from "../common/card/ItemRestaurant";
 import styles from "../common/home-body/Restaurant.module.css";
 import Header from "../../components/header/Header";
@@ -33,7 +33,7 @@ export default function RestaurantListPage() {
       ...params,
       page,
     }).toString();
-
+    
     try {
       const res = await fetch(`http://localhost:8080/public/restaurant/filter?${query}`);
       const data = await res.json();
@@ -43,7 +43,10 @@ export default function RestaurantListPage() {
         return [...prev, ...newRestaurants];
       });      setHasMore(!data.last);
     } catch (error) {
-      console.error("Lỗi khi gọi API:", error);
+      notification.error({
+        message:"Thất bại",
+        description:"Lỗi khi gọi API:", error
+      });
     } finally {
       setLoading(false);
     }
@@ -80,6 +83,34 @@ export default function RestaurantListPage() {
     navigate(`/public/restaurant-detail/${restaurant.id}`, { state: restaurant });
   };
 
+  const handleSave = async (restaurant) => {
+    try {
+    const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:8080/public/restaurant/save/${restaurant.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(restaurant)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+         throw new Error(`${data.message}`);
+      }
+      notification.success({
+        message: "Lưu thành công",
+        description: `Nhà hàng "${restaurant.name}" đã được lưu vào mục yêu thích của bạn`,
+      });
+    } 
+    catch(err) {
+      notification.error({
+        message: "Lỗi khi lưu",
+        description: err.message,
+      });
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Header />
@@ -95,6 +126,7 @@ export default function RestaurantListPage() {
             rating={r.avgRatingText}
             image={fixImageUrl(r.photoUrl)}
             onClick={() => handleClick(r)}
+             onSave={() => handleSave(r)} 
           />
         ))}
       </div>

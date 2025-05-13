@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Upload, Button, message } from "antd";
+import { Upload, Button, message,notification } from "antd";
 import { UploadOutlined, CameraOutlined, PictureOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import Webcam from "react-webcam";
@@ -30,7 +30,10 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
   /** Xử lý tải ảnh lên */
   const handleUpload = async () => {
     if (!fileList.length && !capturedImage) {
-      message.warning("Vui lòng chọn hoặc chụp ảnh trước khi tải lên!");
+      notification.error({
+        message: "Thất bại",
+        description: "Vui lòng chọn hoặc chụp ảnh trước khi tải lên!"
+      });
       return;
     }
 
@@ -44,7 +47,6 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
     }
 
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch("http://localhost:8080/customer/searchByImage", {
         method: "POST",
         body: formData,
@@ -52,7 +54,10 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
 
       if (!response.ok) {
         const errorText = await response.text();
-        message.error(`Có lỗi khi tải ảnh lên: ${errorText}`);
+        notification.error({
+          message: "Thất bại",
+          description: `Có lỗi khi tải ảnh lên: ${errorText}`
+        });
         return;
       }
 
@@ -67,7 +72,6 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
         }))
       };
   
-      // Lưu dữ liệu vào state
       setData(formattedData);
 
       // Đóng modal nếu có hàm đóng modal được truyền vào
@@ -77,31 +81,21 @@ export default function UploadImage({ onUpload = () => {}, onCancel = () => {}, 
       if (location.pathname !== "/") {
         navigate("/");
       }
-      message.success("Tải ảnh lên thành công!");
+      notification.success({ 
+        message: "Thành công",
+        description: "Tải ảnh lên thành công !"
+      });
 
-      // Gọi API lấy thông tin nhà hàng
-      const restaurants = await fetchRestaurants(result.label);
-
-      // Điều hướng đến trang mới và truyền dữ liệu nhà hàng qua state
-      navigate("/public/restaurant-list", { state: { restaurants } });
+     if (onUpload && formattedData.label) {
+        onUpload(formattedData.label); // Gọi callback truyền label cho Header
+     }
 
     } catch (error) {
-      message.error("Có lỗi xảy ra khi tải ảnh lên!");
-    }
-  };
+       notification.error({ 
+        message: "Thất bại",
+        description: "Tải ảnh lên thất bại !"
+      });
 
-  /** Hàm gọi API lấy thông tin nhà hàng */
-  const fetchRestaurants = async (name) => {
-    try {
-      const response = await fetch(`http://localhost:8080/public/restaurant/filter?name=${name}`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const restaurants = await response.json();
-      return restaurants; // Trả về danh sách nhà hàng
-    } catch (error) {
-      message.error("Có lỗi xảy ra khi lấy thông tin nhà hàng:", error);
-      return [];
     }
   };
 

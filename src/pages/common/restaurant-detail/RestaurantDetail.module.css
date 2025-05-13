@@ -2,7 +2,13 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+      flex: 1; /* Đẩy footer xuống dưới */
   }
+  .pageWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Đảm bảo chiều cao tối thiểu bằng màn hình */
+}
   .bannerDetail {
     display: flex;        
     align-items: center;   
